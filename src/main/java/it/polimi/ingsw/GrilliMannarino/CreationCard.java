@@ -15,9 +15,19 @@ public class CreationCard {
     private HashMap<Resource, Integer> input;
     private HashMap<Resource, Integer> output;
 
+    public CreationCard(int cardLevel, int value, Faction faction, HashMap<Resource, Integer> price,
+        HashMap<Resource, Integer> input, HashMap<Resource, Integer> output){
+        this.cardLevel = cardLevel;
+        this.faction = faction;
+        this.value = value;
+        this.price = price;
+        this.output = output;
+        this.input = input;
+    }
+
     public boolean canProduce(HashMap<Resource, Integer> resources){
         for (Resource currentResource : this.input.keySet()) {
-            if (resources.get(currentResource) < this.input.get(currentResource)) {
+            if (resources.get(currentResource) == null || resources.get(currentResource) < this.input.get(currentResource)) {
                 return false;
             }
         }
