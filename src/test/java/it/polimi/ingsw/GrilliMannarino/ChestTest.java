@@ -92,5 +92,25 @@ class ChestTest {
         assertEquals(2, (int) retValue.get(Resource.COIN));
     }
 
+    @Test
+    public void removeElementNotEnough(){
+        Chest chest = new Chest();
+        HashMap<Resource, Integer> elem = new HashMap<>();
+        elem.put(Resource.SERVANT, 10);
+        elem.put(Resource.STONE, 15);
+        elem.put(Resource.COIN, 25);
+        chest.addResources(elem);
+        elem.clear();
+        elem.put(Resource.SERVANT, 20);
+        assertFalse(chest.removeResources(elem));
+        HashMap<Resource, Integer> retval = chest.getResources();
+        retval.clear();
+        elem.put(Resource.COIN, 10);
+        assertFalse(chest.removeResources(elem));
+        elem.put(Resource.SERVANT, 10);
+        elem.put(Resource.COIN, 25);
+        assertTrue(chest.removeResources(elem));
+    }
+
 
 }

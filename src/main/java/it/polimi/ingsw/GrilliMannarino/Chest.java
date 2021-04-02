@@ -9,7 +9,7 @@ public class Chest {
 
 
     public HashMap<Resource, Integer> getResources(){
-        return resources;
+        return new HashMap<Resource, Integer>(resources) ;
     }
 
     public void addResources(HashMap<Resource, Integer> input){
@@ -34,7 +34,7 @@ public class Chest {
 
         for(Resource current : input.keySet()){
             if(resourceCopy.get(current)!=null){
-                if(resourceCopy.get(current) > input.get(current))
+                if(resourceCopy.get(current) >= input.get(current))
                     resourceCopy.put(current, resourceCopy.get(current) - input.get(current));
                 else
                     check=false;
