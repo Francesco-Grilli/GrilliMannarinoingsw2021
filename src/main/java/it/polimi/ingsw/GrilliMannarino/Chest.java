@@ -9,8 +9,12 @@ public class Chest {
     private HashMap<Resource, Integer> resources = new HashMap<>();
 
 
+    /**
+     * getResources get all the resources from the chest
+     * @return an HashMap that contain all resources
+     */
     public HashMap<Resource, Integer> getResources(){
-        return new HashMap<Resource, Integer>(resources) ;
+        return new HashMap<>(resources) ;
     }
 
     /**
@@ -27,11 +31,11 @@ public class Chest {
     }
 
     /**
-     * removeResources remove the resources from the chest if are enough
-     * @param input are the resources that must be removed
-     * @return true if the remove was successful, false
+     * canRemoveResources check if can remove the resources passed from parameter
+     * @param input are the resources that try to remove
+     * @return true if the remove can be applied so if there are enough resources
      */
-    public boolean removeResources(HashMap<Resource, Integer> input){
+    public boolean canRemoveResources(HashMap<Resource, Integer> input){
         boolean check = true;
         HashMap<Resource, Integer> resourceCopy;
         try {
@@ -43,19 +47,38 @@ public class Chest {
         }
 
         for(Resource current : input.keySet()){
-            if(resourceCopy.get(current)!=null){
-                if(resourceCopy.get(current) >= input.get(current))
-                    resourceCopy.put(current, resourceCopy.get(current) - input.get(current));
-                else
+            if(resourceCopy.containsKey(current)){
+                if(resourceCopy.get(current) < input.get(current))
                     check=false;
             }
             else
                 check=false;
         }
-
-        if(check)
-            resources=resourceCopy;
         return check;
+    }
+
+
+    /**
+     * removeResources remove all the resources passed from parameter. It call canRemoveResources to check if can properly
+     * remove the resources
+     * @param input is an HashMap that contain the resources to remove
+     */
+    public void removeResources(HashMap<Resource, Integer> input){
+        HashMap<Resource, Integer> resourceCopy;
+        try {
+            resourceCopy = new HashMap<>(resources);
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+            return;
+        }
+
+        if(canRemoveResources(input)){
+            for(Resource current : input.keySet()){
+                resourceCopy.put(current, resourceCopy.get(current) - input.get(current));
+            }
+            resources=resourceCopy;
+        }
     }
 
 
