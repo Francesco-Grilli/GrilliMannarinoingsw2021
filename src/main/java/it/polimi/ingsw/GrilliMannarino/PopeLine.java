@@ -12,22 +12,29 @@ public class PopeLine {
      */
     private final int[] favorValue = new int[]{2, 3, 4};
 
+    private final int[] trackValue = new int[]{1, 2, 4, 6, 9, 12, 16, 20};
+
     /**
      * favorActivate is the value of score which activate the Pope's favor
      */
     private final int[] favorActivate = new int[]{5, 12, 19};
+
+    /**
+     * last value of track in the PopeLine
+     */
+    private final int finalTrack = 24;
     private int faith;
 
     /**
      * faithSteps count if the player has reached the Pope space before or at the same time of other player
      */
-    private boolean[] faithSteps;
+    private final boolean[] faithSteps;
 
     /**
      * faithChecks keep trace of the Pope's favor that has been activated
      */
-    private static boolean[] faithChecks = new boolean[3];
-    private int maxFaith;
+    private static final boolean[] faithChecks = new boolean[3];
+    private static int maxFaith;
 
 
     public PopeLine(){
@@ -41,7 +48,10 @@ public class PopeLine {
      * @return return true if adding a new point faith trigger a Pope's favor
      */
     public boolean addFaith(){
-        faith++;
+        if(faith<finalTrack)
+            faith++;
+        if(faith>maxFaith)
+            maxFaith=faith;
         return checkAdd();
     }
 
@@ -60,18 +70,19 @@ public class PopeLine {
 
 
     /**
-     * checkPopeFaith check if after an increment of faith a new Pope's favor is triggered
+     * checkPopeFaith check if, after an increment of faith, a new Pope's favor is triggered
      * @return true if has been activated a new Pope's favor
      */
     private boolean checkAdd(){
         int index = getLastFaith();
-        if(faith >= favorActivate[index])
-            return true;
+        if(index<=2){
+            return faith >= favorActivate[index];
+        }
         return false;
     }
 
     /**
-     * checkPopeFaith is called by the Board if anyone ha return true when has been added a new pointFaith
+     * checkPopeFaith is called by the Board if anyone has returned true when has been added a new popeFaith
      * @return true if the player has triggered the Pope's favor, false if the favor has been discarded
      */
     public boolean checkPopeFaith(){
@@ -84,7 +95,7 @@ public class PopeLine {
     }
 
     /**
-     * updateChecks is called when at least one addFaith return true
+     * updateChecks is called when at least one addFaith return true. It update the faithChecks
      */
     public static void updateChecks(){
         int index=0;
@@ -96,27 +107,45 @@ public class PopeLine {
     }
 
     /**
-     * calculate the amount of points from the Pope's favors that has been activated and not discarded
+     * getpoints calculate the amount of points from the Pope's favors that has been activated and not discarded and from the
+     * track of faith position
      * @return the amount of points
      */
     public int getPoints(){
+        return getFavorPoints()+getTrackPoint();
+    }
+
+    private int getTrackPoint(){
+        return trackValue[(faith/3)-1];
+    }
+
+    private int getFavorPoints(){
         int points = 0;
         for(int i=0; i<NUMBERFAVOR; i++){
             if(faithSteps[i])
                 points += favorValue[i];
         }
+
         return points;
     }
 
-
+    /**
+     * @return the value of faith
+     */
     public int getFaith() {
         return faith;
     }
 
+    /**
+     * @return the faithSteps, private to every single object of PopeLine
+     */
     public boolean[] getFaithSteps() {
         return faithSteps;
     }
 
+    /**
+     * @return the faithChecks, static array global to all object of PopeLine
+     */
     public static boolean[] getFaithChecks() {
         return faithChecks;
     }

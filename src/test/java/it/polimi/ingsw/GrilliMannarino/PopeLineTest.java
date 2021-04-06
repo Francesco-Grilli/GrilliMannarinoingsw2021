@@ -42,12 +42,12 @@ class PopeLineTest {
             assertFalse(pope.addFaith());
             assertEquals(i+1, pope.getFaith());
         }
-        assertFalse(pope.addFaith());
+        assertTrue(pope.addFaith());
         assertEquals(5, pope.getFaith());
-        assertFalse(pope.checkPopeFaith());
+        assertTrue(pope.checkPopeFaith());
         PopeLine.updateChecks();
-        assertFalse(pope.getFaithSteps()[0]);
-        assertFalse(PopeLine.getFaithChecks()[0]);
+        assertTrue(pope.getFaithSteps()[0]);
+        assertTrue(PopeLine.getFaithChecks()[0]);
     }
 
     @Test
@@ -58,7 +58,17 @@ class PopeLineTest {
             assertFalse(pope1.addFaith());
             System.out.println("Popefaith: " + pope1.getFaith());
         }
-        assertFalse(pope1.addFaith());
+        assertTrue(pope1.addFaith());
+        assertFalse(pope2.addFaith());
+        assertTrue(pope1.checkPopeFaith());
+        assertFalse(pope2.checkPopeFaith());
+        PopeLine.updateChecks();
+        assertFalse(pope2.getFaithSteps()[0]);
+        assertTrue(pope1.getFaithSteps()[0]);
+        for(int i=0; i<3; i++)
+            assertFalse(pope2.addFaith());
+        assertFalse(pope2.addFaith());
+
         /*assertEquals(true, pope1.checkPopeFaith());
         assertEquals(true, pope1.getFaithSteps()[0]);
         assertEquals(false, pope2.checkPopeFaith());
@@ -70,5 +80,49 @@ class PopeLineTest {
 
     @Test
     void getPoints() {
+        PopeLine pope1 = new PopeLine();
+        PopeLine pope2 = new PopeLine();
+
+        for(int i=0; i<4; i++) {
+            assertFalse(pope1.addFaith());
+            assertFalse(pope2.addFaith());
+        }
+
+        assertTrue(pope1.addFaith());
+        assertTrue(pope1.checkPopeFaith());
+        assertFalse(pope2.checkPopeFaith());
+        PopeLine.updateChecks();
+        assertFalse(pope2.addFaith());
+        assertEquals(5, pope1.getFaith());
+        assertEquals(5, pope2.getFaith());
+        // pope1 = 5;   favor=true, false, false
+        // pope2 = 5;   favor=false, false, false
+        assertEquals(3, pope1.getPoints());
+        assertEquals(1, pope2.getPoints());
+        for(int i=0; i<6; i++)
+            assertFalse(pope2.addFaith());
+        assertTrue(pope2.addFaith());
+        assertTrue(pope2.checkPopeFaith());
+        assertFalse(pope1.checkPopeFaith());
+        PopeLine.updateChecks();
+        // pope1 = 5;   favor= true, false, false
+        // pope2 = 12;  favor= false, true, false
+        for(int i=0; i<3; i++)
+            assertFalse(pope2.addFaith());
+        //pope2 = 15;   favor=false, true, false
+        assertEquals(3, pope1.getPoints());
+        assertEquals(12, pope2.getPoints());
+        for(int i=0; i<13; i++)
+            assertFalse(pope1.addFaith());
+        assertTrue(pope1.addFaith());
+        assertTrue(pope1.checkPopeFaith());
+        assertFalse(pope2.checkPopeFaith());
+        PopeLine.updateChecks();
+        assertEquals(18, pope1.getPoints());
+        assertEquals(12, pope2.getPoints());
+        for(int i=0; i<20; i++)
+            assertFalse(pope1.addFaith());
+        assertEquals(26, pope1.getPoints());
+        assertEquals(12, pope2.getPoints());
     }
 }
