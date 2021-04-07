@@ -3,7 +3,7 @@ package it.polimi.ingsw.GrilliMannarino;
 public class PopeLine {
 
     /**
-     * NUMBERFAVOR is the number of favor that are used in the PopeLine
+     * is the number of favor that are used in the PopeLine
      */
     private final int NUMBERFAVOR = 3;
 
