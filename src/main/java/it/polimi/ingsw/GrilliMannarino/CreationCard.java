@@ -36,11 +36,11 @@ public class CreationCard {
 
     public HashMap<Resource, Integer> produce(HashMap<Resource, Integer> resourcesIn, HashMap<Resource, Integer> resourcesOut){
         if(canProduce(resourcesIn)) {
-            for (Resource currentResource : this.input.keySet()) {
-                resourcesIn.put(currentResource, resourcesIn.get(currentResource) - this.input.get(currentResource));
+            for (Resource currentResourceIn : this.input.keySet()) {
+                resourcesIn.put(currentResourceIn, (resourcesIn.get(currentResourceIn) == null ? 0 : resourcesIn.get(currentResourceIn)) - this.input.get(currentResourceIn));
             }
-            for (Resource currentResource : this.output.keySet()) {
-                resourcesOut.put(currentResource, resourcesOut.get(currentResource) + this.input.get(currentResource));
+            for (Resource currentResourceOut : this.output.keySet()) {
+                resourcesOut.put(currentResourceOut, (resourcesOut.get(currentResourceOut) == null ? 0 : resourcesOut.get(currentResourceOut)) + this.output.get(currentResourceOut));
             }
         }
         return resourcesOut;
@@ -48,11 +48,30 @@ public class CreationCard {
 
     public boolean canBuyCard(HashMap<Resource, Integer> resources){
         for (Resource currentResource : this.price.keySet()) {
-            if (resources.get(currentResource) < this.price.get(currentResource)) {
+            if ((resources.get(currentResource) == null ? 0 : resources.get(currentResource)) < this.price.get(currentResource)) {
                 return false;
             }
         }
         return true;
     }
 
+    public HashMap<Resource, Integer> buyCard(HashMap<Resource, Integer> resourcesIn){
+        if(canBuyCard(resourcesIn)) {
+            for (Resource currentResourceIn : this.price.keySet()) {
+                resourcesIn.put(currentResourceIn, (resourcesIn.get(currentResourceIn) == null ? 0 : resourcesIn.get(currentResourceIn)) - this.price.get(currentResourceIn));
+            }
+        }
+        return resourcesIn;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public Faction getFaction() {
+        return faction;
+    }
+    public int getCardLevel() {
+        return cardLevel;
+    }
 }
