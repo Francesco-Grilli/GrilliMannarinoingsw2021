@@ -52,9 +52,71 @@ public class Collection {
             return null;
     }
 
+    public boolean canSetResourcesFromMarket(Row line, Resource res, Integer value){
+        return wareHouse.canAddResources(line, res, value);
+    }
+
     public void setResourcesFromProduction(HashMap<Resource, Integer> res){
         chest.addResources(res);
     }
 
     //method to remove the resources from chest or warehouse returned by getResources
+
+    public boolean canRemove(HashMap<Resource, Integer> input){
+        HashMap<Resource, Integer> resources = getResources();
+        boolean check = true;
+        for (Resource res : input.keySet()) {
+            if(!resources.containsKey(res) || !(resources.get(res)>=input.get(res)))
+                check=false;
+        }
+        return check;
+    }
+
+    public HashMap<Resource, Integer> remove(HashMap<Resource, Integer> input){
+        return removeFromChest(removeFromWareHouse(input));
+    }
+
+    private HashMap<Resource, Integer> removeFromWareHouse(HashMap<Resource, Integer> input){
+        HashMap<Row, HashMap<Resource, Integer>> resources = wareHouse.getResources();
+
+        if(canRemove(input)){
+            for(Row line : resources.keySet()){
+                for(Resource res : resources.get(line).keySet()){
+                    if(input.containsKey(res)){
+                        if(input.get(res)>=resources.get(line).get(res)){
+                            input.put(res, (input.get(res) - resources.get(line).get(res)));
+                            wareHouse.removeResources(line, res, resources.get(line).get(res));
+                        }
+                        else{
+                            wareHouse.removeResources(line, res, input.get(res));
+                            input.put(res, 0);
+                        }
+                    }
+                }
+            }
+        }
+        return input;
+    }
+
+    private HashMap<Resource, Integer> removeFromChest(HashMap<Resource, Integer> input){
+        HashMap<Resource, Integer> resources = chest.getResources();
+
+        for(Resource res : input.keySet()){
+            if(resources.containsKey(res)){
+                if(input.get(res)>=resources.get(res)){
+                    input.put(res, (input.get(res) - resources.get(res)));
+                    HashMap<Resource, Integer> temp = new HashMap<>();
+                    temp.put(res, resources.get(res));
+                    chest.removeResources(temp);
+                }
+                else{
+                    HashMap<Resource, Integer> temp = new HashMap<>();
+                    temp.put(res, input.get(res));
+                    chest.removeResources(temp);
+                    input.put(res, 0);
+                }
+            }
+        }
+        return input;
+    }
 }
