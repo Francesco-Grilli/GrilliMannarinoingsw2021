@@ -4,10 +4,9 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
-public class CreationCard {
-
+public class CreationCard implements CreationCardGroup {
+    private int cardCode;
     private int cardLevel;
     private Faction faction;
     private int value;
@@ -15,8 +14,9 @@ public class CreationCard {
     private HashMap<Resource, Integer> input;
     private HashMap<Resource, Integer> output;
 
-    public CreationCard(int cardLevel, int value, Faction faction, HashMap<Resource, Integer> price,
+    public CreationCard(int cardCode, int cardLevel, int value, Faction faction, HashMap<Resource, Integer> price,
         HashMap<Resource, Integer> input, HashMap<Resource, Integer> output){
+        this.cardCode = cardCode;
         this.cardLevel = cardLevel;
         this.faction = faction;
         this.value = value;
@@ -67,11 +67,19 @@ public class CreationCard {
     public int getValue() {
         return value;
     }
-
     public Faction getFaction() {
         return faction;
     }
     public int getCardLevel() {
         return cardLevel;
     }
+    public int getCardCode() {return cardCode; }
+    public HashMap<Resource, Integer> getInput() {
+        return new HashMap<>(this.input);
+    }
+    public HashMap<Resource, Integer> getOutput() {
+        return new HashMap<>(this.output);
+    }
+    public boolean canAdd(int cardLevel){return false;}
+    public boolean addCard(CreationCard card){return false;}
 }

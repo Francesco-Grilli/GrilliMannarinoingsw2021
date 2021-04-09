@@ -1,5 +1,5 @@
 package it.polimi.ingsw.GrilliMannarino.GameData;
 
 public enum Resource {
-    SHIELD,STONE,SERVANT,COIN,FAITH
+    SHIELD,STONE,SERVANT,COIN,FAITH,UNKNOWN
 }

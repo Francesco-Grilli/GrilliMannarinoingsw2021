@@ -21,7 +21,7 @@ public class CreationCardTest {
         HashMap<Resource, Integer> output = new HashMap<>();
         output.put(Resource.COIN,1);
 
-        CreationCard test = new CreationCard(cardLevel,value,faction,price,input,output);
+        CreationCard test = new CreationCard(0,cardLevel,value,faction,price,input,output);
 
         HashMap<Resource, Integer> input1 = new HashMap<>();
         HashMap<Resource, Integer> input2 = new HashMap<>();
@@ -52,7 +52,7 @@ public class CreationCardTest {
         HashMap<Resource, Integer> output = new HashMap<>();
         output.put(Resource.COIN,1);
 
-        CreationCard test = new CreationCard(cardLevel,value,faction,price,input,output);
+        CreationCard test = new CreationCard(0,cardLevel,value,faction,price,input,output);
 
         HashMap<Resource, Integer> input1 = new HashMap<>();
         HashMap<Resource, Integer> input2 = new HashMap<>();
@@ -91,7 +91,7 @@ public class CreationCardTest {
         HashMap<Resource, Integer> output = new HashMap<>();
         output.put(Resource.COIN,1);
 
-        CreationCard test = new CreationCard(cardLevel,value,faction,price,input,output);
+        CreationCard test = new CreationCard(0,cardLevel,value,faction,price,input,output);
 
         HashMap<Resource, Integer> input1 = new HashMap<>();
         HashMap<Resource, Integer> input2 = new HashMap<>();
@@ -122,7 +122,7 @@ public class CreationCardTest {
         HashMap<Resource, Integer> output = new HashMap<>();
         output.put(Resource.COIN,1);
 
-        CreationCard test = new CreationCard(cardLevel,value,faction,price,input,output);
+        CreationCard test = new CreationCard(0,cardLevel,value,faction,price,input,output);
 
         HashMap<Resource, Integer> input1 = new HashMap<>();
         HashMap<Resource, Integer> input2 = new HashMap<>();
@@ -156,10 +156,10 @@ public class CreationCardTest {
         Faction faction = Faction.GREEN;
         HashMap<Resource, Integer> placeholder = new HashMap<>();
 
-        CreationCard test1 = new CreationCard(cardLevel,value1,faction,placeholder, placeholder, placeholder);
-        CreationCard test2 = new CreationCard(cardLevel,value2,faction,placeholder, placeholder, placeholder);
-        CreationCard test3 = new CreationCard(cardLevel,value3,faction,placeholder, placeholder, placeholder);
-        CreationCard test4 = new CreationCard(cardLevel,value4,faction,placeholder, placeholder, placeholder);
+        CreationCard test1 = new CreationCard(0,cardLevel,value1,faction,placeholder, placeholder, placeholder);
+        CreationCard test2 = new CreationCard(0,cardLevel,value2,faction,placeholder, placeholder, placeholder);
+        CreationCard test3 = new CreationCard(0,cardLevel,value3,faction,placeholder, placeholder, placeholder);
+        CreationCard test4 = new CreationCard(0,cardLevel,value4,faction,placeholder, placeholder, placeholder);
 
         assertEquals(1,test1.getValue());
         assertEquals(4,test2.getValue());
@@ -178,10 +178,10 @@ public class CreationCardTest {
         Faction faction4 = Faction.YELLOW;
         HashMap<Resource, Integer> placeholder = new HashMap<>();
 
-        CreationCard test1 = new CreationCard(cardLevel,value,faction1,placeholder, placeholder, placeholder);
-        CreationCard test2 = new CreationCard(cardLevel,value,faction2,placeholder, placeholder, placeholder);
-        CreationCard test3 = new CreationCard(cardLevel,value,faction3,placeholder, placeholder, placeholder);
-        CreationCard test4 = new CreationCard(cardLevel,value,faction4,placeholder, placeholder, placeholder);
+        CreationCard test1 = new CreationCard(0,cardLevel,value,faction1,placeholder, placeholder, placeholder);
+        CreationCard test2 = new CreationCard(0,cardLevel,value,faction2,placeholder, placeholder, placeholder);
+        CreationCard test3 = new CreationCard(0,cardLevel,value,faction3,placeholder, placeholder, placeholder);
+        CreationCard test4 = new CreationCard(0,cardLevel,value,faction4,placeholder, placeholder, placeholder);
 
         assertEquals(Faction.GREEN,test1.getFaction());
         assertEquals(Faction.BLUE,test2.getFaction());
@@ -200,10 +200,10 @@ public class CreationCardTest {
         Faction faction = Faction.GREEN;
         HashMap<Resource, Integer> placeholder = new HashMap<>();
 
-        CreationCard test1 = new CreationCard(cardLevel1,value,faction,placeholder, placeholder, placeholder);
-        CreationCard test2 = new CreationCard(cardLevel2,value,faction,placeholder, placeholder, placeholder);
-        CreationCard test3 = new CreationCard(cardLevel3,value,faction,placeholder, placeholder, placeholder);
-        CreationCard test4 = new CreationCard(cardLevel4,value,faction,placeholder, placeholder, placeholder);
+        CreationCard test1 = new CreationCard(0,cardLevel1,value,faction,placeholder, placeholder, placeholder);
+        CreationCard test2 = new CreationCard(0,cardLevel2,value,faction,placeholder, placeholder, placeholder);
+        CreationCard test3 = new CreationCard(0,cardLevel3,value,faction,placeholder, placeholder, placeholder);
+        CreationCard test4 = new CreationCard(0,cardLevel4,value,faction,placeholder, placeholder, placeholder);
 
         assertEquals(1,test1.getCardLevel());
         assertEquals(2,test2.getCardLevel());
