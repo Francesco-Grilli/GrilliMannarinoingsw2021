@@ -5,12 +5,12 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.util.HashMap;
 
-public class Collection {
+public class ResourceManager {
 
     private final Chest chest;
     private final WareHouse wareHouse;
 
-    public Collection() {
+    public ResourceManager() {
         chest = new Chest();
         wareHouse = new WareHouse();
     }

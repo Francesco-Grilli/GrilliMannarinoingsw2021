@@ -8,11 +8,11 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CollectionTest {
+class ResourceManagerTest {
 
     @Test
     public void getResources(){
-        Collection c = new Collection();
+        ResourceManager c = new ResourceManager();
         HashMap<Resource, Integer> res = new HashMap<>();
         res.put(Resource.COIN, 5);
         res.put(Resource.SERVANT, 10);
