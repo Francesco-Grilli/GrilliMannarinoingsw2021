@@ -60,6 +60,7 @@ class PopeLineTest {
         }
         assertTrue(pope1.addFaith());
         assertFalse(pope2.addFaith());
+        assertTrue(pope1.addFaith());
         assertTrue(pope1.checkPopeFaith());
         assertFalse(pope2.checkPopeFaith());
         PopeLine.updateChecks();
@@ -68,14 +69,6 @@ class PopeLineTest {
         for(int i=0; i<3; i++)
             assertFalse(pope2.addFaith());
         assertFalse(pope2.addFaith());
-
-        /*assertEquals(true, pope1.checkPopeFaith());
-        assertEquals(true, pope1.getFaithSteps()[0]);
-        assertEquals(false, pope2.checkPopeFaith());
-        assertEquals(false, pope2.getFaithSteps()[0]);
-        assertEquals(false, PopeLine.getFaithChecks()[0]);
-        PopeLine.updateChecks();
-        assertTrue(PopeLine.getFaithChecks()[0]);*/
     }
 
     @Test
