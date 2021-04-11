@@ -10,8 +10,12 @@ public class CardStack implements CreationCardGroup{
 
     private Stack<CreationCard> cards;
 
+    public CardStack(){
+        this.cards = new Stack<>();
+    }
+
     public void putCard(CreationCard card){
-        cards.push(card);
+        this.cards.push(card);
     }
 
     public CreationCard getCard(){
@@ -74,22 +78,29 @@ public class CardStack implements CreationCardGroup{
         return cards.peek().getCardCode();
     }
 
+    public HashMap<Resource, Integer> getPrice() {
+        if(this.cards.empty()){
+            return null;
+        }
+        return cards.peek().getPrice();
+    }
+
     public HashMap<Resource, Integer> getInput() {
         if(this.cards.empty()){
-            return new HashMap<>();
+            return null;
         }
         return cards.peek().getInput();
     }
 
     public HashMap<Resource, Integer> getOutput() {
         if(this.cards.empty()){
-            return new HashMap<>();
+            return null;
         }
         return cards.peek().getOutput();
     }
 
     public boolean canAdd(int cardLevel){
-        return this.getCardLevel() < cardLevel;
+        return this.getCardLevel() == cardLevel-1;
     }
 
     public boolean addCard(CreationCard card) {

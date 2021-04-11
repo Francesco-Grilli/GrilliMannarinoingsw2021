@@ -4,7 +4,6 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.Stack;
 
 public class CardMarket {
@@ -51,9 +50,10 @@ public class CardMarket {
     if (canCard(faction,level,resources)){
       CreationCard cardToReturn = layedCards.get(faction).get(level).pop();
       cardToReturn.buyCard(resources);
+      playedCards.put(cardToReturn.getCardCode(),cardToReturn);
       return cardToReturn;
     }else{
-       return new CreationCard(0,0,0,Faction.NONE, new HashMap<>(), new HashMap<>(), new HashMap<>());
+       return null;
     }
   }
 

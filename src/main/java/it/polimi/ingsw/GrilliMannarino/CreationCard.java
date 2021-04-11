@@ -74,6 +74,9 @@ public class CreationCard implements CreationCardGroup {
         return cardLevel;
     }
     public int getCardCode() {return cardCode; }
+    public HashMap<Resource, Integer> getPrice() {
+        return new HashMap<>(this.price);
+    }
     public HashMap<Resource, Integer> getInput() {
         return new HashMap<>(this.input);
     }

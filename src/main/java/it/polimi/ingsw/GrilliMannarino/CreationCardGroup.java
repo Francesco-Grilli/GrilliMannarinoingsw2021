@@ -14,6 +14,7 @@ public interface CreationCardGroup {
     Faction getFaction();
     int getCardLevel();
     int getCardCode();
+    HashMap<Resource, Integer> getPrice();
     HashMap<Resource, Integer> getInput();
     HashMap<Resource, Integer> getOutput();
     boolean canAdd(int cardLevel);

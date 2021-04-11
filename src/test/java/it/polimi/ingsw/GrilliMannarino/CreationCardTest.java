@@ -211,4 +211,185 @@ public class CreationCardTest {
         assertEquals(3,test4.getCardLevel());
 
     }
+
+    @Test
+    public void getCardCodeTest() {
+        int value = 1;
+        int cardLevel = 1;
+        int cardCode1 = 129;
+        int cardCode2 = 113;
+        int cardCode3 = 429;
+        int cardCode4 = 292;
+        Faction faction = Faction.GREEN;
+        HashMap<Resource, Integer> placeholder = new HashMap<>();
+
+        CreationCard test1 = new CreationCard(cardCode1,cardLevel,value,faction,placeholder, placeholder, placeholder);
+        CreationCard test2 = new CreationCard(cardCode2,cardLevel,value,faction,placeholder, placeholder, placeholder);
+        CreationCard test3 = new CreationCard(cardCode3,cardLevel,value,faction,placeholder, placeholder, placeholder);
+        CreationCard test4 = new CreationCard(cardCode4,cardLevel,value,faction,placeholder, placeholder, placeholder);
+
+        assertEquals(cardCode1,test1.getCardCode());
+        assertEquals(cardCode2,test2.getCardCode());
+        assertEquals(cardCode3,test3.getCardCode());
+        assertEquals(cardCode4,test4.getCardCode());
+    }
+
+    @Test
+    public void getPriceTest() {
+        int value = 1;
+        int cardLevel = 1;
+        int cardCode = 129;
+        Faction faction = Faction.GREEN;
+        HashMap<Resource, Integer> price1 = new HashMap<>();
+        price1.put(Resource.COIN, 1);
+        price1.put(Resource.SHIELD, 1);
+        HashMap<Resource, Integer> price2 = new HashMap<>();
+        price2.put(Resource.SHIELD, 3);
+        price2.put(Resource.SERVANT, 5);
+        HashMap<Resource, Integer> price3 = new HashMap<>();
+        price3.put(Resource.STONE, 5);
+        price3.put(Resource.COIN, 2);
+        HashMap<Resource, Integer> price4 = new HashMap<>();
+        price4.put(Resource.COIN, 1);
+        price4.put(Resource.SHIELD, 2);
+        price4.put(Resource.STONE, 3);
+        price4.put(Resource.SERVANT, 1);
+
+        HashMap<Resource, Integer> priceOut1 = new HashMap<>();
+        priceOut1.put(Resource.COIN, 1);
+        priceOut1.put(Resource.SHIELD, 1);
+        HashMap<Resource, Integer> priceOut2 = new HashMap<>();
+        priceOut2.put(Resource.SHIELD, 3);
+        priceOut2.put(Resource.SERVANT, 5);
+        HashMap<Resource, Integer> priceOut3 = new HashMap<>();
+        priceOut3.put(Resource.STONE, 5);
+        priceOut3.put(Resource.COIN, 2);
+        HashMap<Resource, Integer> priceOut4 = new HashMap<>();
+        priceOut4.put(Resource.COIN, 1);
+        priceOut4.put(Resource.SHIELD, 2);
+        priceOut4.put(Resource.STONE, 3);
+        priceOut4.put(Resource.SERVANT, 1);
+
+        HashMap<Resource, Integer> input = new HashMap<>();
+        input.put(Resource.SHIELD,1);
+        HashMap<Resource, Integer> output = new HashMap<>();
+        output.put(Resource.COIN,1);
+
+        CreationCard test1 = new CreationCard(cardCode,cardLevel,value,faction,price1,input,output);
+        CreationCard test2 = new CreationCard(cardCode,cardLevel,value,faction,price2,input,output);
+        CreationCard test3 = new CreationCard(cardCode,cardLevel,value,faction,price3,input,output);
+        CreationCard test4 = new CreationCard(cardCode,cardLevel,value,faction,price4,input,output);
+
+        assertEquals(priceOut1,test1.getPrice());
+        assertEquals(priceOut2,test2.getPrice());
+        assertEquals(priceOut3,test3.getPrice());
+        assertEquals(priceOut4,test4.getPrice());
+
+    }
+
+    @Test
+    public void getInputTest() {
+        int value = 1;
+        int cardLevel = 1;
+        int cardCode = 129;
+        Faction faction = Faction.GREEN;
+        HashMap<Resource, Integer> price = new HashMap<>();
+        price.put(Resource.SHIELD,1);
+        HashMap<Resource, Integer> input1 = new HashMap<>();
+        input1.put(Resource.COIN, 1);
+        input1.put(Resource.SHIELD, 1);
+        HashMap<Resource, Integer> input2 = new HashMap<>();
+        input2.put(Resource.SHIELD, 3);
+        input2.put(Resource.SERVANT, 5);
+        HashMap<Resource, Integer> input3 = new HashMap<>();
+        input3.put(Resource.STONE, 5);
+        input3.put(Resource.COIN, 2);
+        HashMap<Resource, Integer> input4 = new HashMap<>();
+        input4.put(Resource.COIN, 1);
+        input4.put(Resource.SHIELD, 2);
+        input4.put(Resource.STONE, 3);
+        input4.put(Resource.SERVANT, 1);
+
+        HashMap<Resource, Integer> inputOut1 = new HashMap<>();
+        inputOut1.put(Resource.COIN, 1);
+        inputOut1.put(Resource.SHIELD, 1);
+        HashMap<Resource, Integer> inputOut2 = new HashMap<>();
+        inputOut2.put(Resource.SHIELD, 3);
+        inputOut2.put(Resource.SERVANT, 5);
+        HashMap<Resource, Integer> inputOut3 = new HashMap<>();
+        inputOut3.put(Resource.STONE, 5);
+        inputOut3.put(Resource.COIN, 2);
+        HashMap<Resource, Integer> inputOut4 = new HashMap<>();
+        inputOut4.put(Resource.COIN, 1);
+        inputOut4.put(Resource.SHIELD, 2);
+        inputOut4.put(Resource.STONE, 3);
+        inputOut4.put(Resource.SERVANT, 1);
+
+        HashMap<Resource, Integer> output = new HashMap<>();
+        output.put(Resource.COIN,1);
+
+        CreationCard test1 = new CreationCard(cardCode,cardLevel,value,faction,price,input1,output);
+        CreationCard test2 = new CreationCard(cardCode,cardLevel,value,faction,price,input2,output);
+        CreationCard test3 = new CreationCard(cardCode,cardLevel,value,faction,price,input3,output);
+        CreationCard test4 = new CreationCard(cardCode,cardLevel,value,faction,price,input4,output);
+
+        assertEquals(inputOut1,test1.getInput());
+        assertEquals(inputOut2,test2.getInput());
+        assertEquals(inputOut3,test3.getInput());
+        assertEquals(inputOut4,test4.getInput());
+
+    }
+
+    @Test
+    public void getOutputTest() {
+        int value = 1;
+        int cardLevel = 1;
+        int cardCode = 129;
+        Faction faction = Faction.GREEN;
+        HashMap<Resource, Integer> price = new HashMap<>();
+        price.put(Resource.SHIELD,1);
+        HashMap<Resource, Integer> input = new HashMap<>();
+        input.put(Resource.COIN,1);
+
+        HashMap<Resource, Integer> output1 = new HashMap<>();
+        output1.put(Resource.COIN, 1);
+        output1.put(Resource.SHIELD, 1);
+        HashMap<Resource, Integer> output2 = new HashMap<>();
+        output2.put(Resource.SHIELD, 3);
+        output2.put(Resource.SERVANT, 5);
+        HashMap<Resource, Integer> output3 = new HashMap<>();
+        output3.put(Resource.STONE, 5);
+        output3.put(Resource.COIN, 2);
+        HashMap<Resource, Integer> output4 = new HashMap<>();
+        output4.put(Resource.COIN, 1);
+        output4.put(Resource.SHIELD, 2);
+        output4.put(Resource.STONE, 3);
+        output4.put(Resource.SERVANT, 1);
+
+        HashMap<Resource, Integer> outputOut1 = new HashMap<>();
+        outputOut1.put(Resource.COIN, 1);
+        outputOut1.put(Resource.SHIELD, 1);
+        HashMap<Resource, Integer> outputOut2 = new HashMap<>();
+        outputOut2.put(Resource.SHIELD, 3);
+        outputOut2.put(Resource.SERVANT, 5);
+        HashMap<Resource, Integer> outputOut3 = new HashMap<>();
+        outputOut3.put(Resource.STONE, 5);
+        outputOut3.put(Resource.COIN, 2);
+        HashMap<Resource, Integer> outputOut4 = new HashMap<>();
+        outputOut4.put(Resource.COIN, 1);
+        outputOut4.put(Resource.SHIELD, 2);
+        outputOut4.put(Resource.STONE, 3);
+        outputOut4.put(Resource.SERVANT, 1);
+
+        CreationCard test1 = new CreationCard(cardCode,cardLevel,value,faction,price,input,output1);
+        CreationCard test2 = new CreationCard(cardCode,cardLevel,value,faction,price,input,output2);
+        CreationCard test3 = new CreationCard(cardCode,cardLevel,value,faction,price,input,output3);
+        CreationCard test4 = new CreationCard(cardCode,cardLevel,value,faction,price,input,output4);
+
+        assertEquals(outputOut1,test1.getOutput());
+        assertEquals(outputOut2,test2.getOutput());
+        assertEquals(outputOut3,test3.getOutput());
+        assertEquals(outputOut4,test4.getOutput());
+
+    }
 }
