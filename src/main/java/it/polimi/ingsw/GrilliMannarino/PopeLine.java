@@ -5,36 +5,43 @@ public class PopeLine {
     /**
      * is the number of favor that are used in the PopeLine
      */
-    private final int NUMBERFAVOR = 3;
+    protected final int NUMBERFAVOR = 3;
 
     /**
      * favorValue is the value of each Pope's favor
      */
-    private final int[] favorValue = new int[]{2, 3, 4};
+    protected final int[] favorValue = new int[]{2, 3, 4};
 
-    private final int[] trackValue = new int[]{1, 2, 4, 6, 9, 12, 16, 20};
+    /**
+     * trackValue is the point's value of the track
+     */
+    protected final int[] trackValue = new int[]{1, 2, 4, 6, 9, 12, 16, 20};
 
     /**
      * favorActivate is the value of score which activate the Pope's favor
      */
-    private final int[] favorActivate = new int[]{5, 12, 19};
+    protected final int[] favorActivate = new int[]{5, 12, 19};
 
     /**
      * last value of track in the PopeLine
      */
-    private final int finalTrack = 24;
-    private int faith;
+    protected final int finalTrack = 24;
+
+    /**
+     * the number of faith --> the position in the track
+     */
+    protected int faith;
 
     /**
      * faithSteps count if the player has reached the Pope space before or at the same time of other player
      */
-    private final boolean[] faithSteps;
+    protected final boolean[] faithSteps;
 
     /**
      * faithChecks keep trace of the Pope's favor that has been activated
      */
-    private static final boolean[] faithChecks = new boolean[3];
-    private static int maxFaith;
+    protected static final boolean[] faithChecks = new boolean[3];
+    protected static int maxFaith;
 
 
     public PopeLine(){
@@ -116,6 +123,8 @@ public class PopeLine {
     }
 
     private int getTrackPoint(){
+        if(faith<3)
+            return 0;
         return trackValue[(faith/3)-1];
     }
 
