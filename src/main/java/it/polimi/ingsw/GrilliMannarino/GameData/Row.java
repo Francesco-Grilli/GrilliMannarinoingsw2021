@@ -1,7 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.GameData;
 
 public enum Row {
-    FIRST(1), SECOND(2), THIRD(3);
+    FIRST(1), SECOND(2), THIRD(3), FOURTH(4), FIFTH(5);
 
     private final int value;
 
