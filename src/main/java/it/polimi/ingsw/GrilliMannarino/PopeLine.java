@@ -123,6 +123,8 @@ public class PopeLine {
     }
 
     private int getTrackPoint(){
+        if(faith<3)
+            return 0;
         return trackValue[(faith/3)-1];
     }
 

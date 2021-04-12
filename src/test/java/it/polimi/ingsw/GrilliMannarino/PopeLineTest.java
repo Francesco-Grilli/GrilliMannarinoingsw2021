@@ -118,4 +118,18 @@ class PopeLineTest {
         assertEquals(26, pope1.getPoints());
         assertEquals(12, pope2.getPoints());
     }
+
+    @Test
+    void fullPoint(){
+        PopeLine pope = new PopeLine();
+        for(int i=0; i<30; i++){
+            if(pope.addFaith()){
+                pope.checkPopeFaith();
+                PopeLine.updateChecks();
+            }
+        }
+
+        assertEquals(29, pope.getPoints());
+
+    }
 }

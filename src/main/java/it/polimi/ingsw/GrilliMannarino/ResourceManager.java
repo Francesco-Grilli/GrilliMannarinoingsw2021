@@ -15,6 +15,9 @@ public class ResourceManager {
         wareHouse = new WareHouse();
     }
 
+    /**
+     * @return all resources from chest and warehouse
+     */
     public HashMap<Resource, Integer> getResources(){
         HashMap<Resource, Integer> ret = new HashMap<>(getResourcesFromChest());
         HashMap<Resource, Integer> looping = new HashMap<>(getResourcesFromWareHouse());
@@ -29,10 +32,16 @@ public class ResourceManager {
 
     }
 
+    /**
+     * @return the resources from chest
+     */
     private HashMap<Resource, Integer> getResourcesFromChest(){
         return new HashMap<>(chest.getResources());
     }
 
+    /**
+     * @return the resources from warehouse
+     */
     private HashMap<Resource, Integer> getResourcesFromWareHouse(){
         HashMap<Resource, Integer> ret = new HashMap<>();
         HashMap<Row, HashMap<Resource, Integer>> resourceCopy = new HashMap<>(wareHouse.getResources());
@@ -45,23 +54,45 @@ public class ResourceManager {
         return ret;
     }
 
+    /**
+     * @param line take the line where to put the resource
+     * @param res take the resource to put
+     * @param value take the number of resources
+     * @return the resources that couldn't set inside warehouse
+     */
     public HashMap<Resource, Integer> setResourcesFromMarket(Row line, Resource res, Integer value){
         if (wareHouse.canAddResources(line, res, value))
             return wareHouse.addResources(line, res, value);
-        else
-            return null;
+        else{
+            HashMap<Resource, Integer> ret = new HashMap<>();
+            ret.put(res, value);
+            return ret;
+        }
+
     }
 
+    /**
+     * check if can add the resource to warehouse
+     * @see #setResourcesFromMarket(Row, Resource, Integer)
+     * @return true if can add the resource, false otherwise
+     */
     public boolean canSetResourcesFromMarket(Row line, Resource res, Integer value){
         return wareHouse.canAddResources(line, res, value);
     }
 
+    /**
+     * put the resources inside chest
+     * @param res is an hashmap of resources
+     */
     public void setResourcesFromProduction(HashMap<Resource, Integer> res){
         chest.addResources(res);
     }
 
-    //method to remove the resources from chest or warehouse returned by getResources
-
+    /**
+     * check if can remove the resources from both chest and warehouse. The priority is first WareHouse and then Chest
+     * @param input take the resources to remove
+     * @return true if can remove, false otherwise
+     */
     public boolean canRemove(HashMap<Resource, Integer> input){
         HashMap<Resource, Integer> resources = getResources();
         boolean check = true;
@@ -72,6 +103,11 @@ public class ResourceManager {
         return check;
     }
 
+    /**
+     * remove the resources from both chest and warehouse. The priority is first WareHouse and then Chest
+     * @param input is the resources to remove
+     * @return an hashmap of resources that it failed to remove
+     */
     public HashMap<Resource, Integer> remove(HashMap<Resource, Integer> input){
         return removeFromChest(removeFromWareHouse(input));
     }
