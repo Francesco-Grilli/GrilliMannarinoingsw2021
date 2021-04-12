@@ -5,7 +5,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.util.HashMap;
 
-public class ResourceManager {
+public class ResourceManager implements ResourceManagerInterface{
 
     private final Chest chest;
     private final WareHouse wareHouse;
@@ -27,6 +27,8 @@ public class ResourceManager {
             else
                 ret.put(res, looping.get(res));
         }
+
+        ret.entrySet().removeIf(e -> e.getValue().equals(0));
 
         return ret;
 
@@ -106,10 +108,11 @@ public class ResourceManager {
     /**
      * remove the resources from both chest and warehouse. The priority is first WareHouse and then Chest
      * @param input is the resources to remove
-     * @return an hashmap of resources that it failed to remove
+     * @return an hashmap of resources if it failed to remove
      */
     public HashMap<Resource, Integer> remove(HashMap<Resource, Integer> input){
-        return removeFromChest(removeFromWareHouse(input));
+        HashMap<Resource, Integer> pass = new HashMap<>(input);
+        return removeFromChest(removeFromWareHouse(pass));
     }
 
     private HashMap<Resource, Integer> removeFromWareHouse(HashMap<Resource, Integer> input){
@@ -125,7 +128,7 @@ public class ResourceManager {
                         }
                         else{
                             wareHouse.removeResources(line, res, input.get(res));
-                            input.put(res, 0);
+                            input.remove(res);
                         }
                     }
                 }
@@ -149,10 +152,24 @@ public class ResourceManager {
                     HashMap<Resource, Integer> temp = new HashMap<>();
                     temp.put(res, input.get(res));
                     chest.removeResources(temp);
-                    input.put(res, 0);
+                    input.remove(res);
                 }
             }
         }
+        input.entrySet().removeIf(e -> e.getValue().equals(0));
         return input;
+    }
+
+    /**
+     * calculate the points from the resources in chest and warehouse. Every 5 resources give 1 point
+     * @return the points of the resources
+     */
+    public int getPoints(){
+        int points=0;
+        HashMap<Resource, Integer> resourcePoint = new HashMap<>(getResources());
+        for(Resource res : resourcePoint.keySet()){
+            points+=resourcePoint.get(res);
+        }
+        return points/5;
     }
 }

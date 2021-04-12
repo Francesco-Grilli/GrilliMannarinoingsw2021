@@ -12,9 +12,14 @@ public class Board {
   private Player player;
   private PopeLine popeLine;
   private ResourceManager resourceManager;
+  private ResourceManagerInterface resourceManagerPro;
   private ProductionLine productionLine;
   private CardMarket cardMarket;
   //private MarbleMarketUserInterface marbleMarket;
+
+        /*
+
+
 
   public ArrayList<Integer> checkProduction(){
     return productionLine.showCards();
@@ -47,4 +52,9 @@ public class Board {
   public HashMap<Resource, Integer> setResourcesFromMarket(HashMap<Resource,Integer> resources){
 
   }
+
+          */
+
+
+
 }

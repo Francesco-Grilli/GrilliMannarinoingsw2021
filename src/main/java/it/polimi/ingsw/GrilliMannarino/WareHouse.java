@@ -39,11 +39,23 @@ public class WareHouse {
 
         boolean checkPresence =true;
         for(Row l : resources.keySet()){
-            if(resources.get(l).containsKey(res) && l!=line)
+            if((resources.get(l).containsKey(res) && l!=line))
                 checkPresence=false;
+
         }
+        if(alreadyPresent(line, res))
+            checkPresence=false;
 
         return checkPresence;
+    }
+
+    private boolean alreadyPresent(Row l, Resource resource){
+        boolean check=false;
+        for(Resource r : resources.get(l).keySet()){
+            if(r!=resource)
+                check = true;
+        }
+        return check;
     }
 
     /**
