@@ -10,7 +10,7 @@ public class Board {
 
   private Player player;
   private PopeLine popeLine;
-  private ResourceManager resourceManager;
+  private ResourceManagerInterface resourceManager;
   private ProductionLineBoardInterface productionLine;
   private CardMarketBoardInterface cardMarket;
   private MarbleMarketBoardInterface marbleMarket;
@@ -37,6 +37,13 @@ public class Board {
     return null;
   }
 
+  public ResourceManagerInterface getResourceManager(){
+    return this.resourceManager;
+  }
+
+  public void setResourceManager(ResourceManagerInterface resourceManager) {
+    this.resourceManager = resourceManager;
+  }
 
   public void setResourcesFromMarket(HashMap<Resource,Integer> resources){
     resourceManager.getResources();

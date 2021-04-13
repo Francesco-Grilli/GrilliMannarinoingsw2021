@@ -145,7 +145,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
 
     @Override
     public void execute(Board board) {
-        resourceManager = board.getCollection();
-        board.setCollection(this);
+        resourceManager = board.getResourceManager();
+        board.setResourceManager(this);
     }
 }
