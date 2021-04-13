@@ -27,8 +27,8 @@ public class WareHouse {
      * @param line is the position you want to add your resources
      * @param res is the type of resources you want to add
      * @param value is the number of resources you want to add
-     * @return true if you can add resources because there is enough space on the line or even if there isn't enough space
-     * or false if you absolutely can't add resources because there is already one resource of type res on another line
+     * @return true if you can add resources because there is enough space on the line or even if there isn't enough space.
+     * return false if you absolutely can't add resources because there is already one resource of type res on another line
      */
     public boolean canAddResources(Row line, Resource res, Integer value) throws IllegalArgumentException {
 

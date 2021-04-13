@@ -20,7 +20,7 @@ public class PopeLine {
     /**
      * favorActivate is the value of score which activate the Pope's favor
      */
-    protected final int[] favorActivate = new int[]{5, 12, 19};
+    protected final int[] favorActivate = new int[]{8, 16, 24};
 
     /**
      * last value of track in the PopeLine
@@ -94,7 +94,7 @@ public class PopeLine {
      */
     public boolean checkPopeFaith(){
         int index = getLastFaith();
-        if(faith >= favorActivate[index]) {
+        if(faith >= favorActivate[index]-index-3) {
             faithSteps[index] = true;
             return true;
         }

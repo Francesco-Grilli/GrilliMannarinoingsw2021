@@ -60,7 +60,7 @@ public class ResourceManager implements ResourceManagerInterface{
      * @param line take the line where to put the resource
      * @param res take the resource to put
      * @param value take the number of resources
-     * @return the resources that couldn't set inside warehouse
+     * @return the resources that couldn't set inside warehouse or null
      */
     public HashMap<Resource, Integer> setResourcesFromMarket(Row line, Resource res, Integer value){
         if (wareHouse.canAddResources(line, res, value))
@@ -122,18 +122,19 @@ public class ResourceManager implements ResourceManagerInterface{
             for(Row line : resources.keySet()){
                 for(Resource res : resources.get(line).keySet()){
                     if(input.containsKey(res)){
-                        if(input.get(res)>=resources.get(line).get(res)){
+                        if(input.get(res)>resources.get(line).get(res)){
                             input.put(res, (input.get(res) - resources.get(line).get(res)));
                             wareHouse.removeResources(line, res, resources.get(line).get(res));
                         }
                         else{
                             wareHouse.removeResources(line, res, input.get(res));
-                            input.remove(res);
+                            input.put(res, 0);
                         }
                     }
                 }
             }
         }
+        input.entrySet().removeIf(e -> e.getValue().equals(0));
         return input;
     }
 
@@ -152,7 +153,7 @@ public class ResourceManager implements ResourceManagerInterface{
                     HashMap<Resource, Integer> temp = new HashMap<>();
                     temp.put(res, input.get(res));
                     chest.removeResources(temp);
-                    input.remove(res);
+                    input.put(res, 0);
                 }
             }
         }
@@ -171,5 +172,9 @@ public class ResourceManager implements ResourceManagerInterface{
             points+=resourcePoint.get(res);
         }
         return points/5;
+    }
+
+    public Row getRow(){
+        return Row.THIRD;
     }
 }

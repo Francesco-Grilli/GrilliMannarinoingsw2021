@@ -19,4 +19,7 @@ public interface ResourceManagerInterface {
 
     HashMap<Resource, Integer> remove(HashMap<Resource, Integer> input);
 
+    Row getRow();
+
+    int getPoints();
 }

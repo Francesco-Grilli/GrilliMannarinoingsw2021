@@ -145,4 +145,30 @@ class ResourceManagerTest {
         assertTrue(manager.getResources().isEmpty());
     }
 
+
+    @Test
+    void testGetPoints() {
+        ResourceManager manager = new ResourceManager();
+        manager.setResourcesFromMarket(Row.SECOND, Resource.COIN, 1);
+        manager.setResourcesFromMarket(Row.THIRD, Resource.SHIELD, 2);
+        manager.setResourcesFromMarket(Row.THIRD, Resource.SHIELD, 1);
+        manager.setResourcesFromMarket(Row.FIRST, Resource.STONE, 1);
+        HashMap<Resource, Integer> res = new HashMap<>();
+        res.put(Resource.SHIELD, 5);
+        res.put(Resource.COIN, 7);
+        res.put(Resource.STONE, 3);
+        res.put(Resource.SERVANT, 9);
+        manager.setResourcesFromProduction(res);
+        assertEquals(5, manager.getPoints());   //29 resources
+        res.clear();
+        res.put(Resource.SHIELD, 3);
+        res.put(Resource.COIN, 2);
+        res.put(Resource.SERVANT, 4);
+        manager.remove(res);
+        assertEquals(4, manager.getPoints());     //20 resources
+        res.clear();
+        res.put(Resource.SERVANT, 1);
+        manager.remove(res);
+        assertEquals(3, manager.getPoints());     //19 resources
+    }
 }
