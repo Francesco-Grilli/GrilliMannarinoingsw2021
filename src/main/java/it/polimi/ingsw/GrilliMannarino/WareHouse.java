@@ -27,8 +27,8 @@ public class WareHouse {
      * @param line is the position you want to add your resources
      * @param res is the type of resources you want to add
      * @param value is the number of resources you want to add
-     * @return true if you can add resources because there is enough space on the line or even if there isn't enough space
-     * or false if you absolutely can't add resources because there is already one resource of type res on another line
+     * @return true if you can add resources because there is enough space on the line or even if there isn't enough space.
+     * return false if you absolutely can't add resources because there is already one resource of type res on another line
      */
     public boolean canAddResources(Row line, Resource res, Integer value) throws IllegalArgumentException {
 
@@ -39,11 +39,23 @@ public class WareHouse {
 
         boolean checkPresence =true;
         for(Row l : resources.keySet()){
-            if(resources.get(l).containsKey(res) && l!=line)
+            if((resources.get(l).containsKey(res) && l!=line))
                 checkPresence=false;
+
         }
+        if(alreadyPresent(line, res))
+            checkPresence=false;
 
         return checkPresence;
+    }
+
+    private boolean alreadyPresent(Row l, Resource resource){
+        boolean check=false;
+        for(Resource r : resources.get(l).keySet()){
+            if(r!=resource)
+                check = true;
+        }
+        return check;
     }
 
     /**

@@ -9,9 +9,14 @@ public abstract class LeaderCard {
     protected HashMap<Resource, Integer> resourcePrice;
     protected HashMap<Faction, HashMap<Integer, Integer>> cardPrice;
     protected Resource definedResource;
-    protected int value = 0;
+    final protected int points;
 
-    public abstract int getValue();
+    public abstract void execute(Board board);
 
-    public abstract void execute();
+    public LeaderCard(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
+        this.resourcePrice = resourcePrice;
+        this.cardPrice = cardPrice;
+        this.definedResource = definedResource;
+        this.points = points;
+    }
 }

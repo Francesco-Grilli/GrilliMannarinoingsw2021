@@ -5,7 +5,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.util.HashMap;
 
-public class ResourceManager {
+public class ResourceManager implements ResourceManagerInterface{
 
     private final Chest chest;
     private final WareHouse wareHouse;
@@ -27,6 +27,8 @@ public class ResourceManager {
             else
                 ret.put(res, looping.get(res));
         }
+
+        ret.entrySet().removeIf(e -> e.getValue().equals(0));
 
         return ret;
 
@@ -58,7 +60,7 @@ public class ResourceManager {
      * @param line take the line where to put the resource
      * @param res take the resource to put
      * @param value take the number of resources
-     * @return the resources that couldn't set inside warehouse
+     * @return the resources that couldn't set inside warehouse or null
      */
     public HashMap<Resource, Integer> setResourcesFromMarket(Row line, Resource res, Integer value){
         if (wareHouse.canAddResources(line, res, value))
@@ -106,10 +108,11 @@ public class ResourceManager {
     /**
      * remove the resources from both chest and warehouse. The priority is first WareHouse and then Chest
      * @param input is the resources to remove
-     * @return an hashmap of resources that it failed to remove
+     * @return an hashmap of resources if it failed to remove
      */
     public HashMap<Resource, Integer> remove(HashMap<Resource, Integer> input){
-        return removeFromChest(removeFromWareHouse(input));
+        HashMap<Resource, Integer> pass = new HashMap<>(input);
+        return removeFromChest(removeFromWareHouse(pass));
     }
 
     private HashMap<Resource, Integer> removeFromWareHouse(HashMap<Resource, Integer> input){
@@ -119,7 +122,7 @@ public class ResourceManager {
             for(Row line : resources.keySet()){
                 for(Resource res : resources.get(line).keySet()){
                     if(input.containsKey(res)){
-                        if(input.get(res)>=resources.get(line).get(res)){
+                        if(input.get(res)>resources.get(line).get(res)){
                             input.put(res, (input.get(res) - resources.get(line).get(res)));
                             wareHouse.removeResources(line, res, resources.get(line).get(res));
                         }
@@ -131,6 +134,7 @@ public class ResourceManager {
                 }
             }
         }
+        input.entrySet().removeIf(e -> e.getValue().equals(0));
         return input;
     }
 
@@ -153,6 +157,24 @@ public class ResourceManager {
                 }
             }
         }
+        input.entrySet().removeIf(e -> e.getValue().equals(0));
         return input;
+    }
+
+    /**
+     * calculate the points from the resources in chest and warehouse. Every 5 resources give 1 point
+     * @return the points of the resources
+     */
+    public int getPoints(){
+        int points=0;
+        HashMap<Resource, Integer> resourcePoint = new HashMap<>(getResources());
+        for(Resource res : resourcePoint.keySet()){
+            points+=resourcePoint.get(res);
+        }
+        return points/5;
+    }
+
+    public Row getRow(){
+        return Row.THIRD;
     }
 }
