@@ -5,46 +5,60 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
 public class Board {
 
   private Player player;
   private PopeLine popeLine;
   private ResourceManager resourceManager;
-  private ProductionLine productionLine;
-  private CardMarket cardMarket;
-  //private MarbleMarketUserInterface marbleMarket;
+  private ProductionLineBoardInterface productionLine;
+  private CardMarketBoardInterface cardMarket;
+  private MarbleMarketBoardInterface marbleMarket;
 
-  public ArrayList<Integer> checkProduction(){
-    return productionLine.showCards();
+  public boolean canProduceWithConfiguration(ArrayList<CreationCard> cards){
+    return resourceManager.canRemove(getInputOfConfiguration(cards));
   }
 
-  public boolean canProduceWithConfiguration(ArrayList<Integer> cardCodes){
-    return resourceManager.canRemove(productionLine.getCostOfConfiguration(cardCodes));//productionLine.canProduce(cardCodes, resourceManager.getResources());
-  }
-
-  public void produce(ArrayList<Integer> cardCodes){
-    if(resourceManager.remove(productionLine.getCostOfConfiguration(cardCodes)).values().stream().reduce(0, Integer::sum).equals(0)){
-      productionLine.produce(cardCodes, productionLine.getCostOfConfiguration(cardCodes));
+  public void produce(ArrayList<CreationCard> cards){
+    if(canProduceWithConfiguration(cards)) {
+      resourceManager.remove(getInputOfConfiguration(cards));
+      resourceManager.setResourcesFromProduction(getOutputOfConfiguration(cards));
     }
   }
 
-  public ArrayList<Integer> canBuy(){
-    return cardMarket.purchaseableCards(resourceManager.getResources());
+  public Boolean canBuyCard(CreationCard card){
+    return resourceManager.canRemove(card.getPrice());
   }
 
-  public CreationCard buy(Faction faction, Integer level){
-    return cardMarket.buyCard(faction,level, resourceManager.getResources());
-  }
-
-  public void placingCard(int position, CreationCard card){
-    if (!(productionLine.addCard(position,card))) {
-      productionLine.forceAddCard(card);
+  public CreationCard getCardFromMarket(CreationCard card){
+    if(canBuyCard(card)) {
+      return cardMarket.buyCard(card.getFaction(), card.getCardLevel());
     }
+    return null;
   }
 
-  public HashMap<Resource, Integer> setResourcesFromMarket(HashMap<Resource,Integer> resources){
 
+  public void setResourcesFromMarket(HashMap<Resource,Integer> resources){
+    resourceManager.getResources();
+  }
+
+  public HashMap<Resource, Integer> getInputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){
+    HashMap<Resource, Integer> inputOfConfiguration = new HashMap<>();
+    cardsToProduceWith.forEach((t) -> {
+      for(Resource key:t.getInput().keySet()){
+        inputOfConfiguration.put(key, (inputOfConfiguration.get(key) == null ? 0 : inputOfConfiguration.get(key))+t.getInput().get(key));
+      }
+    });
+    return inputOfConfiguration;
+  }
+
+  public HashMap<Resource, Integer> getOutputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){
+    HashMap<Resource, Integer> outputOfConfiguration = new HashMap<>();
+    cardsToProduceWith.forEach((t) -> {
+      for(Resource key:t.getOutput().keySet()){
+        outputOfConfiguration.put(key, (outputOfConfiguration.get(key) == null ? 0 : outputOfConfiguration.get(key))+t.getOutput().get(key));
+      }
+    });
+    return outputOfConfiguration;
   }
 }

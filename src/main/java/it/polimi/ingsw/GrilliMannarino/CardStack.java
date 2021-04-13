@@ -14,40 +14,23 @@ public class CardStack implements CreationCardGroup{
         this.cards = new Stack<>();
     }
 
-    public void putCard(CreationCard card){
+    public void pushCard(CreationCard card){
         this.cards.push(card);
     }
 
+    public CreationCard popCard(){
+        return this.cards.pop();
+    }
+
+    public boolean emptyStack(){
+        return cards.empty();
+    }
+
     public CreationCard getCard(){
-        return  cards.pop();
-    }
-
-    public boolean canProduce(HashMap<Resource, Integer> resources){
         if(this.cards.empty()){
-            return false;
+            return null;
         }
-        return cards.peek().canProduce(resources);
-    }
-
-    public HashMap<Resource, Integer> produce(HashMap<Resource, Integer> resourcesIn, HashMap<Resource, Integer> resourcesOut){
-        if(this.cards.empty()){
-            return resourcesOut;
-        }
-        return cards.peek().produce(resourcesIn, resourcesOut);
-    }
-
-    public boolean canBuyCard(HashMap<Resource, Integer> resources){
-        if(this.cards.empty()){
-            return false;
-        }
-        return cards.peek().canBuyCard(resources);
-    }
-
-    public HashMap<Resource, Integer> buyCard(HashMap<Resource, Integer> resourcesIn){
-        if(this.cards.empty()){
-            return resourcesIn;
-        }
-        return cards.peek().buyCard(resourcesIn);
+        return  cards.peek().getCard();
     }
 
     public int getValue() {
@@ -105,7 +88,7 @@ public class CardStack implements CreationCardGroup{
 
     public boolean addCard(CreationCard card) {
         if(this.canAdd(card.getCardLevel())){
-            this.putCard(card);
+            this.pushCard(card);
             return true;
         }
         return false;

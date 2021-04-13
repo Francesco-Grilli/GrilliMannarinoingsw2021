@@ -6,7 +6,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MarbleMarket implements MarbleMarketUser{
+public class MarbleMarket implements MarbleMarketBoardInterface {
   private Marble[][] marbleBoard;
   private Marble marbleOut;
   private int sizeX;
@@ -16,6 +16,14 @@ public class MarbleMarket implements MarbleMarketUser{
     marbleBoard = new Marble[sizeX][sizeY];
 
     //methods to build the random marble configuration
+  }
+
+  public Marble[][] getMarbleBoard() {
+    return marbleBoard;
+  }
+
+  public Marble getMarbleOut() {
+    return marbleOut;
   }
 
   public ArrayList<MarbleOption> getColumn(int column){
