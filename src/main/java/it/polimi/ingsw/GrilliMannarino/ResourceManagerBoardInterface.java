@@ -5,7 +5,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.util.HashMap;
 
-public interface ResourceManagerInterface {
+public interface ResourceManagerBoardInterface {
 
     HashMap<Resource, Integer> getResources();
 
@@ -22,4 +22,16 @@ public interface ResourceManagerInterface {
     Row getRow();
 
     int getPoints();
+
+    boolean setLineFromChest(Row line, Resource res, Integer value);
+
+    void removeLineFromChest(Row line);
+
+    void execute(ResourceManagerBoardInterface managerBoardInterface);
+
+    boolean canSwapLine(Row one, Row two);
+
+    void forceSwapLine(Row one, Row two);
+
+    HashMap<Resource, Integer> getResourceLine(Row line);
 }

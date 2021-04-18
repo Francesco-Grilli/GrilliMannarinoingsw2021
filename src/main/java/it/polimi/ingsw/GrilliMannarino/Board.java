@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GrilliMannarino;
 
-import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ public class Board {
 
   private Player player;
   private PopeLine popeLine;
-  private ResourceManagerInterface resourceManager;
+  private ResourceManagerBoardInterface resourceManager;
   private ProductionLineBoardInterface productionLine;
   private CardMarketBoardInterface cardMarket;
   private MarbleMarketBoardInterface marbleMarket;
@@ -37,11 +36,11 @@ public class Board {
     return null;
   }
 
-  public ResourceManagerInterface getResourceManager(){
+  public ResourceManagerBoardInterface getResourceManager(){
     return this.resourceManager;
   }
 
-  public void setResourceManager(ResourceManagerInterface resourceManager) {
+  public void setResourceManager(ResourceManagerBoardInterface resourceManager) {
     this.resourceManager = resourceManager;
   }
 
