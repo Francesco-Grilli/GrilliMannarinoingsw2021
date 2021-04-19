@@ -175,17 +175,17 @@ class ResourceManagerTest {
         res.put(Resource.STONE, 3);
         res.put(Resource.SERVANT, 9);
         manager.setResourcesFromProduction(res);
-        assertEquals(5, manager.getPoints());   //29 resources
+        assertEquals(5, manager.getResourcePoints());   //29 resources
         res.clear();
         res.put(Resource.SHIELD, 3);
         res.put(Resource.COIN, 2);
         res.put(Resource.SERVANT, 4);
         manager.remove(res);
-        assertEquals(4, manager.getPoints());     //20 resources
+        assertEquals(4, manager.getResourcePoints());     //20 resources
         res.clear();
         res.put(Resource.SERVANT, 1);
         manager.remove(res);
-        assertEquals(3, manager.getPoints());     //19 resources
+        assertEquals(3, manager.getResourcePoints());     //19 resources
     }
 
     @Test

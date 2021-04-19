@@ -25,6 +25,8 @@ public class Board {
     }
   }
 
+
+
   public Boolean canBuyCard(CreationCard card){
     return resourceManager.canRemove(card.getPrice());
   }

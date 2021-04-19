@@ -21,7 +21,7 @@ public interface ResourceManagerBoardInterface {
 
     Row getRow();
 
-    int getPoints();
+    int getResourcePoints();
 
     boolean setLineFromChest(Row line, Resource res, Integer value);
 

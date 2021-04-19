@@ -124,18 +124,18 @@ class ResourceManagerLeaderCardTest {
         card.setResourcesFromMarket(Row.FIRST, Resource.SHIELD, 1);
         card.setResourcesFromMarket(Row.SECOND, Resource.COIN, 1);
         card.setResourcesFromMarket(Row.FOURTH, Resource.COIN, 1);
-        assertEquals(4, card.getPoints());
+        assertEquals(1, card.getResourcePoints());
         ret.put(Resource.SHIELD, 3);
         ret.put(Resource.COIN, 5);
         ret.put(Resource.SERVANT, 6);
         card.setResourcesFromProduction(ret);
-        assertEquals(6 , card.getPoints());
+        assertEquals(3 , card.getResourcePoints());
         card.setResourcesFromMarket(Row.FOURTH, Resource.COIN, 1);
-        assertEquals(7, card.getPoints());
+        assertEquals(4, card.getResourcePoints());
 
         ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 2);
         card2.execute(card);
-        assertEquals(9, card2.getPoints());
+        assertEquals(4, card2.getResourcePoints());
     }
 
     @Test

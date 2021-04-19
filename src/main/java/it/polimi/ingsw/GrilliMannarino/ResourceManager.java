@@ -170,7 +170,7 @@ public class ResourceManager implements ResourceManagerBoardInterface {
      *
      * @return the points of the resources
      */
-    public int getPoints() {
+    public int getResourcePoints() {
         int points = 0;
         HashMap<Resource, Integer> resourcePoint = new HashMap<>(getResources());
         for (Resource res : resourcePoint.keySet()) {

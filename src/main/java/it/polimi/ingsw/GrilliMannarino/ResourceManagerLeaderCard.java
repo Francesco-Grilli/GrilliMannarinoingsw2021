@@ -27,10 +27,10 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
     public HashMap<Resource, Integer> getResources() {
         HashMap<Resource, Integer> retResource = resourceManager.getResources();
         if(numberOfResource>0){
-            if(retResource.containsKey(definedResource))
-                retResource.put(definedResource, retResource.get(definedResource) + numberOfResource);
+            if(retResource.containsKey(this.getDefinedResource()))
+                retResource.put(this.getDefinedResource(), retResource.get(this.getDefinedResource()) + numberOfResource);
             else
-                retResource.put(definedResource, numberOfResource);
+                retResource.put(this.getDefinedResource(), numberOfResource);
         }
         return retResource;
     }
@@ -54,10 +54,10 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
         else if(line.getValue()<currentRow.getValue())
             return resourceManager.setResourcesFromMarket(line, res, value);
         else{
-            if(res == definedResource && numberOfResource<2){
+            if(res == this.getDefinedResource() && numberOfResource<2){
                 if(value>(MAXNUMBER-numberOfResource)){
                     retResource = new HashMap<>();
-                    retResource.put(definedResource, value-(MAXNUMBER-numberOfResource));
+                    retResource.put(this.getDefinedResource(), value-(MAXNUMBER-numberOfResource));
                     numberOfResource=MAXNUMBER;
                 }
                 else if(value<=(MAXNUMBER-numberOfResource)){
@@ -86,7 +86,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
             return resourceManager.canSetResourcesFromMarket(line, res, value);
         }
         else {
-            return res == definedResource && ((value + numberOfResource) <= MAXNUMBER);
+            return res == this.getDefinedResource() && ((value + numberOfResource) <= MAXNUMBER);
         }
     }
 
@@ -120,13 +120,13 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
             return null;
         HashMap<Resource, Integer> retResource = new HashMap<>(input);
         if(canRemove(input)) {
-            if (retResource.containsKey(definedResource)) {
-                if (retResource.get(definedResource) >= numberOfResource) {
-                    retResource.put(definedResource, retResource.get(definedResource) - numberOfResource);
+            if (retResource.containsKey(this.getDefinedResource())) {
+                if (retResource.get(this.getDefinedResource()) >= numberOfResource) {
+                    retResource.put(this.getDefinedResource(), retResource.get(this.getDefinedResource()) - numberOfResource);
                     numberOfResource = 0;
                 } else {
-                    numberOfResource = numberOfResource - retResource.get(definedResource);
-                    retResource.put(definedResource, 0);
+                    numberOfResource = numberOfResource - retResource.get(this.getDefinedResource());
+                    retResource.put(this.getDefinedResource(), 0);
                 }
             }
             retResource.entrySet().removeIf(e -> e.getValue().equals(0));
@@ -142,21 +142,21 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
     }
 
     @Override
-    public int getPoints() {
+    public int getResourcePoints() {
         int resources=0;
         HashMap<Resource, Integer> resourcePoint = new HashMap<>(getResources());
         for(Resource res : resourcePoint.keySet()){
             resources+=resourcePoint.get(res);
         }
-        return resources/5 + this.points;
-    }   //STILL NEED SOME MODIFICATION TO GET POINTS FROM CARD ABOVE
+        return resources/5;
+    }
 
 
 
     @Override
     public boolean setLineFromChest(Row line, Resource res, Integer value) {
         if(line == currentRow) {
-            if (res == definedResource) {
+            if (res == this.getDefinedResource()) {
                 if (value > currentRow.getMaxValue())
                     numberOfResource = currentRow.getMaxValue();
                 else
@@ -188,7 +188,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
     public HashMap<Resource, Integer> getResourceLine(Row line){
         if(line == currentRow){
             HashMap<Resource, Integer> retResource = new HashMap<>();
-            retResource.put(definedResource, numberOfResource);
+            retResource.put(this.getDefinedResource(), numberOfResource);
             return retResource;
         }
         else
@@ -205,7 +205,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
             HashMap<Resource, Integer> lineTwo = new HashMap<>(resourceManager.getResourceLine(two));
             Resource resTwo = getTheResource(lineTwo);
             if(resTwo!=null){
-                if(lineTwo.get(resTwo) > one.getMaxValue() || resTwo!=definedResource)
+                if(lineTwo.get(resTwo) > one.getMaxValue() || resTwo!=this.getDefinedResource())
                     check = false;
                 if(numberOfResource > two.getMaxValue())
                     check = false;
@@ -217,7 +217,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
             HashMap<Resource, Integer> lineOne = new HashMap<>(resourceManager.getResourceLine(one));
             Resource resOne = getTheResource(lineOne);
             if(resOne!=null){
-                if(lineOne.get(resOne) > two.getMaxValue() || resOne!=definedResource)
+                if(lineOne.get(resOne) > two.getMaxValue() || resOne!=this.getDefinedResource())
                     check = false;
                 if(numberOfResource > one.getMaxValue())
                     check = false;
@@ -235,9 +235,9 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
         else if(one == currentRow && two != currentRow){
             HashMap<Resource, Integer> lineTwo = new HashMap<>(resourceManager.getResourceLine(two));
             Resource resTwo = getTheResource(lineTwo);
-            if(resTwo!=null && resTwo == definedResource) {
+            if(resTwo!=null && resTwo == this.getDefinedResource()) {
                 if(numberOfResource>0)
-                    resourceManager.setLineFromChest(two, definedResource, numberOfResource);
+                    resourceManager.setLineFromChest(two, this.getDefinedResource(), numberOfResource);
                 else
                     resourceManager.removeLineFromChest(two);
                 if (lineTwo.get(resTwo) >= currentRow.getMaxValue())
@@ -246,16 +246,16 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
                     numberOfResource = lineTwo.get(resTwo);
             }
             else if(resTwo==null){
-                if(resourceManager.setLineFromChest(two, definedResource, numberOfResource))
+                if(resourceManager.setLineFromChest(two, this.getDefinedResource(), numberOfResource))
                     numberOfResource=0;
             }
         }
         else if(one != currentRow && two == currentRow){
             HashMap<Resource, Integer> lineOne = new HashMap<>(resourceManager.getResourceLine(one));
             Resource resOne = getTheResource(lineOne);
-            if(resOne!=null && resOne == definedResource){
+            if(resOne!=null && resOne == this.getDefinedResource()){
                 if(numberOfResource>0)
-                    resourceManager.setLineFromChest(one, definedResource, numberOfResource);
+                    resourceManager.setLineFromChest(one, this.getDefinedResource(), numberOfResource);
                 else
                     resourceManager.removeLineFromChest(one);
                 if(lineOne.get(resOne) >= currentRow.getMaxValue())
@@ -264,7 +264,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
                     numberOfResource = lineOne.get(resOne);
             }
             else if(resOne==null){
-                if(resourceManager.setLineFromChest(one, definedResource, numberOfResource))
+                if(resourceManager.setLineFromChest(one, this.getDefinedResource(), numberOfResource))
                     numberOfResource=0;
             }
         }
