@@ -132,6 +132,10 @@ class ResourceManagerLeaderCardTest {
         assertEquals(6 , card.getPoints());
         card.setResourcesFromMarket(Row.FOURTH, Resource.COIN, 1);
         assertEquals(7, card.getPoints());
+
+        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 2);
+        card2.execute(card);
+        assertEquals(9, card2.getPoints());
     }
 
     @Test
@@ -152,6 +156,44 @@ class ResourceManagerLeaderCardTest {
         ret.put(Resource.SHIELD, 1);
         assertTrue(card2.canRemove(ret));
         card2.remove(ret);
+    }
+
+    @Test
+    public void swapLineTest(){
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        card.execute(new ResourceManager());
+        HashMap<Resource, Integer> ret = new HashMap<>();
+
+        card.setResourcesFromMarket(Row.SECOND, Resource.SHIELD, 2);
+        card.setResourcesFromMarket(Row.FOURTH, Resource.COIN, 2);
+        assertFalse(card.canSwapLine(Row.SECOND, Row.FOURTH));
+        card.forceSwapLine(Row.SECOND, Row.FOURTH); // does nothing
+        card.setResourcesFromMarket(Row.THIRD, Resource.COIN, 3);
+        assertFalse(card.canSwapLine(Row.THIRD, Row.FOURTH));
+        card.forceSwapLine(Row.THIRD, Row.FOURTH);
+        card.removeLineFromChest(Row.THIRD);
+        card.setResourcesFromMarket(Row.FIRST, Resource.COIN, 1);
+        assertFalse(card.canSwapLine(Row.FIRST, Row.FOURTH));
+        card.forceSwapLine(Row.FIRST, Row.FOURTH);
+
+        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.SERVANT, 2);
+        card2.execute(card);
+
+        card2.setResourcesFromMarket(Row.FIFTH, Resource.SERVANT, 1);
+        assertFalse(card2.canSwapLine(Row.FIFTH, Row.FOURTH));
+        card2.forceSwapLine(Row.FIFTH, Row.FOURTH);
+        card2.setResourcesFromMarket(Row.THIRD, Resource.SERVANT, 2);
+        assertTrue(card2.canSwapLine(Row.FIFTH, Row.THIRD));
+        card2.forceSwapLine(Row.FIFTH, Row.THIRD);
+        card2.removeLineFromChest(Row.THIRD);
+        assertTrue(card2.canSwapLine(Row.THIRD, Row.FIFTH));
+        card2.forceSwapLine(Row.THIRD, Row.FIFTH);
+        card2.removeLineFromChest(Row.THIRD);
+        card2.removeLineFromChest(Row.FIRST);
+        card2.setLineFromChest(Row.FIFTH, Resource.SERVANT, 2);
+        assertFalse(card2.canSwapLine(Row.FIFTH, Row.FIRST));
+        assertFalse(card2.canSwapLine(Row.FIRST, Row.FIFTH));
+        card2.forceSwapLine(Row.FIRST, Row.FIFTH);
     }
 
 }

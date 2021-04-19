@@ -51,7 +51,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
             retResource.put(res, value);
             return retResource;
         }
-        else if(line.getValue()<=currentRow.getValue())
+        else if(line.getValue()<currentRow.getValue())
             return resourceManager.setResourcesFromMarket(line, res, value);
         else{
             if(res == definedResource && numberOfResource<2){
@@ -82,7 +82,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
      */
     @Override
     public boolean canSetResourcesFromMarket(Row line, Resource res, Integer value) {
-        if(line.getValue()<= currentRow.getValue()){
+        if(line.getValue() < currentRow.getValue()){
             return resourceManager.canSetResourcesFromMarket(line, res, value);
         }
         else {
@@ -143,13 +143,15 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
 
     @Override
     public int getPoints() {
-        int points=0;
+        int resources=0;
         HashMap<Resource, Integer> resourcePoint = new HashMap<>(getResources());
         for(Resource res : resourcePoint.keySet()){
-            points+=resourcePoint.get(res);
+            resources+=resourcePoint.get(res);
         }
-        return (points/5) + this.points;
+        return resources/5 + this.points;
     }   //STILL NEED SOME MODIFICATION TO GET POINTS FROM CARD ABOVE
+
+
 
     @Override
     public boolean setLineFromChest(Row line, Resource res, Integer value) {
@@ -183,7 +185,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
     }
 
     @Override
-    public HashMap<Resource, Integer> getResourceLine(Row line) {
+    public HashMap<Resource, Integer> getResourceLine(Row line){
         if(line == currentRow){
             HashMap<Resource, Integer> retResource = new HashMap<>();
             retResource.put(definedResource, numberOfResource);
@@ -205,8 +207,10 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
             if(resTwo!=null){
                 if(lineTwo.get(resTwo) > one.getMaxValue() || resTwo!=definedResource)
                     check = false;
+                if(numberOfResource > two.getMaxValue())
+                    check = false;
             }
-            if(numberOfResource > two.getMaxValue() || resTwo!=definedResource)
+            else if(numberOfResource > two.getMaxValue())
                 check = false;
         }
         else if(one!=currentRow && two==currentRow){
@@ -215,8 +219,10 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
             if(resOne!=null){
                 if(lineOne.get(resOne) > two.getMaxValue() || resOne!=definedResource)
                     check = false;
+                if(numberOfResource > one.getMaxValue())
+                    check = false;
             }
-            if(numberOfResource > one.getMaxValue() || resOne!=definedResource)
+            else if(numberOfResource > one.getMaxValue())
                 check = false;
         }
         return check;
