@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,18 +16,10 @@ public class Board {
   private CardMarketBoardInterface cardMarket;
   private MarbleMarketBoardInterface marbleMarket;
 
-  public boolean canProduceWithConfiguration(ArrayList<CreationCard> cards){
-    return resourceManager.canRemove(getInputOfConfiguration(cards));
+  //METHOD TO GET/BUY CARD
+  public HashMap<Faction, HashMap<Integer, CreationCard>> getBuyableCard(){
+    return cardMarket.getCards();
   }
-
-  public void produce(ArrayList<CreationCard> cards){
-    if(canProduceWithConfiguration(cards)) {
-      resourceManager.remove(getInputOfConfiguration(cards));
-      resourceManager.setResourcesFromProduction(getOutputOfConfiguration(cards));
-    }
-  }
-
-
 
   public Boolean canBuyCard(CreationCard card){
     return resourceManager.canRemove(card.getPrice());
@@ -38,16 +32,87 @@ public class Board {
     return null;
   }
 
-  public ResourceManagerBoardInterface getResourceManager(){
-    return this.resourceManager;
+  public boolean canProduceWithConfiguration(ArrayList<CreationCard> cards){
+    return resourceManager.canRemove(getInputOfConfiguration(cards));
   }
 
-  public void setResourceManager(ResourceManagerBoardInterface resourceManager) {
-    this.resourceManager = resourceManager;
+  public void produce(ArrayList<CreationCard> cards){
+    if(canProduceWithConfiguration(cards)) {
+      resourceManager.remove(getInputOfConfiguration(cards));
+      resourceManager.setResourcesFromProduction(getOutputOfConfiguration(cards));
+    }
   }
 
-  public void setResourcesFromMarket(HashMap<Resource,Integer> resources){
-    resourceManager.getResources();
+
+  //METHOD TO WORK WITH RESOURCE MANAGER
+
+  public boolean canSetResourcesFromMarket(Row line, Resource resource, Integer value){
+    return resourceManager.canSetResourcesFromMarket(line, resource, value);
+  }
+
+  public HashMap<Resource, Integer> setResourcesFromMarket(Row line, Resource resource, Integer value){
+    return resourceManager.setResourcesFromMarket(line, resource, value);
+  }
+
+  public void setResourcesFromProduction(HashMap<Resource, Integer> resources){
+    resourceManager.setResourcesFromProduction(resources);
+  }
+
+  public boolean canSwapLineFromWareHouse(Row one, Row two){
+    return resourceManager.canSwapLine(one, two);
+  }
+
+  public void forceSwapLineFromWareHouse(Row one, Row two){
+    resourceManager.forceSwapLine(one, two);
+  }
+
+  public int getResourcePoints(){
+    return resourceManager.getResourcePoints();
+  }
+
+  //METHOD TO ACCESS THE POPELINE
+
+  public boolean addPopeFaith(){
+    return popeLine.addFaith();
+  }
+
+  public boolean checkPopeFaith(){
+    return popeLine.checkPopeFaith();
+  }
+
+  //should remove?
+  public void updateChecks(){
+    PopeLine.updateChecks();
+  }
+
+  public int getFaithTrackPoints(){
+    return popeLine.getPoints();
+  }
+
+  public int getFatith(){
+    return popeLine.getFaith();
+  }
+
+  public boolean[] getFaithSteps(){
+    return popeLine.getFaithSteps();
+  }
+
+  //should remove?
+  public boolean[] getFaithChecks(){
+    return PopeLine.getFaithChecks();
+  }
+
+  public void addLorenzoFaith(){
+    ((PopeLineSingle) popeLine).addLorenzoFaith();
+  }
+
+  public void doubleAddLorenzoFaith(){
+    ((PopeLineSingle) popeLine).doubleAddLorenzoFaith();
+  }
+
+
+  public int getLorenzoFaith(){
+    return ((PopeLineSingle) popeLine).getLorenzoFaith();
   }
 
   public HashMap<Resource, Integer> getInputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){
@@ -68,5 +133,48 @@ public class Board {
       }
     });
     return outputOfConfiguration;
+  }
+
+  //GETTERS AND SETTERS
+
+
+  public PopeLine getPopeLine() {
+    return popeLine;
+  }
+
+  public ResourceManagerBoardInterface getResourceManager() {
+    return resourceManager;
+  }
+
+  public ProductionLineBoardInterface getProductionLine() {
+    return productionLine;
+  }
+
+  public CardMarketBoardInterface getCardMarket() {
+    return cardMarket;
+  }
+
+  public MarbleMarketBoardInterface getMarbleMarket() {
+    return marbleMarket;
+  }
+
+  public void setPopeLine(PopeLine popeLine) {
+    this.popeLine = popeLine;
+  }
+
+  public void setResourceManager(ResourceManagerBoardInterface resourceManager) {
+    this.resourceManager = resourceManager;
+  }
+
+  public void setProductionLine(ProductionLineBoardInterface productionLine) {
+    this.productionLine = productionLine;
+  }
+
+  public void setCardMarket(CardMarketBoardInterface cardMarket) {
+    this.cardMarket = cardMarket;
+  }
+
+  public void setMarbleMarket(MarbleMarketBoardInterface marbleMarket) {
+    this.marbleMarket = marbleMarket;
   }
 }
