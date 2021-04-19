@@ -20,4 +20,21 @@ public abstract class LeaderCard {
         this.definedResource = definedResource;
         this.points = points;
     }
+
+    public HashMap<Faction, HashMap<Integer, Integer>> getCardPrice() {
+        return new HashMap<>(cardPrice);
+    }
+
+    public HashMap<Resource, Integer> getResourcePrice() {
+        return new HashMap<>(resourcePrice);
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public Resource getDefinedResource(){
+        return definedResource;
+    }
+
 }

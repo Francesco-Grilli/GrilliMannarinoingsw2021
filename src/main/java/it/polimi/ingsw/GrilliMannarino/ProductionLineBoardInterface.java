@@ -1,8 +1,10 @@
 package it.polimi.ingsw.GrilliMannarino;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface ProductionLineBoardInterface {
   boolean addCard(int pos, CreationCard card);
-  ArrayList<CreationCard> getCards();
+  HashMap<Integer, CreationCard> getCards();
+  int getNextFreeSlot();
 }
