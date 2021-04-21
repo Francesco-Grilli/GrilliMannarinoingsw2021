@@ -13,6 +13,16 @@ public class MarbleOption {
   }
 
   public void addOption(Marble marble){
-    this.marbles.add(marble);
+    if(!(marbles.contains(marble))) {
+      this.marbles.add(marble);
+    }
+  }
+
+  public boolean hasWhite(){
+    return marbles.contains(Marble.WHITE);
+  }
+
+  public ArrayList<Marble> getMarbles() {
+    return marbles;
   }
 }

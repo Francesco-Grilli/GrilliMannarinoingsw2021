@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MarbleMarket implements MarbleMarketBoardInterface {
-  private Marble[][] marbleBoard;
+  private final Marble[][] marbleBoard;
   private Marble marbleOut;
-  private int sizeX;
-  private int sizeY;
+  private final int sizeX;
+  private final int sizeY;
 
   public MarbleMarket(int sizeX, int sizeY, HashMap<Marble, Integer> marbles){
+    this.sizeX = sizeX;
+    this.sizeY = sizeY;
     marbleBoard = new Marble[sizeX][sizeY];
 
     //methods to build the random marble configuration

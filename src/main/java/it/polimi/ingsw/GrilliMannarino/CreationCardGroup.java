@@ -13,7 +13,7 @@ public interface CreationCardGroup {
     HashMap<Resource, Integer> getPrice();
     HashMap<Resource, Integer> getInput();
     HashMap<Resource, Integer> getOutput();
-    boolean canAdd(int cardLevel);
+    boolean canAdd(CreationCard card);
     boolean addCard(CreationCard card);
     CreationCard getCard();
 }

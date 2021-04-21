@@ -3,6 +3,7 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -253,5 +254,30 @@ public class CreationCardTest {
         assertEquals(outputOut3,test3.getOutput());
         assertEquals(outputOut4,test4.getOutput());
 
+    }
+
+    @Test
+    public void getCardTest() {
+        HashMap<Resource, Integer> price = new HashMap<>();
+        price.put(Resource.SHIELD,1);
+        HashMap<Resource, Integer> input = new HashMap<>();
+        input.put(Resource.COIN,1);
+        HashMap<Resource, Integer> output = new HashMap<>();
+        output.put(Resource.SHIELD, 1);
+        output.put(Resource.COIN, 1);
+
+        CreationCard test1 = new CreationCard(1, 1,1,Faction.BLUE, price,input,output);
+        CreationCard testOut1 = test1.getCard();
+
+
+        assertEquals(testOut1.getCardCode(), test1.getCardCode());
+        assertEquals(testOut1.getCardLevel(), test1.getCardLevel());
+        assertEquals(testOut1.getValue(), test1.getValue());
+        assertEquals(testOut1.getFaction(), test1.getFaction());
+        assertEquals(testOut1.getPrice(), test1.getPrice());
+        assertEquals(testOut1.getInput(), test1.getInput());
+        assertEquals(testOut1.getOutput(), test1.getOutput());
+        assertFalse(testOut1.canAdd(test1));
+        assertFalse(test1.addCard(test1));
     }
 }

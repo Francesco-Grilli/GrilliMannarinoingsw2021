@@ -15,6 +15,32 @@ public class Board {
   private CardMarketBoardInterface cardMarket;
   private MarbleMarketBoardInterface marbleMarket;
 
+  public Board(Player player, CardMarketBoardInterface cardMarket, MarbleMarketBoardInterface marbleMarket){
+    this.player = player;
+    this.cardMarket = cardMarket;
+    this.marbleMarket = marbleMarket;
+
+    this.popeLine = new PopeLine();
+    this.resourceManager = new ResourceManager();
+    this.productionLine = new ProductionLine();
+  }
+
+  public CardMarketBoardInterface getCardMarket() { return cardMarket; }
+
+  public void setCardMarket(CardMarketBoardInterface cardMarket) { this.cardMarket = cardMarket; }
+
+  public MarbleMarketBoardInterface getMarbleMarket() {
+    return marbleMarket;
+  }
+
+  public void setMarbleMarket(MarbleMarketBoardInterface marbleMarket){
+    this.marbleMarket = marbleMarket;
+  }
+
+  public ProductionLineBoardInterface getProductionLine() { return productionLine; }
+
+  public void setProductionLine(ProductionLineBoardInterface productionLine) { this.productionLine = productionLine; }
+
   public boolean canProduceWithConfiguration(ArrayList<CreationCard> cards){
     return resourceManager.canRemove(getInputOfConfiguration(cards));
   }

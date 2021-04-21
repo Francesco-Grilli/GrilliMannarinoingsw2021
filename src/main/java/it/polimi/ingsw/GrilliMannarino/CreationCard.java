@@ -36,15 +36,24 @@ public class CreationCard implements CreationCardGroup {
     }
     public int getCardCode() {return cardCode; }
     public HashMap<Resource, Integer> getPrice() {
+        if(this.price == null){
+            return null;
+        }
         return new HashMap<>(this.price);
     }
     public HashMap<Resource, Integer> getInput() {
+        if(this.price == null){
+            return null;
+        }
         return new HashMap<>(this.input);
     }
     public HashMap<Resource, Integer> getOutput() {
+        if(this.price == null){
+            return null;
+        }
         return new HashMap<>(this.output);
     }
-    public boolean canAdd(int cardLevel){return false;}
+    public boolean canAdd(CreationCard card){return false;}
     public boolean addCard(CreationCard card){return false;}
     public CreationCard getCard() {return new CreationCard(this.getCardCode(),this.getCardLevel(),this.getValue(),this.getFaction(),this.getPrice(),this.getInput(),this.getOutput());}
 }
