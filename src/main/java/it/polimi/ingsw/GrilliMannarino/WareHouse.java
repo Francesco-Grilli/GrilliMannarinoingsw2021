@@ -27,8 +27,8 @@ public class WareHouse {
      * @param line is the position you want to add your resources
      * @param res is the type of resources you want to add
      * @param value is the number of resources you want to add
-     * @return true if you can add resources because there is enough space on the line or even if there isn't enough space.
-     * return false if you absolutely can't add resources because there is already one resource of type res on another line
+     * @return true if you can add resources because there is enough space on the line
+     * return false if you absolutely can't add resources because there is already one resource of type res on another line or there isn't space
      */
     public boolean canAddResources(Row line, Resource res, Integer value) throws IllegalArgumentException {
 
@@ -41,11 +41,17 @@ public class WareHouse {
         for(Row l : resources.keySet()){
             if((resources.get(l).containsKey(res) && l!=line))
                 checkPresence=false;
-
         }
+
         if(alreadyPresent(line, res))
             checkPresence=false;
 
+        if(resources.get(line).containsKey(res)){
+            if(resources.get(line).get(res)+value > line.getValue())
+                checkPresence=false;
+        }
+        else if(value > line.getValue())
+            checkPresence=false;
         return checkPresence;
     }
 
@@ -152,5 +158,42 @@ public class WareHouse {
         }
         else
             return false;
+    }
+
+    /**
+     * reset the line into warehouse
+     * @param line
+     * @param res
+     * @param value
+     */
+    public boolean setLine(Row line, Resource res, Integer value){
+        HashMap<Row, HashMap<Resource, Integer>> resourceCopy = new HashMap<>(resources);
+        resourceCopy.get(line).clear();
+
+        boolean checkPresence =true;
+        for(Row l : resourceCopy.keySet()){
+            if((resourceCopy.get(l).containsKey(res) && l!=line))
+                checkPresence=false;
+        }
+
+        if(value<=line.getValue() && checkPresence) {
+            resources.get(line).clear();
+            resources.get(line).put(res, value);
+            return true;
+        }
+        else if(checkPresence){
+            resources.get(line).clear();
+            resources.get(line).put(res, line.getValue());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * remove the selected line from warehouse
+     * @param line
+     */
+    public void removeLine(Row line){
+        resources.get(line).clear();
     }
 }
