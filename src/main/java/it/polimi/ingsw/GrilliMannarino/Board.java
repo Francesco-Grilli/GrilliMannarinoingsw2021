@@ -16,6 +16,11 @@ public class Board {
   private CardMarketBoardInterface cardMarket;
   private MarbleMarketBoardInterface marbleMarket;
 
+  public Board(){
+    popeLine = new PopeLine();
+    resourceManager = new ResourceManager();
+  }
+
   //METHOD TO GET/BUY CARD
   public HashMap<Faction, HashMap<Integer, CreationCard>> getBuyableCard(){
     return cardMarket.getCards();

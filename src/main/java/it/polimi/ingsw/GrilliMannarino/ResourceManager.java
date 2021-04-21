@@ -254,7 +254,5 @@ public class ResourceManager implements ResourceManagerBoardInterface {
     }
 
     @Override
-    public void execute(ResourceManagerBoardInterface managerBoardInterface) {
-
-    }
+    public void execute(Board board) {}
 }

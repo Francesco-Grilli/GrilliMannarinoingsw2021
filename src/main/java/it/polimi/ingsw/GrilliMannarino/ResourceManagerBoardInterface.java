@@ -27,7 +27,7 @@ public interface ResourceManagerBoardInterface {
 
     void removeLineFromChest(Row line);
 
-    void execute(ResourceManagerBoardInterface managerBoardInterface);
+    void execute(Board board);
 
     boolean canSwapLine(Row one, Row two);
 
