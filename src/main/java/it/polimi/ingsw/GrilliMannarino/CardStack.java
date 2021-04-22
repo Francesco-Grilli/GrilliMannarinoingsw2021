@@ -19,6 +19,9 @@ public class CardStack implements CreationCardGroup{
     }
 
     public CreationCard popCard(){
+        if(emptyStack()){
+            return null;
+        }
         return this.cards.pop();
     }
 
@@ -30,7 +33,7 @@ public class CardStack implements CreationCardGroup{
         if(this.cards.empty()){
             return null;
         }
-        return  cards.peek().getCard();
+        return cards.peek().getCard();
     }
 
     public int getValue() {
@@ -82,12 +85,12 @@ public class CardStack implements CreationCardGroup{
         return cards.peek().getOutput();
     }
 
-    public boolean canAdd(int cardLevel){
-        return this.getCardLevel() == cardLevel-1;
+    public boolean canAdd(CreationCard card){
+        return this.getCardLevel() == card.getCardLevel()-1;
     }
 
     public boolean addCard(CreationCard card) {
-        if(this.canAdd(card.getCardLevel())){
+        if(this.canAdd(card)){
             this.pushCard(card);
             return true;
         }

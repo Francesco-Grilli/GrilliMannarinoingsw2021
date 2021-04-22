@@ -15,6 +15,11 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
     ResourceManagerBoardInterface resourceManager;
 
 
+    @Override
+    public void execute(Board board) {
+
+    }
+
     public ResourceManagerLeaderCard(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
         super(resourcePrice, cardPrice, definedResource, points);
     }

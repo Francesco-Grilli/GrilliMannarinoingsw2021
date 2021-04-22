@@ -9,16 +9,20 @@ import java.util.HashMap;
 
 public class Board {
 
-  private Player player;
+  private final Player player;
   private PopeLine popeLine;
   private ResourceManagerBoardInterface resourceManager;
   private ProductionLineBoardInterface productionLine;
   private CardMarketBoardInterface cardMarket;
   private MarbleMarketBoardInterface marbleMarket;
 
-  public Board(){
-    popeLine = new PopeLine();
-    resourceManager = new ResourceManager();
+  public Board(Player player, CardMarketBoardInterface cardMarket, MarbleMarketBoardInterface marbleMarket){
+    this.player = player;
+    this.marbleMarket = marbleMarket;
+    this.cardMarket = cardMarket;
+    this.productionLine = new ProductionLine();
+    this.resourceManager = new ResourceManager();
+    this.popeLine = new PopeLine();
   }
 
   //METHOD TO GET/BUY CARD

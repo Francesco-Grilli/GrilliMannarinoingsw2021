@@ -11,7 +11,7 @@ public abstract class LeaderCard {
     private Resource definedResource;
     private final int points;
 
-    //public abstract void execute(Board board);
+    public abstract void execute(Board board);
 
     public LeaderCard(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
         this.resourcePrice = resourcePrice;
