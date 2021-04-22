@@ -15,11 +15,6 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
     ResourceManagerBoardInterface resourceManager;
 
 
-    @Override
-    public void execute(Board board) {
-
-    }
-
     public ResourceManagerLeaderCard(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
         super(resourcePrice, cardPrice, definedResource, points);
     }
@@ -186,6 +181,7 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
     @Override
     public void execute(Board board) {
         resourceManager = board.getResourceManager();
+        board.setResourceManager(this);
         currentRow = Row.getNextValue(resourceManager.getRow());
     }
 
@@ -282,10 +278,4 @@ public class ResourceManagerLeaderCard extends LeaderCard implements ResourceMan
         return ret;
     }
 
-
-    /*@Override
-    public void execute(Board board) {
-        resourceManager = board.getResourceManager();
-        board.setResourceManager(this);
-    }*/
 }

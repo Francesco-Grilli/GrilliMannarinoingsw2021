@@ -13,7 +13,7 @@ class ResourceManagerLeaderCardTest {
     @Test
     public void setResourcesFromMarketTest(){
         ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
-        Board board = new Board();
+        Board board = new Board(null, null, null);
         card.execute(board);
 
         assertTrue(card.canSetResourcesFromMarket(Row.FIRST, Resource.COIN, 1));
@@ -32,7 +32,7 @@ class ResourceManagerLeaderCardTest {
     @Test
     public void setResourcesFromProductionTest(){
         ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
-        Board board = new Board();
+        Board board = new Board(null, null, null);
         card.execute(board);
 
         HashMap<Resource, Integer> res = new HashMap<>();
@@ -52,7 +52,7 @@ class ResourceManagerLeaderCardTest {
     @Test
     public void getResourcesTest(){
         ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
-        Board board = new Board();
+        Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
 
@@ -84,7 +84,7 @@ class ResourceManagerLeaderCardTest {
     @Test
     public void removeResourcesTest(){
         ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
-        Board board = new Board();
+        Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
 
@@ -121,7 +121,7 @@ class ResourceManagerLeaderCardTest {
     @Test
     public void getPointsTest(){
         ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
-        Board board = new Board();
+        Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
 
@@ -146,7 +146,7 @@ class ResourceManagerLeaderCardTest {
     @Test
     public void doubleCard(){
         ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
-        Board board = new Board();
+        Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
 
@@ -167,7 +167,7 @@ class ResourceManagerLeaderCardTest {
     @Test
     public void swapLineTest(){
         ResourceManagerBoardInterface card = new ResourceManagerLeaderCard(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
-        Board board = new Board();
+        Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
 
