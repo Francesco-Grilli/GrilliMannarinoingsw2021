@@ -1,5 +1,29 @@
 package it.polimi.ingsw.GrilliMannarino.GameData;
 
 public enum Marble {
-  YELLOW, RED, PURPLE, BLUE, WHITE, GREY
+  YELLOW(Resource.COIN), RED(Resource.FAITH), PURPLE(Resource.SERVANT), BLUE(Resource.SHIELD), WHITE(Resource.NONE), GREY(Resource.STONE), BLACK(Resource.UNKNOWN);
+
+  private final Resource resource;
+
+  Marble(Resource resource) { this.resource = resource; }
+
+  public static Resource getMarble(Marble m){
+    switch(m){
+      case YELLOW:
+        return Resource.COIN;
+      case BLUE:
+        return Resource.SHIELD;
+      case PURPLE:
+        return Resource.SERVANT;
+      case GREY:
+        return Resource.STONE;
+      case RED:
+        return Resource.FAITH;
+      case BLACK:
+        return Resource.UNKNOWN;
+      default:
+        return Resource.NONE;
+    }
   }
+
+}

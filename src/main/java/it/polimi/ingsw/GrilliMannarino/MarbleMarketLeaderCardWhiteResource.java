@@ -28,7 +28,7 @@ public class MarbleMarketLeaderCardWhiteResource extends MarbleMarketLeaderCard 
     ArrayList<MarbleOption> temp = getMarbleMarket().getColumn(column);
     temp.forEach(t -> {
       if(t.hasWhite()){
-        t.addOption(getDefinedResource().getMarble());
+        t.addOption(Resource.getMarble(getDefinedResource()));
       }
     });
     return temp;
@@ -39,7 +39,7 @@ public class MarbleMarketLeaderCardWhiteResource extends MarbleMarketLeaderCard 
     ArrayList<MarbleOption> temp = getMarbleMarket().getColumn(row);
     temp.forEach(t -> {
       if(t.hasWhite()){
-        t.addOption(getDefinedResource().getMarble());
+        t.addOption(Resource.getMarble(getDefinedResource()));
       }
     });
     return temp;

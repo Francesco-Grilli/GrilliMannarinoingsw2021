@@ -16,12 +16,14 @@ public class CardMarketLeaderCardDiscount extends CardMarketLeaderCard implement
     HashMap<Faction, HashMap<Integer, CreationCard>> temp = getCardMarket().getCards();
     for(Faction faction:temp.keySet()){
       for(Integer level:temp.get(faction).keySet()){
-        HashMap<Resource,Integer> priceOfCard = temp.get(faction).get(level).getPrice();
+        CreationCard card = temp.get(faction).get(level).getCard();
+        HashMap<Resource,Integer> priceOfCard = card.getPrice();
         if(priceOfCard.containsKey(getDefinedResource())){
           if(priceOfCard.get(getDefinedResource()) != null){
             priceOfCard.put(getDefinedResource(),priceOfCard.get(getDefinedResource())-1);
           }
         }
+        temp.get(faction).put(level, new CreationCard(card.getCardCode(),card.getCardLevel(),card.getValue(),card.getFaction(),priceOfCard,card.getInput(),card.getOutput()));
       }
     }
     return temp;

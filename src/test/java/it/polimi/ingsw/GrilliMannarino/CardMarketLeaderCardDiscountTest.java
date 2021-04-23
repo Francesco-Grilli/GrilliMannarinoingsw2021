@@ -13,7 +13,7 @@ public class CardMarketLeaderCardDiscountTest {
   @Test
   public void executeTest(){
     Player p = new Player("prova", 112233);
-    MarbleMarket m = new MarbleMarket(3,4, new HashMap<>());
+    MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
 
@@ -32,7 +32,7 @@ public class CardMarketLeaderCardDiscountTest {
   @Test
   public void getCardsTest(){
     Player p = new Player("prova", 112233);
-    MarbleMarket m = new MarbleMarket(3,4, new HashMap<>());
+    MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
     Resource res = Resource.COIN;
@@ -58,7 +58,7 @@ public class CardMarketLeaderCardDiscountTest {
   @Test
   public void buyCardTest(){
     Player p = new Player("prova", 112233);
-    MarbleMarket m = new MarbleMarket(3,4, new HashMap<>());
+    MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
     Resource res = Resource.COIN;

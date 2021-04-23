@@ -10,7 +10,7 @@ public enum Faction {
         if(faction == null){
             return Faction.NONE;
         }else{
-            switch (faction.toUpperCase(Locale.ROOT)){
+            switch (faction.toUpperCase()){
                 case "GREEN":
                     return Faction.GREEN;
                 case "PURPLE":
