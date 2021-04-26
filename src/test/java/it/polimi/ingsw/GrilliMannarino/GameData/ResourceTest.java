@@ -7,8 +7,10 @@ public class ResourceTest {
 
   @Test
   public void getMarbleTest(){
-    assertEquals(Marble.PURPLE,Resource.SERVANT.getMarble());
-    assertEquals(Marble.GREY,Resource.STONE.getMarble());
-    assertEquals(Marble.WHITE,Resource.UNKNOWN.getMarble());
+    Resource test = Resource.SERVANT;
+    Marble test2 = Marble.BLACK;
+    Marble test1 = Marble.PURPLE;
+    test2 = Resource.getMarble(test);
+    assertEquals(test1,test2);
   }
 }
