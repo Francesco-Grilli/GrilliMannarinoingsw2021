@@ -3,7 +3,6 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import org.junit.jupiter.api.Test;
 
-import javax.smartcardio.Card;
 
 import static org.junit.jupiter.api.Assertions.*;
 

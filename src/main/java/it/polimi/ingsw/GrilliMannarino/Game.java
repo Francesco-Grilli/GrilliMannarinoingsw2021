@@ -28,7 +28,7 @@ public class Game {
         playerID = new ArrayList<>();
         board = new ConcurrentHashMap<>();
         cardMarket = new CardMarket();
-        marbleMarket = new MarbleMarket(4, 3, new HashMap<>());
+        marbleMarket = new MarbleMarket();
     }
 
     public synchronized void setPlayer(Integer playerId, String nickName) {

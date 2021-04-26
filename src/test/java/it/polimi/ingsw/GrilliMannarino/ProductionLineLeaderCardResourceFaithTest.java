@@ -12,7 +12,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
   @Test
   public void executeTest(){
     Player p = new Player("prova", 112233);
-    MarbleMarket m = new MarbleMarket(3,4, new HashMap<>());
+    MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
 
@@ -29,7 +29,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
   @Test
   public void getNextFreeSlotTest(){
     Player p = new Player("prova", 112233);
-    MarbleMarket m = new MarbleMarket(3,4, new HashMap<>());
+    MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
     assertEquals(4,boardtest.getProductionLine().getNextFreeSlot());
@@ -41,7 +41,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
   @Test
   public void getCardsTest(){
     Player p = new Player("prova", 112233);
-    MarbleMarket m = new MarbleMarket(3,4, new HashMap<>());
+    MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
     LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
@@ -62,7 +62,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
   @Test
   public void addCardTest(){
     Player p = new Player("prova", 112233);
-    MarbleMarket m = new MarbleMarket(3,4, new HashMap<>());
+    MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
     LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
