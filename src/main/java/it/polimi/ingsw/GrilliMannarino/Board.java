@@ -144,6 +144,16 @@ public class Board {
     return outputOfConfiguration;
   }
 
+  //METHOD TO GET MARBLE
+
+  public ArrayList<MarbleOption> getMarbleRow(int row){
+    return marbleMarket.getRow(row);
+  }
+
+  public ArrayList<MarbleOption> getMarbleColumn(int column){
+    return marbleMarket.getColumn(column);
+  }
+
   //GETTERS AND SETTERS
 
 

@@ -2,6 +2,9 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import org.junit.jupiter.api.Test;
+
+import javax.smartcardio.Card;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
@@ -29,4 +32,5 @@ public class CardMarketTest {
     assertNull(test.buyCard(Faction.GREEN, -1));
     assertNotNull(test.buyCard(Faction.GREEN,1));
   }
+
 }
