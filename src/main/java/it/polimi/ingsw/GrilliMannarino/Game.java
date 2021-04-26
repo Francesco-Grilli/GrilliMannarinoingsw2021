@@ -56,6 +56,15 @@ public class Game {
 
     }
 
+    public void cardMarketShopping(){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        HashMap<Faction, HashMap<Integer, CreationCard>> buyableCard = activeBoard.getBuyableCard();
+
+
+    }
+
 
 
 
