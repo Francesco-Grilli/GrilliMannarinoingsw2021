@@ -30,7 +30,7 @@ public abstract class LeaderCard {
         return new HashMap<>(resourcePrice);
     }
 
-    public int getPoints() {
+    public int getValue() {
         return points;
     }
 

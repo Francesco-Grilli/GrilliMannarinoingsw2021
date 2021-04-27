@@ -53,10 +53,12 @@ public class ProductionLine implements ProductionLineBoardInterface{
 
     public ArrayList<CreationCard> allUsedCards(){
         ArrayList<CreationCard> cardsToReturn = new ArrayList<>();
-        this.productionCards.values().forEach(t->{
-            cardsToReturn.add(t.getCard());
-        });
+        this.productionCards.values().forEach(t-> cardsToReturn.add(t.getCard()));
         return cardsToReturn;
+    }
+
+    public int getPoints() {
+        return allUsedCards().stream().map(CreationCard::getValue).reduce(0, Integer::sum);
     }
 
 }

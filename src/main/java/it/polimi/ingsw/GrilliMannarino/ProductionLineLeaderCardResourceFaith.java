@@ -41,6 +41,11 @@ public class ProductionLineLeaderCardResourceFaith extends ProductionLineLeaderC
   }
 
   @Override
+  public int getPoints() {
+    return getProductionLine().getPoints();
+  }
+
+  @Override
   public void execute(Board board) {
     this.setProductionLine(board.getProductionLine());
     board.setProductionLine(this);
