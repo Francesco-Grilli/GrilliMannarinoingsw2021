@@ -73,9 +73,7 @@ public class Board {
   }
 
   public void setLeaderCards(ArrayList<LeaderCard> leaderCards){
-    leaderCards.forEach(t->{
-      this.boardLeaderCards.put(t.getCardCode(),t);
-    });
+    leaderCards.forEach(t-> this.boardLeaderCards.put(t.getCardCode(),t));
   }
 
   public boolean activateLeaderCard(int cardCode){
@@ -117,6 +115,18 @@ public class Board {
     return true;
   }
 
+  private int getLeaderCardsPoints(){
+    return this.activeLeaderCards.stream().map(t -> this.boardLeaderCards.get(t).getValue()).reduce(0,Integer::sum);
+  }
+
+  public int getPoints(){
+    int points = this.getLeaderCardsPoints();
+    points += getResourcePoints();
+    points += productionLine.getPoints();
+    points += popeLine.getPoints();
+    return points;
+  }
+
   public boolean sellLeaderCard(int cardCode){
     if(boardLeaderCards.containsKey(cardCode)){
       boardLeaderCards.remove(cardCode);
@@ -148,7 +158,7 @@ public class Board {
     resourceManager.forceSwapLine(one, two);
   }
 
-  public int getResourcePoints(){
+  private int getResourcePoints(){
     return resourceManager.getResourcePoints();
   }
 
