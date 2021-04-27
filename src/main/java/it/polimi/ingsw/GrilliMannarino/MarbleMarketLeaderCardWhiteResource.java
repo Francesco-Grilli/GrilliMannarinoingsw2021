@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class MarbleMarketLeaderCardWhiteResource extends MarbleMarketLeaderCard implements MarbleMarketBoardInterface{
 
-  public MarbleMarketLeaderCardWhiteResource(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
-    super(resourcePrice, cardPrice, definedResource, points);
+  public MarbleMarketLeaderCardWhiteResource(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points,int cardCode) {
+    super(resourcePrice, cardPrice, definedResource, points,cardCode);
   }
 
   @Override

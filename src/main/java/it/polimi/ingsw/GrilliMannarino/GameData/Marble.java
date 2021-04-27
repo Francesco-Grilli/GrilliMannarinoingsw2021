@@ -7,7 +7,7 @@ public enum Marble {
 
   Marble(Resource resource) { this.resource = resource; }
 
-  public static Resource getMarble(Marble m){
+  public static Resource getResource(Marble m){
     switch(m){
       case YELLOW:
         return Resource.COIN;

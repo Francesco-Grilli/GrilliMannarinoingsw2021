@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
+import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
@@ -50,6 +51,22 @@ public class Board {
       resourceManager.remove(getInputOfConfiguration(cards));
       resourceManager.setResourcesFromProduction(getOutputOfConfiguration(cards));
     }
+  }
+
+  public Marble[][] getMarblesFromMarket(){
+    return this.marbleMarket.getMarbleBoard();
+  }
+
+  public Marble getMarbleOut(){
+    return this.marbleMarket.getMarbleOut();
+  }
+
+  public ArrayList<MarbleOption> getRow(int i){
+    return this.marbleMarket.getRow(i);
+  }
+
+  public ArrayList<MarbleOption> getColumn(int i){
+    return this.marbleMarket.getColumn(i);
   }
 
 
