@@ -132,8 +132,6 @@ public class Game {
         Board activeBoard = board.get(activePlayer.getID());
 
         int points=0;
-        points += activeBoard.getFaithTrackPoints();
-
 
         return points;
     }

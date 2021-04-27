@@ -179,6 +179,15 @@ public class ResourceManager implements ResourceManagerBoardInterface {
         return points / 5;
     }
 
+    public int getNumberOfResource(){
+        int resource=0;
+        HashMap<Resource, Integer> resourceMap = getResources();
+        for(Resource r : resourceMap.keySet()){
+            resource += resourceMap.get(r);
+        }
+        return resource;
+    }
+
     public Row getRow() {
         return Row.THIRD;
     }

@@ -23,6 +23,8 @@ public interface ResourceManagerBoardInterface {
 
     int getResourcePoints();
 
+    int getNumberOfResource();
+
     boolean setLineFromChest(Row line, Resource res, Integer value);
 
     void removeLineFromChest(Row line);

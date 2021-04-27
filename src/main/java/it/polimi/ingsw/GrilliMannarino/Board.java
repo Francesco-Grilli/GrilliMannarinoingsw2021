@@ -152,6 +152,10 @@ public class Board {
     return resourceManager.getResourcePoints();
   }
 
+  public int getNumberOfResources(){
+    return resourceManager.getNumberOfResource();
+  }
+
   //METHOD TO ACCESS THE POPELINE
 
   public boolean addPopeFaith(){

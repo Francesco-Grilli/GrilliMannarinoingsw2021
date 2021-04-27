@@ -151,7 +151,15 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         return resources/5;
     }
 
-
+    @Override
+    public int getNumberOfResource() {
+        int resource=0;
+        HashMap<Resource, Integer> resourceMap = getResources();
+        for(Resource r : resourceMap.keySet()){
+            resource += resourceMap.get(r);
+        }
+        return resource;
+    }
 
     @Override
     public boolean setLineFromChest(Row line, Resource res, Integer value) {
