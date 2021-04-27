@@ -10,8 +10,8 @@ public abstract class ResourceManagerLeaderCard extends LeaderCard{
     public void execute(Board board) {
     }
 
-    public ResourceManagerLeaderCard(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
-        super(resourcePrice, cardPrice, definedResource, points);
+    public ResourceManagerLeaderCard(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points,int cardCode) {
+        super(resourcePrice, cardPrice, definedResource, points,cardCode);
     }
 
     @Override

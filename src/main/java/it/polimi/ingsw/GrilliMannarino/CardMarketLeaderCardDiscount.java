@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 public class CardMarketLeaderCardDiscount extends CardMarketLeaderCard implements CardMarketBoardInterface{
 
-  public CardMarketLeaderCardDiscount(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
-    super(resourcePrice, cardPrice, definedResource, points);
+  public CardMarketLeaderCardDiscount(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points, int cardCode) {
+    super(resourcePrice, cardPrice, definedResource, points,cardCode);
   }
 
   @Override

@@ -12,7 +12,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
 
     @Test
     public void setResourcesFromMarketTest(){
-        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3,1);
         Board board = new Board(null, null, null);
         card.execute(board);
 
@@ -31,7 +31,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
 
     @Test
     public void setResourcesFromProductionTest(){
-        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3,1);
         Board board = new Board(null, null, null);
         card.execute(board);
 
@@ -51,7 +51,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
 
     @Test
     public void getResourcesTest(){
-        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3,1);
         Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
@@ -83,7 +83,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
 
     @Test
     public void removeResourcesTest(){
-        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3,1);
         Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
@@ -120,7 +120,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
 
     @Test
     public void getPointsTest(){
-        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3,1);
         Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
@@ -138,14 +138,14 @@ class ResourceManagerLeaderCardTwoSpaceTest {
         card.setResourcesFromMarket(Row.FOURTH, Resource.COIN, 1);
         assertEquals(4, card.getResourcePoints());
 
-        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 2);
+        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 2,1);
         card2.execute(board);
         assertEquals(4, card2.getResourcePoints());
     }
 
     @Test
     public void doubleCard(){
-        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3,1);
         Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
@@ -154,7 +154,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
         card.setResourcesFromMarket(Row.SECOND, Resource.COIN, 2);
         card.setResourcesFromMarket(Row.FOURTH, Resource.COIN, 1);
 
-        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.SHIELD, 2);
+        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.SHIELD, 2,1);
         card2.execute(board);
         ret = card2.getResources();
         ret.clear();
@@ -166,7 +166,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
 
     @Test
     public void swapLineTest(){
-        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3);
+        ResourceManagerBoardInterface card = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.COIN, 3,1);
         Board board = new Board(null, null, null);
         card.execute(board);
         HashMap<Resource, Integer> ret = new HashMap<>();
@@ -183,7 +183,7 @@ class ResourceManagerLeaderCardTwoSpaceTest {
         assertFalse(card.canSwapLine(Row.FIRST, Row.FOURTH));
         card.forceSwapLine(Row.FIRST, Row.FOURTH);
 
-        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.SERVANT, 2);
+        ResourceManagerBoardInterface card2 = new ResourceManagerLeaderCardTwoSpace(new HashMap<>(), new HashMap<>(), Resource.SERVANT, 2,1);
         card2.execute(board);
 
         card2.setResourcesFromMarket(Row.FIFTH, Resource.SERVANT, 1);

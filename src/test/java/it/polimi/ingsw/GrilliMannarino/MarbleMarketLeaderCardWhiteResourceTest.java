@@ -22,7 +22,7 @@ public class MarbleMarketLeaderCardWhiteResourceTest {
     assertNotNull(boardtest.getMarbleMarket());
     assertEquals(boardtest.getMarbleMarket(), m);
 
-    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
+    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN,4,1);
 
     l.execute(boardtest);
 
@@ -38,7 +38,7 @@ public class MarbleMarketLeaderCardWhiteResourceTest {
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
 
-    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4);
+    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4,1);
 
     l.execute(boardtest);
 
@@ -54,7 +54,7 @@ public class MarbleMarketLeaderCardWhiteResourceTest {
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
 
-    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4);
+    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4,1);
 
     l.execute(boardtest);
 
@@ -69,7 +69,7 @@ public class MarbleMarketLeaderCardWhiteResourceTest {
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
 
-    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4);
+    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4,1);
 
     l.execute(boardtest);
 
@@ -89,7 +89,7 @@ public class MarbleMarketLeaderCardWhiteResourceTest {
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
 
-    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4);
+    LeaderCard l = new MarbleMarketLeaderCardWhiteResource(new HashMap<>(), new HashMap<>(), Resource.COIN, 4,1);
 
     l.execute(boardtest);
 

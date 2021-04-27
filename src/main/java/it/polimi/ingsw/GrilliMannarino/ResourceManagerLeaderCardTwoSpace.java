@@ -15,8 +15,8 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
     ResourceManagerBoardInterface resourceManager;
 
 
-    public ResourceManagerLeaderCardTwoSpace(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
-        super(resourcePrice, cardPrice, definedResource, points);
+    public ResourceManagerLeaderCardTwoSpace(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points,int cardCode) {
+        super(resourcePrice, cardPrice, definedResource, points,cardCode);
     }
 
 

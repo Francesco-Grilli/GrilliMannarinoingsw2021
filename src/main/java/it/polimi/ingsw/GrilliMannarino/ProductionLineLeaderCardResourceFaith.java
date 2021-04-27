@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class ProductionLineLeaderCardResourceFaith extends ProductionLineLeaderCard implements ProductionLineBoardInterface{
 
-  public ProductionLineLeaderCardResourceFaith(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points) {
-    super(resourcePrice, cardPrice, definedResource, points);
+  public ProductionLineLeaderCardResourceFaith(HashMap<Resource, Integer> resourcePrice, HashMap<Faction, HashMap<Integer, Integer>> cardPrice, Resource definedResource, int points,int cardCode) {
+    super(resourcePrice, cardPrice, definedResource, points,cardCode);
   }
 
   @Override

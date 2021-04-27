@@ -20,7 +20,7 @@ public class CardMarketLeaderCardDiscountTest {
     assertNotNull(boardtest.getCardMarket());
     assertEquals(boardtest.getCardMarket(), c);
 
-    LeaderCard l = new CardMarketLeaderCardDiscount(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
+    LeaderCard l = new CardMarketLeaderCardDiscount(new HashMap<>(), new HashMap<>(), Resource.COIN,4,1);
 
     l.execute(boardtest);
 
@@ -37,7 +37,7 @@ public class CardMarketLeaderCardDiscountTest {
     Board boardtest = new Board(p, c, m);
     Resource res = Resource.COIN;
 
-    LeaderCard l = new CardMarketLeaderCardDiscount(new HashMap<>(), new HashMap<>(), res,4);
+    LeaderCard l = new CardMarketLeaderCardDiscount(new HashMap<>(), new HashMap<>(), res,4,1);
 
     l.execute(boardtest);
 
@@ -63,7 +63,7 @@ public class CardMarketLeaderCardDiscountTest {
     Board boardtest = new Board(p, c, m);
     Resource res = Resource.COIN;
 
-    LeaderCard l = new CardMarketLeaderCardDiscount(new HashMap<>(), new HashMap<>(), res,4);
+    LeaderCard l = new CardMarketLeaderCardDiscount(new HashMap<>(), new HashMap<>(), res,4,1);
 
     l.execute(boardtest);
 

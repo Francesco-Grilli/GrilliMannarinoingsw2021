@@ -18,7 +18,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
 
     assertNotNull(boardtest.getProductionLine());
 
-    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
+    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4,1);
 
     l.execute(boardtest);
 
@@ -33,7 +33,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
     assertEquals(4,boardtest.getProductionLine().getNextFreeSlot());
-    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
+    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4,1);
     l.execute(boardtest);
     assertEquals(5,boardtest.getProductionLine().getNextFreeSlot());
   }
@@ -44,7 +44,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
     MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
-    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
+    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4,1);
     ProductionLineBoardInterface oldprod = boardtest.getProductionLine();
     l.execute(boardtest);
 
@@ -65,7 +65,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
     MarbleMarket m = new MarbleMarket();
     CardMarket c = new CardMarket();
     Board boardtest = new Board(p, c, m);
-    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4);
+    LeaderCard l = new ProductionLineLeaderCardResourceFaith(new HashMap<>(), new HashMap<>(), Resource.COIN,4,1);
     l.execute(boardtest);
 
     assertTrue(boardtest.getProductionLine().addCard(1, new CreationCard(1,1,1,Faction.GREEN, null, null,null)));
