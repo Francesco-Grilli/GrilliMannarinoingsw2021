@@ -64,7 +64,7 @@ public class Game {
         Board activeBoard = board.get(activePlayer.getID());
 
         if(activeBoard.canBuyCard(card)){
-            activeBoard.buyCard(card);
+            activeBoard.getCardFromMarket(card);
             return true;
         }
         else
@@ -115,13 +115,6 @@ public class Game {
 
     //METHOD TO BUY PRODUCE
 
-    public displayProductionCard(){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
-        return activeBoard.getCards();
-    }
-
     public boolean startProduction(ArrayList<CreationCard> creationCards){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
@@ -132,6 +125,17 @@ public class Game {
         }
         else
             return false;
+    }
+
+    public int getAllPoints(){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        int points=0;
+        points += activeBoard.getFaithTrackPoints();
+
+
+        return points;
     }
 
 
