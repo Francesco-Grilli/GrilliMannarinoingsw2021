@@ -181,7 +181,7 @@ public class Board {
     PopeLine.updateChecks();
   }
 
-  public int getFaithTrackPoints(){
+  private int getFaithTrackPoints(){
     return popeLine.getPoints();
   }
 

@@ -131,9 +131,7 @@ public class Game {
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
 
-        int points=0;
-
-        return points;
+        return activeBoard.getPoints();
     }
 
 
