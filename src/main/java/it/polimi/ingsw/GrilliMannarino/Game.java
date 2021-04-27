@@ -98,18 +98,14 @@ public class Game {
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
 
-        if(activeBoard.setResourcesFromMarket(row, resource, 1).isEmpty()){
-            return true;
-        }
-        else
-            return false;
+        return activeBoard.setResourcesFromMarket(row, resource, 1).isEmpty();
     }
 
     public ArrayList<Resource> transformMarble(ArrayList<Marble> marbleList){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
 
-        return activeBoard.transform(marbleList);
+        return null;
     }
 
 
@@ -133,9 +129,6 @@ public class Game {
 
         return activeBoard.getPoints();
     }
-
-
-
 
 
 }
