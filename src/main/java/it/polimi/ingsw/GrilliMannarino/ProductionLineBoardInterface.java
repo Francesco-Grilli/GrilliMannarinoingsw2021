@@ -8,4 +8,5 @@ public interface ProductionLineBoardInterface {
   HashMap<Integer, CreationCard> getCards();
   int getNextFreeSlot();
   ArrayList<CreationCard> allUsedCards();
+  int getPoints();
 }

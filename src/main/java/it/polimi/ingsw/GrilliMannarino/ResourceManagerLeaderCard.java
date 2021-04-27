@@ -24,9 +24,8 @@ public abstract class ResourceManagerLeaderCard extends LeaderCard{
         return super.getResourcePrice();
     }
 
-    @Override
     public int getPoints() {
-        return super.getPoints();
+        return super.getValue();
     }
 
     @Override
