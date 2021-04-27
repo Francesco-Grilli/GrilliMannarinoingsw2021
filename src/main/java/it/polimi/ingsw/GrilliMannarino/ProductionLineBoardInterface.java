@@ -7,4 +7,5 @@ public interface ProductionLineBoardInterface {
   boolean addCard(int pos, CreationCard card);
   HashMap<Integer, CreationCard> getCards();
   int getNextFreeSlot();
+  ArrayList<CreationCard> allUsedCards();
 }
