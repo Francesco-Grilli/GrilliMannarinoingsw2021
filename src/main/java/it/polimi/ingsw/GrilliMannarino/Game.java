@@ -3,10 +3,10 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,6 +31,7 @@ public class Game {
         marbleMarket = new MarbleMarket();
     }
 
+
     public synchronized void setPlayer(Integer playerId, String nickName) {
         if(player.size()<4 && !player.containsKey(playerId) && !board.containsKey(playerId)){
             player.put(playerId, new Player(nickName, playerId));
@@ -49,21 +50,90 @@ public class Game {
     }
 
 
-    public void resourceMarketShopping(){
+    //METHOD TO BUY CREATION CARD
+
+    public HashMap<Faction, HashMap<Integer, CreationCard>> displayCreationCard(){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
 
-
+        return activeBoard.getBuyableCard();
     }
 
-    public void cardMarketShopping(){
+    public boolean buyCreationCard(CreationCard card){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
 
-        HashMap<Faction, HashMap<Integer, CreationCard>> buyableCard = activeBoard.getBuyableCard();
-
-
+        if(activeBoard.canBuyCard(card)){
+            activeBoard.buyCard(card);
+            return true;
+        }
+        else
+            return false;
     }
+
+    //METHOD TO GET TO THE MARBLE MARKET
+
+    public Marble[][] displayMarbleMarket(){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return marbleMarket.getMarbleBoard();
+    }
+
+    public ArrayList<MarbleOption> selectMarbleColumn(int column){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return activeBoard.getColumn(column);
+    }
+
+    public ArrayList<MarbleOption> selectMarbleRow(int row){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return activeBoard.getRow(row);
+    }
+
+    public boolean placeResource(Row row, Resource resource){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        if(activeBoard.setResourcesFromMarket(row, resource, 1).isEmpty()){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public ArrayList<Resource> transformMarble(ArrayList<Marble> marbleList){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return activeBoard.transform(marbleList);
+    }
+
+
+    //METHOD TO BUY PRODUCE
+
+    public displayProductionCard(){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return activeBoard.getCards();
+    }
+
+    public boolean startProduction(ArrayList<CreationCard> creationCards){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        if(activeBoard.canProduceWithConfiguration(creationCards)){
+            activeBoard.produce(creationCards);
+            return true;
+        }
+        else
+            return false;
+    }
+
 
 
 
