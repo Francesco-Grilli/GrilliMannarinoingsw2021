@@ -7,6 +7,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 public class Board {
 
@@ -16,6 +17,8 @@ public class Board {
   private ProductionLineBoardInterface productionLine;
   private CardMarketBoardInterface cardMarket;
   private MarbleMarketBoardInterface marbleMarket;
+  private HashMap<Integer, LeaderCard> boardLeaderCards;
+  private ArrayList<Integer> activeLeaderCards;
 
   public Board(Player player, CardMarketBoardInterface cardMarket, MarbleMarketBoardInterface marbleMarket){
     this.player = player;
@@ -67,6 +70,59 @@ public class Board {
 
   public ArrayList<MarbleOption> getColumn(int i){
     return this.marbleMarket.getColumn(i);
+  }
+
+  public void setLeaderCards(ArrayList<LeaderCard> leaderCards){
+    leaderCards.forEach(t->{
+      this.boardLeaderCards.put(t.getCardCode(),t);
+    });
+  }
+
+  public boolean activateLeaderCard(int cardCode){
+    if(boardLeaderCards.containsKey(cardCode)){
+      if(canActivateLeaderCard(boardLeaderCards.get(cardCode))) {
+        boardLeaderCards.get(cardCode).execute(this);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean canActivateLeaderCard(LeaderCard leaderCard){
+    boolean condition = resourceManager.canRemove(leaderCard.getResourcePrice());
+    if(!(checkOnCardsFactionsAndLevels(leaderCard.getCardPrice()))){
+      condition = false;
+    }
+    return condition;
+  }
+
+  private boolean checkOnCardsFactionsAndLevels(HashMap<Faction,HashMap<Integer,Integer>> price){
+    ArrayList<CreationCard> cardsToTest = productionLine.allUsedCards();
+    for(Faction fac: price.keySet()){
+      if(price.get(fac) != null){
+        for(Integer lev: price.get(fac).keySet()){
+          if(price.get(fac).get(lev) != null){
+            Stream<CreationCard> test = cardsToTest.stream();
+            if(lev > 0){
+              test = test.filter(t->t.getCardLevel()==lev);
+            }
+            int respectableCards = (int) test.filter(t->t.getFaction().equals(fac)).count();
+            if(respectableCards < price.get(fac).get(lev)){
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  public boolean sellLeaderCard(int cardCode){
+    if(boardLeaderCards.containsKey(cardCode)){
+      boardLeaderCards.remove(cardCode);
+      return this.popeLine.addFaith();
+    }
+    return false;
   }
 
 

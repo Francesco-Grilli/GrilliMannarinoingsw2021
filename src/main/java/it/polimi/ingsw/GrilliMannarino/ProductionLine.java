@@ -3,16 +3,19 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductionLine implements ProductionLineBoardInterface{
 
+    private HashMap<Integer,CreationCard> productionCards;
     private final HashMap<Integer, CreationCardGroup> activeCards;
-    private final int maxProductionCards;
+    private final int maxProductionSlots;
 
     public ProductionLine(int numberOfActiveCards){
-        this.maxProductionCards = numberOfActiveCards;
+        this.maxProductionSlots = numberOfActiveCards;
         activeCards = new HashMap<>();
+        productionCards = new HashMap<>();
         for(int i = 1; i<=numberOfActiveCards;i++){
             activeCards.put(i,new CardStack());
         }
@@ -23,8 +26,9 @@ public class ProductionLine implements ProductionLineBoardInterface{
     }
 
     public boolean addCard(int pos, CreationCard card){
-        int position = ((pos % this.maxProductionCards)+1);
+        int position = ((pos % this.maxProductionSlots)+1);
         if(activeCards.get(position).canAdd(card)){
+            productionCards.put(card.getCardCode(), card);
             return activeCards.get(position).addCard(card);
         }else{
             return false;
@@ -44,7 +48,15 @@ public class ProductionLine implements ProductionLineBoardInterface{
     }
 
     public int getNextFreeSlot() {
-        return maxProductionCards+1;
+        return maxProductionSlots +1;
+    }
+
+    public ArrayList<CreationCard> allUsedCards(){
+        ArrayList<CreationCard> cardsToReturn = new ArrayList<>();
+        this.productionCards.values().forEach(t->{
+            cardsToReturn.add(t.getCard());
+        });
+        return cardsToReturn;
     }
 
 }

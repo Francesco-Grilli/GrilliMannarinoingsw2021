@@ -38,4 +38,6 @@ public abstract class LeaderCard {
         return definedResource;
     }
 
+    public int getCardCode(){ return cardCode; }
+
 }
