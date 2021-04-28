@@ -12,7 +12,7 @@ public class Controller implements VisitorInterface {
     }
 
     @Override
-    public void executeAccount(AccountMessage account) {
+    public void executeAccount(GuestMessage account) {
 
     }
 
@@ -27,7 +27,7 @@ public class Controller implements VisitorInterface {
     }
 
     @Override
-    public void executeBuyMarket(BuyMarketMessage buyMarket) {
+    public void executeBuyMarket(MarbleMarketMessage buyMarket) {
 
     }
 
@@ -43,6 +43,11 @@ public class Controller implements VisitorInterface {
 
     @Override
     public void executeEndGame(EndGameMessage endGame) {
+
+    }
+
+    @Override
+    public void executeTurn(TurnMessage turn) {
 
     }
 }
