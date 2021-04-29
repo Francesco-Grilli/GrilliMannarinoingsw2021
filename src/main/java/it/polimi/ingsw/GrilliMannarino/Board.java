@@ -5,8 +5,10 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class Board {
@@ -27,16 +29,27 @@ public class Board {
     this.productionLine = new ProductionLine();
     this.resourceManager = new ResourceManager();
     this.popeLine = new PopeLine();
+    this.boardLeaderCards = new HashMap<>();
+    this.activeLeaderCards = new ArrayList<>();
   }
 
   //METHOD TO GET/BUY CARD
-  public HashMap<Faction, HashMap<Integer, CreationCard>> getBuyableCard(){
-    return cardMarket.getCards();
+  public HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard,Boolean>>> getBuyableCard(){
+    HashMap<Faction, HashMap<Integer, CreationCard>> t = cardMarket.getCards();
+    HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard,Boolean>>> ret = new HashMap<>();
+    t.forEach((fac,levels)->{
+      ret.put(fac,new HashMap<>());
+      levels.forEach((lev,pair)->{
+        ret.get(fac).put(lev, new AbstractMap.SimpleEntry<>(pair.getCard(), canBuyCard(pair)));
+      });
+    });
+    return ret;
   }
 
-  public Boolean canBuyCard(CreationCard card){
+  private Boolean canBuyCard(CreationCard card){
     return resourceManager.canRemove(card.getPrice());
   }
+
 
   public CreationCard getCardFromMarket(CreationCard card){
     if(canBuyCard(card)) {
@@ -150,6 +163,10 @@ public class Board {
     resourceManager.setResourcesFromProduction(resources);
   }
 
+  public HashMap<Resource, Integer> getResources(){
+    return resourceManager.getResources();
+  }
+
   public boolean canSwapLineFromWareHouse(Row one, Row two){
     return resourceManager.canSwapLine(one, two);
   }
@@ -181,7 +198,7 @@ public class Board {
     return popeLine.getPoints();
   }
 
-  public int getFatith(){
+  public int getFaith(){
     return popeLine.getFaith();
   }
 
@@ -210,9 +227,9 @@ public class Board {
   public HashMap<Resource, Integer> getInputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){
     HashMap<Resource, Integer> inputOfConfiguration = new HashMap<>();
     cardsToProduceWith.forEach((t) -> {
-      for(Resource key:t.getInput().keySet()){
-        inputOfConfiguration.put(key, (inputOfConfiguration.get(key) == null ? 0 : inputOfConfiguration.get(key))+t.getInput().get(key));
-      }
+      t.getInput().forEach((key,value) ->{
+        inputOfConfiguration.merge(key,value,Integer::sum);
+      });
     });
     return inputOfConfiguration;
   }
@@ -220,9 +237,9 @@ public class Board {
   public HashMap<Resource, Integer> getOutputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){
     HashMap<Resource, Integer> outputOfConfiguration = new HashMap<>();
     cardsToProduceWith.forEach((t) -> {
-      for(Resource key:t.getOutput().keySet()){
-        outputOfConfiguration.put(key, (outputOfConfiguration.get(key) == null ? 0 : outputOfConfiguration.get(key))+t.getOutput().get(key));
-      }
+      t.getOutput().forEach((key,value) ->{
+        outputOfConfiguration.merge(key,value,Integer::sum);
+      });
     });
     return outputOfConfiguration;
   }
@@ -268,5 +285,13 @@ public class Board {
 
   public void setMarbleMarket(MarbleMarketBoardInterface marbleMarket) {
     this.marbleMarket = marbleMarket;
+  }
+
+  public ArrayList<Integer> getActiveLeaderCards() {
+    return new ArrayList<>(activeLeaderCards);
+  }
+
+  public ArrayList<Integer> getLeaderCards(){
+    return new ArrayList<>(this.boardLeaderCards.keySet());
   }
 }
