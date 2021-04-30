@@ -111,13 +111,6 @@ public class Game {
         return false;
     }
 
-    public ArrayList<Resource> transformMarble(ArrayList<Marble> marbleList){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
-        return null;
-    }
-
 
     //METHOD TO BUY PRODUCE
 

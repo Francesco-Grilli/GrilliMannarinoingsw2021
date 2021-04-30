@@ -45,6 +45,7 @@ public class Board {
     return null;
   }
 
+
   public boolean canProduceWithConfiguration(ArrayList<CreationCard> cards){
     return resourceManager.canRemove(getInputOfConfiguration(cards));
   }

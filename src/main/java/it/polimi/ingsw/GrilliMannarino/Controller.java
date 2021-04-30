@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Internet.Server;
@@ -129,7 +130,20 @@ public class Controller implements VisitorInterface {
 
     @Override
     public void executeBuyProduction(BuyProductionMessage buyProduction) {
+        if(game.getActivePlayer().getID()!=buyProduction.getPlayerId())
+            return;
 
+        if(!buyProduction.isDisplayCard()){
+            if(!buyProduction.isSelectCard()){
+
+                //errore
+            }
+            //code to buy production card from market and put into productionLine
+
+
+        }
+        //code to display cards to the client
+        //NEED HASHMAP<INTEGER, BOOLEAN> CARDS METHOD
     }
 
     @Override
