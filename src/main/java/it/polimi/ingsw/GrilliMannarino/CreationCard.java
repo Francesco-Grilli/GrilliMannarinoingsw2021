@@ -42,13 +42,13 @@ public class CreationCard implements CreationCardGroup {
         return new HashMap<>(this.price);
     }
     public HashMap<Resource, Integer> getInput() {
-        if(this.price == null){
+        if(this.input == null){
             return null;
         }
         return new HashMap<>(this.input);
     }
     public HashMap<Resource, Integer> getOutput() {
-        if(this.price == null){
+        if(this.output == null){
             return null;
         }
         return new HashMap<>(this.output);

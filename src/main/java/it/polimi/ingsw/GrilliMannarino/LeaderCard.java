@@ -6,10 +6,10 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import java.util.HashMap;
 
 public abstract class LeaderCard {
-    private int cardCode;
-    private HashMap<Resource, Integer> resourcePrice;
-    private HashMap<Faction, HashMap<Integer, Integer>> cardPrice;
-    private Resource definedResource;
+    private final int cardCode;
+    private final HashMap<Resource, Integer> resourcePrice;
+    private final HashMap<Faction, HashMap<Integer, Integer>> cardPrice;
+    private final Resource definedResource;
     private final int points;
 
     public abstract void execute(Board board);
