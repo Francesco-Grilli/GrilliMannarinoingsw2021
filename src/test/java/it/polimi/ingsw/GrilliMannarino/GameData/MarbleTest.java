@@ -16,4 +16,11 @@ public class MarbleTest {
 
     assertEquals(Resource.SERVANT,Marble.getResource(test1));
   }
+
+  @Test
+  public void printResourceTest(){
+
+    assertEquals(Marble.PURPLE, Marble.valueOf("PURPLE"));
+
+  }
 }

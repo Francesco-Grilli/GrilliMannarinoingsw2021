@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.Internet;
 
+import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +17,7 @@ public class ClientHandler implements  Runnable{
     InputStream is = null;
     InputStreamReader in = null;
 
-    private DataOutputStream output;
+    private ObjectOutputStream output;
 
 
     public ClientHandler(Socket socket, Server server, int playerId, String nickName){
@@ -35,7 +37,7 @@ public class ClientHandler implements  Runnable{
             is = socket.getInputStream();
             in = new InputStreamReader(is);
             input = new BufferedReader(in);
-            output = new DataOutputStream(socket.getOutputStream());
+            output = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,6 +46,15 @@ public class ClientHandler implements  Runnable{
     public void sendMessage(String message){
         try {
             output.write(message.getBytes(StandardCharsets.UTF_8));
+            output.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessage(MessageInterface message) {
+        try{
+            output.writeObject(message);
             output.flush();
         } catch (IOException e) {
             e.printStackTrace();

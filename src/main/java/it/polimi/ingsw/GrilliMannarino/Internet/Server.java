@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.Internet;
 
 import it.polimi.ingsw.GrilliMannarino.Game;
+import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -146,6 +147,10 @@ public class Server {
         for (Integer c : handlerList.keySet()){
             handlerList.get(c).sendMessage(message);
         }
+    }
+
+    public void sendMessageTo(Integer playerId, MessageInterface message){
+        handlerList.get(playerId).sendMessage(message);
     }
 
 }

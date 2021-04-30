@@ -40,7 +40,7 @@ public class Game {
         }
     }
 
-    private Player getActivePlayer(){
+    public Player getActivePlayer(){
         int p = playerID.get(countPlayer % playerID.size());
         return player.getOrDefault(p, null);
     }
@@ -80,6 +80,13 @@ public class Game {
         return marbleMarket.getMarbleBoard();
     }
 
+    public Marble displayMarbleOut(){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return activeBoard.getMarbleOut();
+    }
+
     public ArrayList<MarbleOption> selectMarbleColumn(int column){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
@@ -97,8 +104,11 @@ public class Game {
     public boolean placeResource(Row row, Resource resource){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
-
-        return activeBoard.setResourcesFromMarket(row, resource, 1).isEmpty();
+        if(activeBoard.canSetResourcesFromMarket(row, resource, 1)){
+            activeBoard.setResourcesFromMarket(row, resource, 1);
+            return true;
+        }
+        return false;
     }
 
     public ArrayList<Resource> transformMarble(ArrayList<Marble> marbleList){
@@ -128,6 +138,11 @@ public class Game {
         Board activeBoard = board.get(activePlayer.getID());
 
         return activeBoard.getPoints();
+    }
+
+
+    public Integer getGameId() {
+        return gameId;
     }
 
 

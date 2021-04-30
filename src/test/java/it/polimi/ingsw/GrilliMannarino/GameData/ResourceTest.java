@@ -12,4 +12,5 @@ public class ResourceTest {
     Marble test1 = Marble.PURPLE;
     assertEquals(test1,test2);
   }
+
 }
