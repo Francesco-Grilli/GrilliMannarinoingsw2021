@@ -32,6 +32,7 @@ public class Game {
     }
 
 
+
     public synchronized void setPlayer(Integer playerId, String nickName) {
         if(player.size()<4 && !player.containsKey(playerId) && !board.containsKey(playerId)){
             player.put(playerId, new Player(nickName, playerId));
@@ -39,6 +40,8 @@ public class Game {
             board.put(playerId, new Board(player.get(playerId), cardMarket, marbleMarket));
         }
     }
+
+
 
     public Player getActivePlayer(){
         int p = playerID.get(countPlayer % playerID.size());
@@ -52,7 +55,7 @@ public class Game {
 
     //METHOD TO BUY CREATION CARD
 
-    public HashMap<Faction, HashMap<Integer, CreationCard>> displayCreationCard(){
+    public HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard, Boolean>>> displayCreationCard(){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
 
@@ -63,12 +66,7 @@ public class Game {
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
 
-        if(activeBoard.canBuyCard(card)){
-            activeBoard.getCardFromMarket(card);
-            return true;
-        }
-        else
-            return false;
+        return activeBoard.getCardFromMarket(card) != null;
     }
 
     //METHOD TO GET TO THE MARBLE MARKET
@@ -126,6 +124,13 @@ public class Game {
             return false;
     }
 
+    public HashMap<Integer, CreationCard> displayCardInProductionLine(){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return activeBoard.showCardInProductionLine();
+    }
+
     public int getAllPoints(){
         Player activePlayer = getActivePlayer();
         Board activeBoard = board.get(activePlayer.getID());
@@ -136,6 +141,26 @@ public class Game {
 
     public Integer getGameId() {
         return gameId;
+    }
+
+    //METHOD TO WORK WITH LEADERCARDS
+
+    public boolean activateLeaderCard(int cardCode){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return activeBoard.activateLeaderCard(cardCode);
+    }
+
+    public boolean hasActiveLeaderCard(){
+        Player activePlayer = getActivePlayer();
+        Board activeBoard = board.get(activePlayer.getID());
+
+        return !activeBoard.getActiveLeaderCards().isEmpty();
+    }
+
+    public ArrayList<Integer> getPlayerID() {
+        return playerID;
     }
 
 

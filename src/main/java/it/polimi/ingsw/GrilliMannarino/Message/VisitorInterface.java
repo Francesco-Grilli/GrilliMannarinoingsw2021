@@ -10,6 +10,6 @@ public interface VisitorInterface {
     void executeBuyProduction(BuyProductionMessage buyProduction);
     void executeProduction(ProductionMessage productionMessage);
     void executeEndGame(EndGameMessage endGame);
-    void executeTurn(TurnMessage turn);
+    void executeTurnPlayer(TurnMessage turn);
 
 }

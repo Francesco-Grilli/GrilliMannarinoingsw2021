@@ -33,6 +33,12 @@ public class Board {
     this.activeLeaderCards = new ArrayList<>();
   }
 
+  //METHOD TO PRODUCTIONLINE
+
+  public HashMap<Integer, CreationCard> showCardInProductionLine(){
+    return productionLine.getCards();
+  }
+
   //METHOD TO GET/BUY CARD
   public HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard,Boolean>>> getBuyableCard(){
     HashMap<Faction, HashMap<Integer, CreationCard>> t = cardMarket.getCards();
@@ -69,6 +75,7 @@ public class Board {
       resourceManager.setResourcesFromProduction(getOutputOfConfiguration(cards));
     }
   }
+
 
   public Marble[][] getMarblesFromMarket(){
     return this.marbleMarket.getMarbleBoard();

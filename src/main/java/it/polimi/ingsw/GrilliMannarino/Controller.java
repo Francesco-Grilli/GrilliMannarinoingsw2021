@@ -6,8 +6,10 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Internet.Server;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Controller implements VisitorInterface {
 
@@ -16,10 +18,63 @@ public class Controller implements VisitorInterface {
     private Server server;
     private HashMap<Integer, Game> games;
     private Game game;
+    private boolean leaderCardAction = true;
+    private boolean normalAction = true;
+    private boolean endGame = true;
 
     public Controller(){
         server = new Server();
         game = new Game();
+    }
+
+    public void startController(){
+
+        server.getMessageFrom(game.getActivePlayer().getID()).execute(this); //get startGame message
+
+        do{
+
+            do{
+
+                server.getMessageFrom(game.getActivePlayer().getID()).execute(this);
+
+            }while(playerCanStillPlay());
+
+            nextTurn();
+
+        }while(endGame);
+
+
+    }
+
+    private void nextTurn(){
+        TurnMessage message = new TurnMessage(game.getActivePlayer().getID());
+        server.sendMessageTo(game.getActivePlayer().getID(), message);
+
+        leaderCardAction = true;
+        normalAction = true;
+        game.turnExecution();
+
+
+        TurnMessage nextPlayer = new TurnMessage(game.getActivePlayer().getID());
+        server.sendMessageTo(game.getActivePlayer().getID(), nextPlayer);
+    }
+
+    private boolean playerCanStillPlay(){
+        if(normalAction){
+            return true;
+        }
+        else{
+            if(game.hasActiveLeaderCard() && leaderCardAction)
+                return true;
+            else
+                return false;
+        }
+    }
+
+
+    private void startGamePlayer(){
+        ArrayList<Integer> player = new ArrayList<>(game.getPlayerID());
+        player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(p, player.size(), game.getGameId())));
     }
 
     @Override
@@ -34,11 +89,27 @@ public class Controller implements VisitorInterface {
 
     @Override
     public void executeStartGame(StartGameMessage startGame) {
-
+        startGamePlayer();
     }
 
     @Override
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
+        if(!leaderCard.isSellingCard()){
+            if(!leaderCard.isCanActivate()){
+                server.sendMessageTo(leaderCard.getPlayerId(), new LeaderCardMessage(leaderCard.getPlayerId()));
+                return;
+            }
+            //code to activate leaderCard
+
+            LeaderCardMessage message = new LeaderCardMessage(leaderCard.getPlayerId());
+            if (game.activateLeaderCard(leaderCard.getCardCode())) {
+                message.setActivationSellingCorrect(true);
+            }
+            server.sendMessageTo(leaderCard.getPlayerId(), message);
+            return;
+        }
+        //code for selling the leaderCard
+
 
     }
 
@@ -96,10 +167,10 @@ public class Controller implements VisitorInterface {
             }
 
             ArrayList<ArrayList<String>> marbleList = new ArrayList<>();
-            for(int x=0; x<marbles.size(); x++){
-                ArrayList<Marble> tempArray = new ArrayList<>(marbles.get(x).getMarbles());
+            for (MarbleOption marble : marbles) {
+                ArrayList<Marble> tempArray = new ArrayList<>(marble.getMarbles());
                 ArrayList<String> tempArrayString = new ArrayList<>();
-                for(Marble m : tempArray){
+                for (Marble m : tempArray) {
                     tempArrayString.add(m.toString());
                 }
                 marbleList.add(tempArrayString);
@@ -143,11 +214,49 @@ public class Controller implements VisitorInterface {
 
         }
         //code to display cards to the client
-        //NEED HASHMAP<INTEGER, BOOLEAN> CARDS METHOD
+        HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard, Boolean>>> cards = game.displayCreationCard();
+        HashMap<Integer, Boolean> returnedCards = new HashMap<>();
+        for(Faction fac : cards.keySet()){
+            for(Integer cardCode : cards.get(fac).keySet()){
+                returnedCards.put(cardCode, cards.get(fac).get(cardCode).getValue());
+            }
+        }
+        BuyProductionMessage message = new BuyProductionMessage(buyProduction.getPlayerId());
+        message.setDisplayCard(true);
+        message.setBuyableCard(returnedCards);
+        server.sendMessageTo(buyProduction.getPlayerId(), message);
+        return;
     }
 
     @Override
     public void executeProduction(ProductionMessage productionMessage) {
+        if(game.getActivePlayer().getID()!=productionMessage.getPlayerId())
+            return;
+
+        if(!productionMessage.isDisplayCard()){
+            if(!productionMessage.isSelectCard()){
+                ProductionMessage message = new ProductionMessage(productionMessage.getPlayerId());
+                server.sendMessageTo(productionMessage.getPlayerId(), message);
+                return;
+            }
+            //code to produce with selected card
+            ProductionMessage message = new ProductionMessage(productionMessage.getPlayerId());
+            /*if(game.startProduction(productionMessage.getSelectedCard())){
+                message.setProductionCorrect(true);
+            }*/
+            server.sendMessageTo(productionMessage.getPlayerId(), message);
+            return;
+        }
+        //code to display card into production to the client
+        HashMap<Integer, CreationCard> cards = game.displayCardInProductionLine();
+        ArrayList<Integer> cardList = new ArrayList<>();
+        for(Integer i : cards.keySet())
+            cardList.add(i);
+        ProductionMessage message = new ProductionMessage(productionMessage.getPlayerId());
+        message.setDisplayCard(true);
+        message.setProductionCard(cardList);
+        server.sendMessageTo(productionMessage.getPlayerId(), message);
+        return;
 
     }
 
@@ -157,7 +266,8 @@ public class Controller implements VisitorInterface {
     }
 
     @Override
-    public void executeTurn(TurnMessage turn) {
-
+    public void executeTurnPlayer(TurnMessage turn) {
+        leaderCardAction = false;
+        normalAction = false;
     }
 }

@@ -153,4 +153,7 @@ public class Server {
         handlerList.get(playerId).sendMessage(message);
     }
 
+    public MessageInterface getMessageFrom(Integer playerId) {
+
+    }
 }
