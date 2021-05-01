@@ -128,6 +128,10 @@ public class Board {
     return true;
   }
 
+  public CreationCard getCardFromCode(int cardCode){
+    return cardMarket.getCardFromCode(cardCode);
+  }
+
   public boolean canAddCard(int pos, CreationCard card){
     return productionLine.canAddCArd(pos, card);
   }

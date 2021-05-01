@@ -35,6 +35,11 @@ public class CardMarketLeaderCardDiscount extends CardMarketLeaderCard implement
   }
 
   @Override
+  public CreationCard getCardFromCode(int cardCode) {
+    return getCardMarket().getCardFromCode(cardCode);
+  }
+
+  @Override
   public void execute(Board board) {
     setCardMarket(board.getCardMarket());
     board.setCardMarket(this);
