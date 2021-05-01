@@ -56,6 +56,11 @@ public class CardMarket implements CardMarketBoardInterface {
     }
   }
 
+  @Override
+  public CreationCard getCardFromCode(int cardCode) {
+    return cardsInGame.get(cardCode);
+  }
+
   private void loadCards(){
     JSONParser jsonParser = new JSONParser();
 

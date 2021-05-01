@@ -18,6 +18,11 @@ public class ProductionLineLeaderCardResourceFaith extends ProductionLineLeaderC
   }
 
   @Override
+  public boolean canAddCArd(int pos, CreationCard card) {
+    return getProductionLine().canAddCArd(pos, card);
+  }
+
+  @Override
   public HashMap<Integer, CreationCard> getCards() {
     HashMap<Integer, CreationCard> temp = getProductionLine().getCards();
     if(temp.get(getProductionLine().getNextFreeSlot()) == null){

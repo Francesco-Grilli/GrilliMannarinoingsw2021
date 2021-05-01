@@ -136,6 +136,21 @@ public class Board {
     return true;
   }
 
+  public CreationCard getCardFromCode(int cardCode){
+    return cardMarket.getCardFromCode(cardCode);
+  }
+
+  public boolean canAddCard(int pos, CreationCard card){
+    return productionLine.canAddCArd(pos, card);
+  }
+
+  public boolean addCard(int pos, CreationCard card){
+    if(canAddCard(pos,card)){
+      return productionLine.addCard(pos,card);
+    }
+    return false;
+  }
+
   private int getLeaderCardsPoints(){
     return this.activeLeaderCards.stream().map(t -> this.boardLeaderCards.get(t).getValue()).reduce(0,Integer::sum);
   }
