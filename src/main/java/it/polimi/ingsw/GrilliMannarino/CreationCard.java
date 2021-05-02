@@ -2,6 +2,8 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -56,4 +58,17 @@ public class CreationCard implements CreationCardGroup {
     public boolean canAdd(CreationCard card){return false;}
     public boolean addCard(CreationCard card){return false;}
     public CreationCard getCard() {return new CreationCard(this.getCardCode(),this.getCardLevel(),this.getValue(),this.getFaction(),this.getPrice(),this.getInput(),this.getOutput());}
+
+    @Override
+    public JSONObject getStatus() {
+        JSONObject status = new JSONObject();
+        JSONArray cards = new JSONArray();
+        JSONObject card = new JSONObject();
+        card.put("position", 0);
+        card.put("card_code", cardCode);
+        cards.add(card);
+        status.put("cards", cards);
+        status.put("top_card", cardCode);
+        return status;
+    }
 }

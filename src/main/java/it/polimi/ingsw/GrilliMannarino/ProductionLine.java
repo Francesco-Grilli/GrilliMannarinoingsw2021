@@ -2,6 +2,8 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,4 +69,24 @@ public class ProductionLine implements ProductionLineBoardInterface{
         return allUsedCards().stream().map(CreationCard::getValue).reduce(0, Integer::sum);
     }
 
+    public JSONObject getStatus(){
+        JSONObject status = new JSONObject();
+        JSONArray cards = new JSONArray();
+        this.productionCards.forEach((key,value)->{
+            JSONObject card = new JSONObject();
+            card.put("code", key.toString());
+            cards.add(card);
+        });
+        JSONArray stacks = new JSONArray();
+        this.activeCards.forEach((key,value)->{
+            JSONObject stack = new JSONObject();
+            stack.put("stack_number",key.toString());
+            stack.put("stack_value", value.getStatus());
+            stacks.add(stack);
+        });
+        status.put("raw_cards",cards);
+        status.put("stacks", stacks);
+        status.put("number_of_slots",maxProductionSlots);
+        return status;
+    }
 }

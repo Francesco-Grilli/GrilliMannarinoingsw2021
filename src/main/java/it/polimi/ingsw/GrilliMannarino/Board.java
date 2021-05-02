@@ -4,6 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONObject;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -308,5 +309,11 @@ public class Board {
 
   public ArrayList<Integer> getLeaderCards(){
     return new ArrayList<>(this.boardLeaderCards.keySet());
+  }
+
+  public JSONObject getStatus(){
+    JSONObject status = new JSONObject();
+    {}
+    return status;
   }
 }
