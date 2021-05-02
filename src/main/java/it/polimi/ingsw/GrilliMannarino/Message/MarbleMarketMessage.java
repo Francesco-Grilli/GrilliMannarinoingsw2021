@@ -48,7 +48,7 @@ public class MarbleMarketMessage implements MessageInterface, Serializable {
         return addedResource;
     }
 
-    public Integer getPalyerID() {
+    public Integer getPlayerId() {
         return palyerID;
     }
 

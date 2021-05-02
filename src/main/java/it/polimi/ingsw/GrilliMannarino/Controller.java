@@ -16,9 +16,6 @@ public class Controller implements VisitorInterface {
     private Server server;
     private HashMap<Integer, Game> activeGames;
     private Game game;
-    private boolean leaderCardAction = true;
-    private boolean normalAction = true;
-    private boolean endGame = true;
 
     public Controller(){
         server = new Server();
@@ -44,7 +41,7 @@ public class Controller implements VisitorInterface {
 
             nextTurn();
 
-        }while(endGame);
+        }while(game.isEndGame());
 
 
     }
@@ -53,8 +50,8 @@ public class Controller implements VisitorInterface {
         TurnMessage message = new TurnMessage(game.getActivePlayer().getID());
         server.sendMessageTo(game.getActivePlayer().getID(), message);
 
-        leaderCardAction = true;
-        normalAction = true;
+        game.setLeaderCardAction(true);
+        game.setNormalAction(true);
         game.turnExecution();
 
 
@@ -63,14 +60,11 @@ public class Controller implements VisitorInterface {
     }
 
     private boolean playerCanStillPlay(){
-        if(normalAction){
+        if(game.isNormalAction()){
             return true;
         }
         else{
-            if(game.hasActiveLeaderCard() && leaderCardAction)
-                return true;
-            else
-                return false;
+            return game.hasActiveLeaderCard() && game.isLeaderCardAction();
         }
     }
 
@@ -97,6 +91,16 @@ public class Controller implements VisitorInterface {
 
     @Override
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
+
+        if ((game.getActivePlayer().getID() != leaderCard.getPlayerId())) {
+            return;
+            //should run exception??
+        }
+        if(!game.isLeaderCardAction()){
+            sendErrorMessage("No Leader Card action left!");
+            return;
+        }
+
         if(!leaderCard.isSellingCard()){
             if(!leaderCard.isCanActivate()){
                 server.sendMessageTo(leaderCard.getPlayerId(), new LeaderCardMessage(leaderCard.getPlayerId(), game.getGameId()));
@@ -140,9 +144,13 @@ public class Controller implements VisitorInterface {
     @Override
     public void executeBuyMarket(MarbleMarketMessage buyMarket) {
 
-        if (!(game.getActivePlayer().getID() == buyMarket.getPalyerID())) {
+        if ((game.getActivePlayer().getID() != buyMarket.getPlayerId())) {
             return;
             //should run exception??
+        }
+        if(!game.isNormalAction()){
+            sendErrorMessage("No normal action left!");
+            return;
         }
 
         if(!buyMarket.isDisplayMarbleMarket()){
@@ -150,8 +158,8 @@ public class Controller implements VisitorInterface {
                 if(!buyMarket.isAddedResource()){
                     //should not enter here
 
-                    MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPalyerID());
-                    server.sendMessageTo(buyMarket.getPalyerID(), message);
+                    MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPlayerId());
+                    server.sendMessageTo(buyMarket.getPlayerId(), message);
                     return;
                 }
                 //code to add one resource at a time
@@ -160,22 +168,22 @@ public class Controller implements VisitorInterface {
                     Marble res = Marble.valueOf(buyMarket.getMarbleType());
                     Row row = Row.valueOf(buyMarket.getInsertRow());
                     if(game.placeResource(row, Marble.getResource(res))){
-                        MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPalyerID());
+                        MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPlayerId());
                         message.setAddResourceCorrect(true);
                         message.setAddedResource(true);
-                        server.sendMessageTo(buyMarket.getPalyerID(), message);
+                        server.sendMessageTo(buyMarket.getPlayerId(), message);
                     }
                     else{
-                        MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPalyerID());
+                        MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPlayerId());
                         message.setAddedResource(true);
-                        server.sendMessageTo(buyMarket.getPalyerID(), message);
+                        server.sendMessageTo(buyMarket.getPlayerId(), message);
                     }
                     return;
                 }
                 catch(IllegalArgumentException e){
                     e.printStackTrace();
-                    MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPalyerID());
-                    server.sendMessageTo(buyMarket.getPalyerID(), message);
+                    MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPlayerId());
+                    server.sendMessageTo(buyMarket.getPlayerId(), message);
                     return;
                 }
 
@@ -199,10 +207,10 @@ public class Controller implements VisitorInterface {
                 }
                 marbleList.add(tempArrayString);
             }
-            MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPalyerID());
+            MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPlayerId());
             message.setDisplayMarblesReturned(true);
             message.setReturnedMarble(marbleList);
-            server.sendMessageTo(buyMarket.getPalyerID(), message);
+            server.sendMessageTo(buyMarket.getPlayerId(), message);
             return;
 
         }
@@ -215,11 +223,11 @@ public class Controller implements VisitorInterface {
                 marbleString[x][y] = marbles[x][y].toString();
             }
         }
-        MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPalyerID());
+        MarbleMarketMessage message = new MarbleMarketMessage(buyMarket.getPlayerId());
         message.setMarbleList(marbleString);
         message.setDisplayMarbleMarket(true);
         message.setMarbleOut(game.displayMarbleOut().toString());
-        server.sendMessageTo(buyMarket.getPalyerID(), message);
+        server.sendMessageTo(buyMarket.getPlayerId(), message);
         return;
     }
 
@@ -227,6 +235,11 @@ public class Controller implements VisitorInterface {
     public void executeBuyProduction(BuyProductionMessage buyProduction){
         if(game.getActivePlayer().getID()!=buyProduction.getPlayerId())
             return;
+
+        if(!game.isNormalAction()){
+            sendErrorMessage("No normal action left!");
+            return;
+        }
 
         if(!buyProduction.isDisplayCard()){
             if(!buyProduction.isSelectCard()){
@@ -244,8 +257,11 @@ public class Controller implements VisitorInterface {
             BuyProductionMessage message = new BuyProductionMessage(buyProduction.getPlayerId());
             message.setSelectCard(true);
             if(game.buyCreationCard(card, cardPosition)){
+                game.setNormalAction(false);
                 message.setPlaceCardCorrect(true);
             }
+            server.sendMessageTo(buyProduction.getPlayerId(), message);
+            return;
 
         }
         //code to display cards to the client
@@ -267,6 +283,11 @@ public class Controller implements VisitorInterface {
     public void executeProduction(ProductionMessage productionMessage) {
         if(game.getActivePlayer().getID()!=productionMessage.getPlayerId())
             return;
+        if(!game.isNormalAction()){
+            sendErrorMessage("No normal action left!");
+            return;
+        }
+
 
         if(!productionMessage.isDisplayCard()){
             if(!productionMessage.isSelectCard()){
@@ -283,6 +304,7 @@ public class Controller implements VisitorInterface {
                 cardList.add(game.getCardFromCode(i));
             }
             if(game.startProduction(cardList)){
+                game.setNormalAction(false);    //completed a normal action
                 message.setProductionCorrect(true);
             }
             server.sendMessageTo(productionMessage.getPlayerId(), message);
@@ -291,8 +313,7 @@ public class Controller implements VisitorInterface {
         //code to display card into production to the client
         HashMap<Integer, CreationCard> cards = game.displayCardInProductionLine();
         ArrayList<Integer> cardList = new ArrayList<>();
-        for(Integer i : cards.keySet())
-            cardList.add(i);
+        cardList.addAll(cards.keySet());
         ProductionMessage message = new ProductionMessage(productionMessage.getPlayerId());
         message.setDisplayCard(true);
         message.setProductionCard(cardList);
@@ -308,8 +329,8 @@ public class Controller implements VisitorInterface {
 
     @Override
     public void executeTurnPlayer(TurnMessage turn) {
-        leaderCardAction = false;
-        normalAction = false;
+        game.setNormalAction(false);
+        game.setLeaderCardAction(false);
     }
 
     @Override
@@ -322,5 +343,11 @@ public class Controller implements VisitorInterface {
     @Override
     public void executePopeLine(PopeLineMessage popeLineMessage) {
 
+    }
+
+    private void sendErrorMessage(String error){
+        ErrorMessage message = new ErrorMessage(game.getActivePlayer().getID(), game.getGameId());
+        message.setError(error);
+        server.sendMessageTo(message.getPlayerId(), message);
     }
 }

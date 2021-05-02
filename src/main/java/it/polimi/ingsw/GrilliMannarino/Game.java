@@ -25,6 +25,10 @@ public class Game {
     private CardMarketBoardInterface cardMarket;
     private MarbleMarketBoardInterface marbleMarket;
 
+    private boolean leaderCardAction = true;
+    private boolean normalAction = true;
+    private boolean endGame = true;
+
     public Game(){
         gameId = (int) (Math.random()*1000)+1;
         player = new ConcurrentHashMap<>();
@@ -171,7 +175,7 @@ public class Game {
         boolean[] arr = PopeLine.getFaithChecks();
         int checkPosition;
         for(checkPosition=0; checkPosition<arr.length; checkPosition++){
-            if(arr[checkPosition]==true)
+            if(arr[checkPosition])
                 checkPosition++;
         }
         return checkPosition-1;   //if check position is -1 means no favor has been ever activate
@@ -185,4 +189,27 @@ public class Game {
         return activeBoard;
     }
 
+    public boolean isLeaderCardAction() {
+        return leaderCardAction;
+    }
+
+    public void setLeaderCardAction(boolean leaderCardAction) {
+        this.leaderCardAction = leaderCardAction;
+    }
+
+    public boolean isNormalAction() {
+        return normalAction;
+    }
+
+    public void setNormalAction(boolean normalAction) {
+        this.normalAction = normalAction;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public void setEndGame(boolean endGame) {
+        this.endGame = endGame;
+    }
 }
