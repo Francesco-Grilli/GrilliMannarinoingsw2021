@@ -4,9 +4,20 @@ import java.util.ArrayList;
 
 public class ProductionMessage implements MessageInterface{
 
+    /**
+     * displayCard is set to true by the client if it wants to see the card in the productionLine to produce
+     * is set true by the server to let the client understand that the field productionCard contains all the
+     * creation card that can be selected
+     */
     private ArrayList<Integer> productionCard;
     private boolean displayCard = false;
 
+    /**
+     * selectCard is set true by the client to let the server understand that the field selectedCard contains the
+     * card that has been selected by the client to produce
+     * selectCard is set to true by the server and check if the configuration in selectedCard can produce, if it is
+     * correct put productionCorrect to true
+     */
     private ArrayList<Integer> selectedCard;
     private boolean selectCard = false;
     private boolean productionCorrect = false;

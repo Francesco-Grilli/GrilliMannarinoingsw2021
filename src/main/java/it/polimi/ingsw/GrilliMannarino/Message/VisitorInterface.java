@@ -11,5 +11,7 @@ public interface VisitorInterface {
     void executeProduction(ProductionMessage productionMessage);
     void executeEndGame(EndGameMessage endGame);
     void executeTurnPlayer(TurnMessage turn);
+    void executeErrorMessage(ErrorMessage error);
+    void executePopeLine(PopeLineMessage popeLineMessage);
 
 }

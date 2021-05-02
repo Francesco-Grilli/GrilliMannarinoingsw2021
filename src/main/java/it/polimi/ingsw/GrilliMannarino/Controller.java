@@ -5,8 +5,6 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Internet.Server;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +14,7 @@ public class Controller implements VisitorInterface {
     //implements all method needed to communicate with client
 
     private Server server;
-    private HashMap<Integer, Game> games;
+    private HashMap<Integer, Game> activeGames;
     private Game game;
     private boolean leaderCardAction = true;
     private boolean normalAction = true;
@@ -35,7 +33,12 @@ public class Controller implements VisitorInterface {
 
             do{
 
-                server.getMessageFrom(game.getActivePlayer().getID()).execute(this);
+                try{
+                    server.getMessageFrom(game.getActivePlayer().getID()).execute(this);
+                }
+                catch (NullPointerException e){
+                    executeErrorMessage(new ErrorMessage(game.getActivePlayer().getID(), game.getGameId()));
+                }
 
             }while(playerCanStillPlay());
 
@@ -96,12 +99,12 @@ public class Controller implements VisitorInterface {
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
         if(!leaderCard.isSellingCard()){
             if(!leaderCard.isCanActivate()){
-                server.sendMessageTo(leaderCard.getPlayerId(), new LeaderCardMessage(leaderCard.getPlayerId()));
+                server.sendMessageTo(leaderCard.getPlayerId(), new LeaderCardMessage(leaderCard.getPlayerId(), game.getGameId()));
                 return;
             }
             //code to activate leaderCard
 
-            LeaderCardMessage message = new LeaderCardMessage(leaderCard.getPlayerId());
+            LeaderCardMessage message = new LeaderCardMessage(leaderCard.getPlayerId(), game.getGameId());
             if (game.activateLeaderCard(leaderCard.getCardCode())) {
                 message.setActivationSellingCorrect(true);
             }
@@ -110,7 +113,28 @@ public class Controller implements VisitorInterface {
         }
         //code for selling the leaderCard
 
+        LeaderCardMessage message = new LeaderCardMessage(leaderCard.getPlayerId(), game.getGameId());
+        message.setSellingCard(true);
+        if(game.canSellLeaderCard(leaderCard.getCardCode())){
+            message.setActivationSellingCorrect(true);
+            if(game.sellLeaderCard(leaderCard.getCardCode())){
+                updatePopeLine(game);
+            }
+        }
+        server.sendMessageTo(leaderCard.getPlayerId(), message);
+        return;
 
+    }
+
+    private void updatePopeLine(Game game){
+        HashMap<Integer, Boolean> check = game.checkPopeLine();
+        Integer popePosition = game.getPopeLinePosition();
+        for(Integer playerId : check.keySet()){
+            PopeLineMessage message = new PopeLineMessage(playerId, game.getGameId());
+            message.setCheckPopeLine(check.get(playerId));
+            message.setCheckPosition(popePosition);
+            server.sendMessageTo(playerId, message);
+        }
     }
 
     @Override
@@ -200,7 +224,7 @@ public class Controller implements VisitorInterface {
     }
 
     @Override
-    public void executeBuyProduction(BuyProductionMessage buyProduction) {
+    public void executeBuyProduction(BuyProductionMessage buyProduction){
         if(game.getActivePlayer().getID()!=buyProduction.getPlayerId())
             return;
 
@@ -211,6 +235,17 @@ public class Controller implements VisitorInterface {
             }
             //code to buy production card from market and put into productionLine
 
+            Integer cardCode = buyProduction.getSelectedCard();
+            Integer cardPosition = buyProduction.getPositionCard();
+            CreationCard card = game.getCardFromCode(cardCode);
+            if(card==null) {
+                throw new NullPointerException();
+            }
+            BuyProductionMessage message = new BuyProductionMessage(buyProduction.getPlayerId());
+            message.setSelectCard(true);
+            if(game.buyCreationCard(card, cardPosition)){
+                message.setPlaceCardCorrect(true);
+            }
 
         }
         //code to display cards to the client
@@ -241,9 +276,15 @@ public class Controller implements VisitorInterface {
             }
             //code to produce with selected card
             ProductionMessage message = new ProductionMessage(productionMessage.getPlayerId());
-            /*if(game.startProduction(productionMessage.getSelectedCard())){
+            message.setSelectCard(true);
+            ArrayList<CreationCard> cardList = new ArrayList<>();
+            ArrayList<Integer> cardStringList = new ArrayList<>(productionMessage.getSelectedCard());
+            for(Integer i : cardStringList){
+                cardList.add(game.getCardFromCode(i));
+            }
+            if(game.startProduction(cardList)){
                 message.setProductionCorrect(true);
-            }*/
+            }
             server.sendMessageTo(productionMessage.getPlayerId(), message);
             return;
         }
@@ -269,5 +310,17 @@ public class Controller implements VisitorInterface {
     public void executeTurnPlayer(TurnMessage turn) {
         leaderCardAction = false;
         normalAction = false;
+    }
+
+    @Override
+    public void executeErrorMessage(ErrorMessage error) {
+        ErrorMessage message = new ErrorMessage(error.getPlayerId(), error.getGameId());
+        server.sendMessageTo(error.getPlayerId(), message);
+        return;
+    }
+
+    @Override
+    public void executePopeLine(PopeLineMessage popeLineMessage) {
+
     }
 }

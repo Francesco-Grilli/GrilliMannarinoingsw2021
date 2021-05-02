@@ -4,12 +4,22 @@ import java.util.HashMap;
 
 public class BuyProductionMessage implements MessageInterface{
 
-    private boolean displayCard = false;    //client set true if want to see card
+    /**
+     *displayCard is set to true by the client if he wants to see the creation card that can buy,
+     * the server set it to true to let the client know that the field buyableCard there are the creationCard
+     */
+    private boolean displayCard = false;
     private HashMap<Integer, Boolean> buyableCard;
 
-    private boolean selectCard = false;     //client set true if selected a card to buy
+    /**
+     * selectCard is set to true by the client if want to buy a creationCard. In selectedCard there is the code of a
+     * creationCard and in the positionCard there is the position he wants to put the card into Productionline
+     * the server set selectCard to true to let the client check if placeCardCorrect is true, the buy was correct, or
+     * false if it failed
+     */
+    private boolean selectCard = false;
     private Integer selectedCard;
-    private boolean placeCardCorrect = false;  //server set true if card is added correcty to productionLine
+    private boolean placeCardCorrect = false;
     private Integer positionCard;
 
     private Integer playerId;

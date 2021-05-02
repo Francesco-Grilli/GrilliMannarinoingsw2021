@@ -1,6 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class LeaderCardMessage implements MessageInterface{
+public class LeaderCardMessage extends Message implements MessageInterface{
 
     private boolean canActivate = false;
     private boolean sellingCard = false;
@@ -9,7 +9,8 @@ public class LeaderCardMessage implements MessageInterface{
 
     private Integer playerId;
 
-    public LeaderCardMessage(Integer playerId) {
+    public LeaderCardMessage(Integer playerId, Integer gameId) {
+        super(gameId, playerId);
         this.playerId = playerId;
     }
 

@@ -13,9 +13,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Game {
 
     final private Integer gameId;
-    private Map<Integer, Player> player;    //map or arrayList?  synchronized
+    private Map<Integer, Player> player;
     private ArrayList<Integer> playerID;
     private Map<Integer, Board> board;
+
+    private Player activePlayer;
+    private Board activeBoard;
 
     private int countPlayer = 0;
 
@@ -43,65 +46,58 @@ public class Game {
 
 
 
-    public Player getActivePlayer(){
+    public void setActivePlayer(){
         int p = playerID.get(countPlayer % playerID.size());
-        return player.getOrDefault(p, null);
+        activePlayer =  player.getOrDefault(p, null);
+    }
+
+    public void setActiveBoard(){
+        activeBoard = board.get(activePlayer.getID());
     }
 
     public void turnExecution(){
         countPlayer++;
+        setActivePlayer();
+        setActiveBoard();
     }
 
 
     //METHOD TO BUY CREATION CARD
 
     public HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard, Boolean>>> displayCreationCard(){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return activeBoard.getBuyableCard();
     }
 
-    public boolean buyCreationCard(CreationCard card){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
+    public boolean buyCreationCard(CreationCard card, Integer cardPosition){
+        if(activeBoard.canAddCard(cardPosition, card)){
+            if(activeBoard.getCardFromMarket(card)!=null){
+                activeBoard.addCard(cardPosition, card);
+                return true;
+            }
+        }
 
-        return activeBoard.getCardFromMarket(card) != null;
+        return false;
     }
 
     //METHOD TO GET TO THE MARBLE MARKET
 
     public Marble[][] displayMarbleMarket(){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return marbleMarket.getMarbleBoard();
     }
 
     public Marble displayMarbleOut(){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return activeBoard.getMarbleOut();
     }
 
     public ArrayList<MarbleOption> selectMarbleColumn(int column){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return activeBoard.getColumn(column);
     }
 
     public ArrayList<MarbleOption> selectMarbleRow(int row){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return activeBoard.getRow(row);
     }
 
     public boolean placeResource(Row row, Resource resource){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
         if(activeBoard.canSetResourcesFromMarket(row, resource, 1)){
             activeBoard.setResourcesFromMarket(row, resource, 1);
             return true;
@@ -113,9 +109,6 @@ public class Game {
     //METHOD TO BUY PRODUCE
 
     public boolean startProduction(ArrayList<CreationCard> creationCards){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         if(activeBoard.canProduceWithConfiguration(creationCards)){
             activeBoard.produce(creationCards);
             return true;
@@ -125,16 +118,10 @@ public class Game {
     }
 
     public HashMap<Integer, CreationCard> displayCardInProductionLine(){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return activeBoard.showCardInProductionLine();
     }
 
     public int getAllPoints(){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return activeBoard.getPoints();
     }
 
@@ -143,25 +130,59 @@ public class Game {
         return gameId;
     }
 
+    public CreationCard getCardFromCode(Integer cardCode){
+        return activeBoard.getCardFromCode(cardCode);
+    }
+
     //METHOD TO WORK WITH LEADERCARDS
 
     public boolean activateLeaderCard(int cardCode){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return activeBoard.activateLeaderCard(cardCode);
     }
 
     public boolean hasActiveLeaderCard(){
-        Player activePlayer = getActivePlayer();
-        Board activeBoard = board.get(activePlayer.getID());
-
         return !activeBoard.getActiveLeaderCards().isEmpty();
+    }
+
+    public boolean sellLeaderCard(Integer cardCode){
+        return activeBoard.sellLeaderCard(cardCode);
+    }
+
+    public boolean canSellLeaderCard(Integer cardCode){
+        return activeBoard.getLeaderCards().contains(cardCode);
     }
 
     public ArrayList<Integer> getPlayerID() {
         return playerID;
     }
 
+    public HashMap<Integer, Boolean> checkPopeLine(){
+        HashMap<Integer, Boolean> checkPope = new HashMap<>();
+
+        for(Integer i : board.keySet()){
+            checkPope.put(i, board.get(i).checkPopeFaith());
+        }
+        PopeLine.updateChecks();
+
+        return checkPope;
+    }
+
+    public Integer getPopeLinePosition(){
+        boolean[] arr = PopeLine.getFaithChecks();
+        int checkPosition;
+        for(checkPosition=0; checkPosition<arr.length; checkPosition++){
+            if(arr[checkPosition]==true)
+                checkPosition++;
+        }
+        return checkPosition-1;   //if check position is -1 means no favor has been ever activate
+    }
+
+    public Player getActivePlayer() {
+        return activePlayer;
+    }
+
+    public Board getActiveBoard() {
+        return activeBoard;
+    }
 
 }

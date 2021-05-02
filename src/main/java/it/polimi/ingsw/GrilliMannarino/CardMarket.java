@@ -58,7 +58,10 @@ public class CardMarket implements CardMarketBoardInterface {
 
   @Override
   public CreationCard getCardFromCode(int cardCode) {
-    return cardsInGame.get(cardCode);
+    if(cardsInGame.get(cardCode)!=null){
+      return cardsInGame.get(cardCode).getCard();
+    }
+    return null;
   }
 
   private void loadCards(){
