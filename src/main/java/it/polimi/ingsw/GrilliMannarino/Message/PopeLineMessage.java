@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 public class PopeLineMessage extends Message implements MessageInterface, Serializable {

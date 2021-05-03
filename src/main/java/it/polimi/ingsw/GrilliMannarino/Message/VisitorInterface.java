@@ -6,8 +6,8 @@ public interface VisitorInterface {
     void executeAccount(GuestMessage account);
     void executeStartGame(StartGameMessage startGame);
     void executeLeaderCard(LeaderCardMessage leaderCard);
-    void executeBuyMarket(MarbleMarketMessage buyMarket);
-    void executeBuyProduction(BuyProductionMessage buyProduction);
+    void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage);
+    void executeBuyProduction(BuyProductionCardMessage buyProductionCardMessage);
     void executeProduction(ProductionMessage productionMessage);
     void executeEndGame(EndGameMessage endGame);
     void executeTurnPlayer(TurnMessage turn);

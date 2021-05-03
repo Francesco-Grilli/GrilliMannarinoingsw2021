@@ -4,7 +4,13 @@ import java.io.Serializable;
 
 public class LeaderCardMessage extends Message implements MessageInterface, Serializable {
 
-    private boolean canActivate = false;
+    /**
+     * activateCard and sellingCard is used by the client and the server to activate that action
+     * the server also put true or false the activationSellingCorrect boolean to let the client know if
+     * the action was a success
+     * In the cardCode both server and client put the code of the card witch they operated
+     */
+    private boolean activateCard = false;
     private boolean sellingCard = false;
     private boolean activationSellingCorrect = false;
     private Integer cardCode;
@@ -18,12 +24,12 @@ public class LeaderCardMessage extends Message implements MessageInterface, Seri
         visitor.executeLeaderCard(this);
     }
 
-    public boolean isCanActivate() {
-        return canActivate;
+    public boolean isActivateCard() {
+        return activateCard;
     }
 
-    public void setCanActivate(boolean canActivate) {
-        this.canActivate = canActivate;
+    public void setActivateCard(boolean activateCard) {
+        this.activateCard = activateCard;
     }
 
     public boolean isSellingCard() {

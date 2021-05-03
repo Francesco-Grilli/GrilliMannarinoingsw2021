@@ -1,26 +1,41 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MarbleMarketMessage extends Message implements MessageInterface, Serializable {
 
+    /**
+     * displayMarbleMarket is set true by client to ask the server to see the configuration of marbleMarket
+     * server set displayMarbleMarket true to let client know that marbleList contains the configuration asked
+     */
     private String[][] marbleList;
     private String marbleOut;
     private boolean displayMarbleMarket = false; //client ask to see the MarbleMarket
 
+    /**
+     * client set selectColumnRow to get a line or a row from the marbleMarket
+     * Server set displayMarblesReturned to let client know that in returnedMarble there are the marbles
+     */
     private String columnRow;
     private Integer columnRowValue;
-    private boolean selectColumnRow = false;    //client ask to select a column or a row to get resource
-    private boolean displayMarblesReturned = false; //server set the returnedMarble, client must check this
+    private boolean selectColumnRow = false;
+    private boolean displayMarblesReturned = false;
     private ArrayList<ArrayList<String>> returnedMarble;
 
-    private boolean addedResource = false;  //client ask to add a resource into warehouse and set MarbleType and Row
+    /**
+     * addedResource is used by the client to tell the server that want put a resource into warehouse
+     * addedResource is set true by the server to let client check if the resource war correctly added to warehouse or
+     * not by checking addResourceCorrect
+     */
+    private boolean addedResource = false;
     private String marbleType;
     private String insertRow;
-    private boolean addResourceCorrect = false; //server inform client if the added resource was correctly inserted
+    private boolean addResourceCorrect = false;
 
+    /**
+     * destroyRemaining is set to true by the client if want to destroy the marble remained
+     */
     private boolean destroyRemaining = false;
     private ArrayList<String> returnedResource;
 
@@ -31,7 +46,7 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
 
     @Override
     public void execute(VisitorInterface visitor) {
-        visitor.executeBuyMarket(this);
+        visitor.executeMarbleMarket(this);
     }
 
     public boolean isDisplayMarbleMarket() {
