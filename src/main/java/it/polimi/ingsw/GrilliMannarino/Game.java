@@ -14,17 +14,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Game {
 
     final private Integer gameId;
-    private Map<Integer, Player> player;
-    private ArrayList<Integer> playerID;
-    private Map<Integer, Board> board;
+    private final Map<Integer, Player> player;
+    private final ArrayList<Integer> playerID;
+    private final Map<Integer, Board> board;
 
     private Player activePlayer;
     private Board activeBoard;
 
     private int countPlayer = 0;
 
-    private CardMarketBoardInterface cardMarket;
-    private MarbleMarketBoardInterface marbleMarket;
+    private final CardMarketBoardInterface cardMarket;
+    private final MarbleMarketBoardInterface marbleMarket;
 
     private boolean leaderCardAction = true;
     private boolean normalAction = true;
@@ -165,7 +165,7 @@ public class Game {
         HashMap<Integer, Map.Entry<Integer, Boolean>> checkPope = new HashMap<>();
 
         for(Integer i : board.keySet()){
-            Map.Entry<Integer, Boolean> couple = new AbstractMap.SimpleEntry<Integer, Boolean>(board.get(i).getFaith(), board.get(i).checkPopeFaith());
+            Map.Entry<Integer, Boolean> couple = new AbstractMap.SimpleEntry<>(board.get(i).getFaith(), board.get(i).checkPopeFaith());
             checkPope.put(i, couple);
         }
         PopeLine.updateChecks();

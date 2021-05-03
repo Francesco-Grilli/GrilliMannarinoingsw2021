@@ -129,7 +129,6 @@ public class ServerController implements VisitorInterface {
             }
         }
         server.sendMessageTo(leaderCard.getPlayerId(), message);
-        return;
 
     }
 
@@ -264,7 +263,6 @@ public class ServerController implements VisitorInterface {
         message.setDisplayMarbleMarket(true);
         message.setMarbleOut(game.displayMarbleOut().toString());
         server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
-        return;
     }
 
     @Override
@@ -316,7 +314,6 @@ public class ServerController implements VisitorInterface {
         message.setDisplayCard(true);
         message.setBuyableCard(returnedCards);
         server.sendMessageTo(buyProductionCardMessage.getPlayerId(), message);
-        return;
     }
 
     @Override
@@ -352,13 +349,11 @@ public class ServerController implements VisitorInterface {
         }
         //code to display card into production to the client
         HashMap<Integer, CreationCard> cards = game.displayCardInProductionLine();
-        ArrayList<Integer> cardList = new ArrayList<>();
-        cardList.addAll(cards.keySet());
+        ArrayList<Integer> cardList = new ArrayList<>(cards.keySet());
         ProductionMessage message = new ProductionMessage(productionMessage.getGameId(), productionMessage.getPlayerId());
         message.setDisplayCard(true);
         message.setProductionCard(cardList);
         server.sendMessageTo(productionMessage.getPlayerId(), message);
-        return;
 
     }
 

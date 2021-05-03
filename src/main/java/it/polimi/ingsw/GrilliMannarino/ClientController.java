@@ -44,7 +44,6 @@ public class ClientController implements VisitorInterface {
             view.activateLeaderCard(leaderCard.getCardCode());
         else
             view.sendError("leaderCard has not been activated");
-        return;
     }
 
     @Override
@@ -68,7 +67,6 @@ public class ClientController implements VisitorInterface {
         }
         //code to see the marble
         view.showMarbleMarket(marbleMarketMessage.getMarbleList(), marbleMarketMessage.getMarbleOut());
-        return;
     }
 
     @Override
@@ -87,7 +85,6 @@ public class ClientController implements VisitorInterface {
         }
         //code to display card
         view.showProductionCard(buyProductionCardMessage.getBuyableCard());
-        return;
     }
 
     @Override
@@ -99,7 +96,6 @@ public class ClientController implements VisitorInterface {
         //code to check if the production was successful
         if(!productionMessage.isProductionCorrect())
             view.sendError("Production configuration wasn't correct");
-        return;
     }
 
     @Override
