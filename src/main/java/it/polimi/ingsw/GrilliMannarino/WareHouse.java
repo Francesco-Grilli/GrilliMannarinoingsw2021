@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -195,5 +196,10 @@ public class WareHouse {
      */
     public void removeLine(Row line){
         resources.get(line).clear();
+    }
+
+    public JSONObject getStatus(){
+        JSONObject status = new JSONObject();
+        return status;
     }
 }

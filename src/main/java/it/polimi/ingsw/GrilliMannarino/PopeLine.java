@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 public class PopeLine {
 
     /**
@@ -162,6 +165,20 @@ public class PopeLine {
     public static void reset(){
         for(int i=0; i<3; i++)
             faithChecks[i]=false;
+    }
+
+    public JSONObject getStatus(){
+        JSONObject status = new JSONObject();
+        JSONArray faithStepsJson = new JSONArray();
+        for(int i=0; i<faithSteps.length; i++){
+            JSONObject faithPoint = new JSONObject();
+            faithPoint.put("index",i);
+            faithPoint.put("step", faithSteps[i]);
+            faithStepsJson.add(faithPoint);
+        }
+        status.put("faith", this.faith);
+        status.put("faith_steps", faithStepsJson);
+        return status;
     }
 
 

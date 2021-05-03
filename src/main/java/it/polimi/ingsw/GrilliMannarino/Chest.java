@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -81,6 +83,12 @@ public class Chest {
         }
     }
 
-
+    public JSONObject getStatus(){
+        JSONObject status = new JSONObject();
+        resources.forEach((key,value)->{
+            status.put(key.toString(),value.toString());
+        });
+        return status;
+    }
 
 }

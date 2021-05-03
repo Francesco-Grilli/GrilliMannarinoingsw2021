@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +49,11 @@ public class ProductionLineLeaderCardResourceFaith extends ProductionLineLeaderC
   @Override
   public int getPoints() {
     return getProductionLine().getPoints();
+  }
+
+  @Override
+  public JSONObject getStatus() {
+    return getProductionLine().getStatus();
   }
 
   @Override

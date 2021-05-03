@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,4 +13,5 @@ public interface ProductionLineBoardInterface {
   int getNextFreeSlot();
   ArrayList<CreationCard> allUsedCards();
   int getPoints();
+  JSONObject getStatus();
 }

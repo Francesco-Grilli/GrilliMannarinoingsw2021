@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -34,4 +35,6 @@ public interface ResourceManagerBoardInterface {
     void forceSwapLine(Row one, Row two);
 
     HashMap<Resource, Integer> getResourceLine(Row line);
+
+    JSONObject getStatus();
 }
