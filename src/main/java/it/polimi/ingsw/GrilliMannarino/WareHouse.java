@@ -200,6 +200,9 @@ public class WareHouse {
 
     public JSONObject getStatus(){
         JSONObject status = new JSONObject();
+        resources.forEach((key,value)->{
+            status.put(key.toString(),value.toString());
+        });
         return status;
     }
 }
