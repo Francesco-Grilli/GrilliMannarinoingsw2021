@@ -4,6 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.AbstractMap;
@@ -313,7 +314,23 @@ public class Board {
 
   public JSONObject getStatus(){
     JSONObject status = new JSONObject();
-    {}
+    JSONArray leadercards = new JSONArray();
+    boardLeaderCards.forEach((key,value)->{
+      JSONObject leadercard = new JSONObject();
+      leadercard.put("card",key);
+    });
+    JSONArray activeleadercards = new JSONArray();
+    activeLeaderCards.forEach((key)->{
+      JSONObject leadercard = new JSONObject();
+      leadercard.put("card",key);
+    });
+    status.put("resource_manager",resourceManager.getStatus());
+    status.put("popeline",popeLine.getStatus());
+    status.put("production_line",productionLine.getStatus());
+    status.put("player_id",player.getID());
+    status.put("player_name",player.getName());
+    status.put("leader_cards",leadercards);
+    status.put("active_leader_cards",activeleadercards);
     return status;
   }
 }
