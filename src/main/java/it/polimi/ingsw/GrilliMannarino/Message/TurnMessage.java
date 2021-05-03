@@ -1,13 +1,14 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class TurnMessage implements MessageInterface{
+import java.io.Serializable;
+
+public class TurnMessage extends Message implements MessageInterface, Serializable {
 
     private String playerNickName;
-    private Integer playerId;
     private boolean isMyTurn = false;
 
-    public TurnMessage(Integer playerId) {
-        this.playerId = playerId;
+    public TurnMessage(Integer gameId, Integer playerId) {
+        super(gameId, playerId);
     }
 
     @Override

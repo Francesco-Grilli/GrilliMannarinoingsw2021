@@ -5,6 +5,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -160,15 +161,25 @@ public class Game {
         return playerID;
     }
 
-    public HashMap<Integer, Boolean> checkPopeLine(){
-        HashMap<Integer, Boolean> checkPope = new HashMap<>();
+    public HashMap<Integer, Map.Entry<Integer, Boolean>> checkPopeLine(){
+        HashMap<Integer, Map.Entry<Integer, Boolean>> checkPope = new HashMap<>();
 
         for(Integer i : board.keySet()){
-            checkPope.put(i, board.get(i).checkPopeFaith());
+            Map.Entry<Integer, Boolean> couple = new AbstractMap.SimpleEntry<Integer, Boolean>(board.get(i).getFaith(), board.get(i).checkPopeFaith());
+            checkPope.put(i, couple);
         }
         PopeLine.updateChecks();
 
         return checkPope;
+    }
+
+    public HashMap<Integer, Integer> getPlayersFaith(){
+        HashMap<Integer, Integer> playersFaith = new HashMap<>();
+
+        for(Integer i : board.keySet())
+            playersFaith.put(i, board.get(i).getFaith());
+
+        return playersFaith;
     }
 
     public Integer getPopeLinePosition(){
@@ -211,5 +222,19 @@ public class Game {
 
     public void setEndGame(boolean endGame) {
         this.endGame = endGame;
+    }
+
+    public boolean addFaithExceptThis(Integer playerId, int numberOfResource) {
+        boolean check = false;
+        for(Integer player : board.keySet()){
+            if(!player.equals(playerId)) {
+                for (int i = 0; i < numberOfResource; i++) {
+                    if(board.get(player).addPopeFaith())
+                        check = true;
+                }
+            }
+        }
+
+        return check;
     }
 }

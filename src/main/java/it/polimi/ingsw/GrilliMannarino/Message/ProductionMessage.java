@@ -1,8 +1,9 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ProductionMessage implements MessageInterface{
+public class ProductionMessage extends Message implements MessageInterface, Serializable {
 
     /**
      * displayCard is set to true by the client if it wants to see the card in the productionLine to produce
@@ -22,19 +23,13 @@ public class ProductionMessage implements MessageInterface{
     private boolean selectCard = false;
     private boolean productionCorrect = false;
 
-    private Integer playerId;
-
-    public ProductionMessage(Integer playerId) {
-        this.playerId = playerId;
+    public ProductionMessage(Integer gameId, Integer playerId) {
+        super(gameId, playerId);
     }
 
     @Override
     public void execute(VisitorInterface visitor) {
         visitor.executeProduction(this);
-    }
-
-    public Integer getPlayerId() {
-        return playerId;
     }
 
     public boolean isDisplayCard() {

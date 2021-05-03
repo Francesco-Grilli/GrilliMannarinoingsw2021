@@ -1,10 +1,12 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class ErrorMessage extends Message implements MessageInterface{
+import java.io.Serializable;
+
+public class ErrorMessage extends Message implements MessageInterface, Serializable {
 
     private String error;
 
-    public ErrorMessage(Integer playerId, Integer gameId) {
+    public ErrorMessage(Integer gameId, Integer playerId) {
         super(gameId, playerId);
     }
 

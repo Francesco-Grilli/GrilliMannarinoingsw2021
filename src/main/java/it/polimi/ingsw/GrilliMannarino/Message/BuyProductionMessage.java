@@ -1,8 +1,9 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class BuyProductionMessage implements MessageInterface{
+public class BuyProductionMessage extends Message implements MessageInterface, Serializable {
 
     /**
      *displayCard is set to true by the client if he wants to see the creation card that can buy,
@@ -22,19 +23,14 @@ public class BuyProductionMessage implements MessageInterface{
     private boolean placeCardCorrect = false;
     private Integer positionCard;
 
-    private Integer playerId;
+
+    public BuyProductionMessage(Integer gameId, Integer playerId) {
+        super(gameId, playerId);
+    }
 
     @Override
     public void execute(VisitorInterface visitor) {
         visitor.executeBuyProduction(this);
-    }
-
-    public Integer getPlayerId() {
-        return playerId;
-    }
-
-    public BuyProductionMessage(Integer playerId) {
-        this.playerId = playerId;
     }
 
     public boolean isDisplayCard() {

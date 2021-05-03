@@ -1,15 +1,14 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class StartGameMessage implements MessageInterface{
+import java.io.Serializable;
+
+public class StartGameMessage extends Message implements MessageInterface, Serializable {
 
     private Integer numberOfPlayer;
-    private Integer gameID;
-    private Integer playerId;
 
-    public StartGameMessage(Integer playerId, Integer numberOfPlayer, Integer gameID) {
-        this.numberOfPlayer = numberOfPlayer;
-        this.gameID = gameID;
-        this.playerId = playerId;
+    public StartGameMessage(Integer gameId, Integer playerId, Integer numberOfPlayer){
+        super(gameId, playerId);
+        this.numberOfPlayer=numberOfPlayer;
     }
 
 
@@ -20,8 +19,8 @@ public class StartGameMessage implements MessageInterface{
         visitor.executeStartGame(this);
     }
 
-    public Integer getPlayerId() {
-        return playerId;
-    }
 
+    public Integer getNumberOfPlayer() {
+        return numberOfPlayer;
+    }
 }

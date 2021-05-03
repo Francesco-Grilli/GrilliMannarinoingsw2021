@@ -1,9 +1,10 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class MarbleMarketMessage implements MessageInterface, Serializable {
+public class MarbleMarketMessage extends Message implements MessageInterface, Serializable {
 
     private String[][] marbleList;
     private String marbleOut;
@@ -16,15 +17,16 @@ public class MarbleMarketMessage implements MessageInterface, Serializable {
     private ArrayList<ArrayList<String>> returnedMarble;
 
     private boolean addedResource = false;  //client ask to add a resource into warehouse and set MarbleType and Row
-    private String[] returnedResource;
     private String marbleType;
     private String insertRow;
     private boolean addResourceCorrect = false; //server inform client if the added resource was correctly inserted
 
-    private Integer palyerID;
+    private boolean destroyRemaining = false;
+    private ArrayList<String> returnedResource;
 
-    public MarbleMarketMessage(Integer palyerID) {
-        this.palyerID = palyerID;
+
+    public MarbleMarketMessage(Integer gameId, Integer playerId) {
+        super(gameId, playerId);
     }
 
     @Override
@@ -46,10 +48,6 @@ public class MarbleMarketMessage implements MessageInterface, Serializable {
 
     public boolean isAddedResource() {
         return addedResource;
-    }
-
-    public Integer getPlayerId() {
-        return palyerID;
     }
 
     public String[][] getMarbleList() {
@@ -100,11 +98,11 @@ public class MarbleMarketMessage implements MessageInterface, Serializable {
         this.returnedMarble = returnedMarble;
     }
 
-    public String[] getReturnedResource() {
+    public ArrayList<String> getReturnedResource() {
         return returnedResource;
     }
 
-    public void setReturnedResource(String[] returnedResource) {
+    public void setReturnedResource(ArrayList<String> returnedResource) {
         this.returnedResource = returnedResource;
     }
 
@@ -138,5 +136,13 @@ public class MarbleMarketMessage implements MessageInterface, Serializable {
 
     public void setAddResourceCorrect(boolean addResourceCorrect) {
         this.addResourceCorrect = addResourceCorrect;
+    }
+
+    public boolean isDestroyRemaining() {
+        return destroyRemaining;
+    }
+
+    public void setDestroyRemaining(boolean destroyRemaining) {
+        this.destroyRemaining = destroyRemaining;
     }
 }

@@ -1,17 +1,16 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class LeaderCardMessage extends Message implements MessageInterface{
+import java.io.Serializable;
+
+public class LeaderCardMessage extends Message implements MessageInterface, Serializable {
 
     private boolean canActivate = false;
     private boolean sellingCard = false;
     private boolean activationSellingCorrect = false;
     private Integer cardCode;
 
-    private Integer playerId;
-
     public LeaderCardMessage(Integer playerId, Integer gameId) {
         super(gameId, playerId);
-        this.playerId = playerId;
     }
 
     @Override
@@ -49,9 +48,5 @@ public class LeaderCardMessage extends Message implements MessageInterface{
 
     public void setActivationSellingCorrect(boolean activationSellingCorrect) {
         this.activationSellingCorrect = activationSellingCorrect;
-    }
-
-    public Integer getPlayerId() {
-        return playerId;
     }
 }
