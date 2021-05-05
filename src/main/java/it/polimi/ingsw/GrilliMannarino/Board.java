@@ -190,6 +190,14 @@ public class Board {
     return resourceManager.getResources();
   }
 
+  public HashMap<Row, HashMap<Resource, Integer>> getResourcesFromWareHouse(){
+    return resourceManager.getEachResourceFromWareHouse();
+  }
+
+  public HashMap<Resource, Integer> getResourcesFromChest(){
+    return resourceManager.getResourcesFromChest();
+  }
+
   public boolean canSwapLineFromWareHouse(Row one, Row two){
     return resourceManager.canSwapLine(one, two);
   }

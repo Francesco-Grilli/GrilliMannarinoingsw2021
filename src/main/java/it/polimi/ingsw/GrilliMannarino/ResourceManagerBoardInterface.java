@@ -36,4 +36,8 @@ public interface ResourceManagerBoardInterface {
     void forceSwapLine(Row one, Row two);
 
     HashMap<Resource, Integer> getResourceLine(Row line);
+
+    HashMap<Resource, Integer> getResourcesFromChest();
+
+    HashMap<Row, HashMap<Resource, Integer>> getEachResourceFromWareHouse();
 }

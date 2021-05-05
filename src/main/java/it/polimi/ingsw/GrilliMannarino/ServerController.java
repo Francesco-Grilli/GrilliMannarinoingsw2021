@@ -2,12 +2,23 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Internet.Server;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ServerController implements VisitorInterface {
 
@@ -16,10 +27,14 @@ public class ServerController implements VisitorInterface {
     private Server server;
     private HashMap<Integer, Game> activeGames;
     private Game game;
+    private HashMap<String, Integer> nicknamesList;
+    private Integer nextPlayerId = 0;
+    JSONObject nicknameListObj = new JSONObject();
 
     public ServerController(){
         server = new Server();
         game = new Game();
+        nicknamesList = new HashMap<>();
     }
 
     public void startController(){
@@ -76,12 +91,69 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeLogin(LoginMessage login) {
+        if(nicknamesList.containsKey(login.getNickName())){
+            game.setPlayer(nicknamesList.get(login.getNickName()), login.getNickName());
+        }
+    }
 
+    public boolean nicknameAlreadyPresent(String nickname) {
+        if(nicknamesList.containsKey(nickname))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean addPlayer(String nickname){
+        if(!nicknamesList.containsKey(nickname)){
+            nicknamesList.put(nickname, nextPlayerId);
+            JSONObject player = new JSONObject();
+            player.put("nickname", nickname);
+            player.put("playerId", String.valueOf(nextPlayerId));
+            nicknameListObj.put(String.valueOf(nextPlayerId), player);
+            nextPlayerId++;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public void writeNickname(){
+        nicknameListObj.put("nextPlayerId", String.valueOf(nextPlayerId));
+        try{
+            FileWriter file = new FileWriter("player.json");
+            file.write(nicknameListObj.toJSONString());
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadNickname(){
+        try {
+            FileReader file = new FileReader("player.json");
+            JSONParser parser = new JSONParser();
+            nicknameListObj = (JSONObject) parser.parse(file);
+            nextPlayerId = Integer.parseInt((String) nicknameListObj.get("nextPlayerId"));
+            for(int i=0; i<nextPlayerId; i++){
+                JSONObject player = (JSONObject) nicknameListObj.get(String.valueOf(i));
+                nicknamesList.put((String) player.get("nickname"), Integer.parseInt((String) player.get("playerId")));
+            }
+
+            file.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.err.println("File does not exist!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void executeAccount(GuestMessage guest) {
-        String playerNickname = guest.getNickName();
+    public void executeGuest(GuestMessage guest) {
+
     }
 
     @Override
@@ -93,6 +165,7 @@ public class ServerController implements VisitorInterface {
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
 
         if ((game.getActivePlayer().getID() != leaderCard.getPlayerId())) {
+            sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on playerId");
             return;
             //should run exception??
         }
@@ -161,6 +234,7 @@ public class ServerController implements VisitorInterface {
     public void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage) {
 
         if ((game.getActivePlayer().getID() != marbleMarketMessage.getPlayerId())) {
+            sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on playerId");
             return;
             //should run exception??
         }
@@ -267,8 +341,10 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeBuyProduction(BuyProductionCardMessage buyProductionCardMessage){
-        if(game.getActivePlayer().getID()!= buyProductionCardMessage.getPlayerId())
+        if(game.getActivePlayer().getID()!= buyProductionCardMessage.getPlayerId()) {
+            sendErrorMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId(), "Error on playerId");
             return;
+        }
 
         if(!game.isNormalAction()){
             sendErrorMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId(), "No normal action left!");
@@ -296,7 +372,7 @@ public class ServerController implements VisitorInterface {
                 message.setPlaceCardCorrect(true);
                 message.setSelectedCard(buyProductionCardMessage.getSelectedCard());
                 message.setPositionCard(buyProductionCardMessage.getPositionCard());
-                //NEED METHOD TO UPDATE THE WAREHOUSE AND THE CHEST TO THE CLIENT
+                updateResources(game);
             }
             server.sendMessageTo(buyProductionCardMessage.getPlayerId(), message);
             return;
@@ -318,8 +394,10 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeProduction(ProductionMessage productionMessage) {
-        if(game.getActivePlayer().getID()!=productionMessage.getPlayerId())
+        if(game.getActivePlayer().getID()!=productionMessage.getPlayerId()) {
+            sendErrorMessage(productionMessage.getGameId(), productionMessage.getPlayerId(), "Error on playerId");
             return;
+        }
         if(!game.isNormalAction()){
             sendErrorMessage(productionMessage.getGameId(), productionMessage.getPlayerId(), "No normal action left!");
             return;
@@ -342,7 +420,7 @@ public class ServerController implements VisitorInterface {
             if(game.startProduction(cardList)){
                 game.setNormalAction(false);    //completed a normal action
                 message.setProductionCorrect(true);
-                //NEED METHOD TO UPDATE THE WAREHOUSE AND THE CHEST TO THE CLIENT
+                updateResources(game);
             }
             server.sendMessageTo(productionMessage.getPlayerId(), message);
             return;
@@ -374,6 +452,68 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executePopeLine(PopeLineMessage popeLineMessage) {
+
+    }
+
+    @Override
+    public void executeResource(ResourceMessage resourceMessage) {
+
+    }
+
+    @Override
+    public void executeMoveResource(MoveResourceMessage moveResourceMessage) {
+        if ((game.getActivePlayer().getID() != moveResourceMessage.getPlayerId())) {
+            sendErrorMessage(moveResourceMessage.getGameId(), moveResourceMessage.getPlayerId(), "Error on playerId");
+            return;
+        }
+
+        try {
+            Row one = Row.valueOf(moveResourceMessage.getRowOne());
+            Row two = Row.valueOf(moveResourceMessage.getRowTwo());
+
+            MoveResourceMessage message = new MoveResourceMessage(moveResourceMessage.getGameId(), moveResourceMessage.getPlayerId());
+
+            if(moveResourceMessage.isForceSwap()){
+                message.setForceSwap(true);
+                game.forceSwapLine(one, two);
+            }else{
+                message.setCanMove(game.canSwapLine(one, two));
+            }
+            server.sendMessageTo(moveResourceMessage.getPlayerId(), message);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+            sendErrorMessage(moveResourceMessage.getGameId(), moveResourceMessage.getPlayerId(), "Error on Resource Moving");
+        }
+
+
+    }
+
+    @Override
+    public void executeCreateAccount(CreateAccountMessage createAccountMessage) {
+
+    }
+
+    private void updateResources(Game game){
+        ResourceMessage message = new ResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+
+        HashMap<String, Integer> chest;
+        HashMap<String, HashMap<String, Integer>> wareHouse = new HashMap<>();
+        HashMap<Resource, Integer> chestResource = new HashMap<>(game.getResourcesFromChest());
+        HashMap<Row, HashMap<Resource, Integer>> wareHouseResource = new HashMap<>(game.getResourcesFromWareHouse());
+
+        chest = chestResource.keySet().stream().collect(Collectors.toMap(Enum::toString, chestResource::get, (a, b) -> b, HashMap::new));
+
+        for(Row row : wareHouseResource.keySet()){
+            HashMap<String, Integer> copy = new HashMap<>();
+            for(Resource res : wareHouseResource.get(row).keySet()){
+                copy.put(res.toString(), wareHouseResource.get(row).get(res));
+            }
+            wareHouse.put(row.toString(), new HashMap<String, Integer>(copy));
+        }
+
+        message.setChestResources(chest);
+        message.setWareHouseResources(wareHouse);
+        server.sendMessageTo(game.getActivePlayer().getID(), message);
 
     }
 

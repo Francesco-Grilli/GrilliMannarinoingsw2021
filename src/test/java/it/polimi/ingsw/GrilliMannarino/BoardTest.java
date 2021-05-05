@@ -313,7 +313,7 @@ public class BoardTest {
     assertFalse(test.addPopeFaith());
   }
 
-  @Test
+  /*@Test
   public void getFaithTrackPointsTest(){
     Board test = new Board(null,null,null);
     Board test2 = new Board(null,null,null);
@@ -355,7 +355,7 @@ public class BoardTest {
     PopeLine.updateChecks();
     assertEquals(26, test.getFaithTrackPoints());
     assertEquals(21, test2.getFaithTrackPoints());
-  }
+  }*/
 
   @Test
   public void getFaithChecksTest(){

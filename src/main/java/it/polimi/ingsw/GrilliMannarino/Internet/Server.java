@@ -154,6 +154,6 @@ public class Server {
     }
 
     public MessageInterface getMessageFrom(Integer playerId) {
-
+        return null;
     }
 }

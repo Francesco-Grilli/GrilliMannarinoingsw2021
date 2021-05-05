@@ -205,6 +205,23 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
     }
 
     @Override
+    public HashMap<Resource, Integer> getResourcesFromChest() {
+        return resourceManager.getResourcesFromChest();
+    }
+
+    @Override
+    public HashMap<Row, HashMap<Resource, Integer>> getEachResourceFromWareHouse() {
+        HashMap<Row, HashMap<Resource, Integer>> resourceCopy = new HashMap<>(resourceManager.getEachResourceFromWareHouse());
+        if(numberOfResource>0){
+            HashMap<Resource, Integer> ri = new HashMap<>();
+            ri.put(this.getDefinedResource(), numberOfResource);
+            resourceCopy.put(currentRow, ri);
+        }
+
+        return resourceCopy;
+    }
+
+    @Override
     public boolean canSwapLine(Row one, Row two) {
         boolean check = true;
         if(one.getValue() < currentRow.getValue() && two.getValue() < currentRow.getValue()){

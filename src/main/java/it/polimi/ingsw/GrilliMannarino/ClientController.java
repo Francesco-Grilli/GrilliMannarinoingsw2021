@@ -16,7 +16,7 @@ public class ClientController implements VisitorInterface {
     }
 
     @Override
-    public void executeAccount(GuestMessage account) {
+    public void executeGuest(GuestMessage account) {
 
     }
 
@@ -124,5 +124,20 @@ public class ClientController implements VisitorInterface {
         }
         //code to check the popeline
         view.checkPopeLine(popeLineMessage.isFavorActive(), popeLineMessage.getCheckPosition(), popeLineMessage.getFaithPosition());
+    }
+
+    @Override
+    public void executeResource(ResourceMessage resourceMessage) {
+
+    }
+
+    @Override
+    public void executeMoveResource(MoveResourceMessage moveResourceMessage) {
+
+    }
+
+    @Override
+    public void executeCreateAccount(CreateAccountMessage createAccountMessage) {
+
     }
 }

@@ -37,7 +37,7 @@ public class ResourceManager implements ResourceManagerBoardInterface {
     /**
      * @return the resources from chest
      */
-    private HashMap<Resource, Integer> getResourcesFromChest() {
+    public HashMap<Resource, Integer> getResourcesFromChest() {
         return new HashMap<>(chest.getResources());
     }
 
@@ -54,6 +54,10 @@ public class ResourceManager implements ResourceManagerBoardInterface {
         }
 
         return ret;
+    }
+
+    public HashMap<Row, HashMap<Resource, Integer>> getEachResourceFromWareHouse(){
+        return new HashMap<>(wareHouse.getResources());
     }
 
     /**

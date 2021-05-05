@@ -41,17 +41,19 @@ public class Game {
 
 
 
-    public synchronized void setPlayer(Integer playerId, String nickName) {
+    public synchronized boolean setPlayer(Integer playerId, String nickName) {
         if(player.size()<4 && !player.containsKey(playerId) && !board.containsKey(playerId)){
             player.put(playerId, new Player(nickName, playerId));
             playerID.add(playerId);
             board.put(playerId, new Board(player.get(playerId), cardMarket, marbleMarket));
+            return true;
         }
+        return false;
     }
 
 
 
-    public void setActivePlayer(){
+    private void setActivePlayer(){
         int p = playerID.get(countPlayer % playerID.size());
         activePlayer =  player.getOrDefault(p, null);
     }
@@ -236,5 +238,22 @@ public class Game {
         }
 
         return check;
+    }
+
+    //METHOD TO WORK WITH RESOURCEMANAGER
+    public HashMap<Resource, Integer> getResourcesFromChest(){
+        return activeBoard.getResourcesFromChest();
+    }
+
+    public HashMap<Row, HashMap<Resource, Integer>> getResourcesFromWareHouse(){
+        return activeBoard.getResourcesFromWareHouse();
+    }
+
+    public boolean canSwapLine(Row one, Row two){
+        return activeBoard.canSwapLineFromWareHouse(one, two);
+    }
+
+    public void forceSwapLine(Row one, Row two){
+        activeBoard.forceSwapLineFromWareHouse(one, two);
     }
 }
