@@ -6,7 +6,6 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Internet.Server;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -21,86 +20,54 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ServerController implements VisitorInterface {
-
     //implements all method needed to communicate with client
 
     private Server server;
-    private HashMap<Integer, Game> activeGames;
-    private Game game;
+    private HashMap<Integer, Game> games;
     private HashMap<String, Integer> nicknamesList;
     private Integer nextPlayerId = 0;
+    private Integer nextGameId = 1;
     JSONObject nicknameListObj = new JSONObject();
 
     public ServerController(){
         server = new Server();
-        game = new Game();
+        games.put(nextGameId, new Game());
+        nextGameId++;
         nicknamesList = new HashMap<>();
     }
 
     public void startController(){
 
-        server.getMessageFrom(game.getActivePlayer().getID()).execute(this); //get startGame message
+        while(true){
 
-        do{
+            server.getMessageFrom().execute(this);
 
-            do{
-
-                try{
-                    server.getMessageFrom(game.getActivePlayer().getID()).execute(this);
-                }
-                catch (NullPointerException e){
-                    executeErrorMessage(new ErrorMessage(game.getGameId(), game.getActivePlayer().getID()));
-                }
-
-            }while(playerCanStillPlay());
-
-            nextTurn();
-
-        }while(game.isEndGame());
+        }
 
 
     }
 
-    private void nextTurn(){
-        TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
-        server.sendMessageTo(game.getActivePlayer().getID(), message);
+    @Override
+    public void executeTurnPlayer(TurnMessage turn) {
+        Game game = games.get(turn.getGameId());
 
         game.setLeaderCardAction(true);
         game.setNormalAction(true);
         game.turnExecution();
 
-
-        TurnMessage nextPlayer = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
-        server.sendMessageTo(game.getActivePlayer().getID(), nextPlayer);
-    }
-
-    private boolean playerCanStillPlay(){
-        if(game.isNormalAction()){
-            return true;
-        }
-        else{
-            return game.hasActiveLeaderCard() && game.isLeaderCardAction();
-        }
+        TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
+        message.setMyTurn(true);
+        server.sendMessageTo(message.getPlayerId(), message);
     }
 
 
-    private void startGamePlayer(){
-        ArrayList<Integer> player = new ArrayList<>(game.getPlayerID());
-        player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(game.getGameId(), p, player.size())));
-    }
-
-    @Override
-    public void executeLogin(LoginMessage login) {
-        if(nicknamesList.containsKey(login.getNickName())){
-            game.setPlayer(nicknamesList.get(login.getNickName()), login.getNickName());
-        }
+    private void startGamePlayer(Integer gameId, Integer playerId){
+        ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
+        player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, player.size())));
     }
 
     public boolean nicknameAlreadyPresent(String nickname) {
-        if(nicknamesList.containsKey(nickname))
-            return true;
-        else
-            return false;
+        return nicknamesList.containsKey(nickname);
     }
 
     public boolean addPlayer(String nickname){
@@ -134,7 +101,7 @@ public class ServerController implements VisitorInterface {
             JSONParser parser = new JSONParser();
             nicknameListObj = (JSONObject) parser.parse(file);
             nextPlayerId = Integer.parseInt((String) nicknameListObj.get("nextPlayerId"));
-            for(int i=0; i<nextPlayerId; i++){
+            for(int i=1; i<nextPlayerId; i++){
                 JSONObject player = (JSONObject) nicknameListObj.get(String.valueOf(i));
                 nicknamesList.put((String) player.get("nickname"), Integer.parseInt((String) player.get("playerId")));
             }
@@ -151,26 +118,18 @@ public class ServerController implements VisitorInterface {
         }
     }
 
-    @Override
-    public void executeGuest(GuestMessage guest) {
 
-    }
-
-    @Override
-    public void executeStartGame(StartGameMessage startGame) {
-        startGamePlayer();
-    }
 
     @Override
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
-
+        Game game = games.get(leaderCard.getGameId());
         if ((game.getActivePlayer().getID() != leaderCard.getPlayerId())) {
             sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on playerId");
             return;
             //should run exception??
         }
-        if(!game.isLeaderCardAction()){
-            sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "No Leader Card action left!");
+        if(!game.isLeaderCardAction() || !game.hasActiveLeaderCard()){
+            sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "No active Leader Card or No action left!");
             return;
         }
 
@@ -186,6 +145,7 @@ public class ServerController implements VisitorInterface {
             message.setCardCode(leaderCard.getCardCode());
             if (game.activateLeaderCard(leaderCard.getCardCode())) {
                 message.setActivationSellingCorrect(true);
+                game.setLeaderCardAction(false);
             }
             server.sendMessageTo(leaderCard.getPlayerId(), message);
             return;
@@ -197,6 +157,7 @@ public class ServerController implements VisitorInterface {
         message.setCardCode(leaderCard.getCardCode());
         if(game.canSellLeaderCard(leaderCard.getCardCode())){
             message.setActivationSellingCorrect(true);
+            game.setLeaderCardAction(false);
             if(game.sellLeaderCard(leaderCard.getCardCode())){
                 updatePopeLine(game);
             }
@@ -232,7 +193,7 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage) {
-
+        Game game = games.get(marbleMarketMessage.getGameId());
         if ((game.getActivePlayer().getID() != marbleMarketMessage.getPlayerId())) {
             sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on playerId");
             return;
@@ -341,6 +302,7 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeBuyProduction(BuyProductionCardMessage buyProductionCardMessage){
+        Game game = games.get(buyProductionCardMessage.getGameId());
         if(game.getActivePlayer().getID()!= buyProductionCardMessage.getPlayerId()) {
             sendErrorMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId(), "Error on playerId");
             return;
@@ -394,6 +356,7 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeProduction(ProductionMessage productionMessage) {
+        Game game = games.get(productionMessage.getGameId());
         if(game.getActivePlayer().getID()!=productionMessage.getPlayerId()) {
             sendErrorMessage(productionMessage.getGameId(), productionMessage.getPlayerId(), "Error on playerId");
             return;
@@ -436,17 +399,6 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeEndGame(EndGameMessage endGame) {
-
-    }
-
-    @Override
-    public void executeTurnPlayer(TurnMessage turn) {
-        game.setNormalAction(false);
-        game.setLeaderCardAction(false);
-    }
-
-    @Override
     public void executeErrorMessage(ErrorMessage error) {
     }
 
@@ -462,6 +414,7 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeMoveResource(MoveResourceMessage moveResourceMessage) {
+        Game game = games.get(moveResourceMessage.getGameId());
         if ((game.getActivePlayer().getID() != moveResourceMessage.getPlayerId())) {
             sendErrorMessage(moveResourceMessage.getGameId(), moveResourceMessage.getPlayerId(), "Error on playerId");
             return;
@@ -490,6 +443,19 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executeCreateAccount(CreateAccountMessage createAccountMessage) {
+        if(!nicknamesList.containsKey(createAccountMessage.getNickname())){
+            addPlayer(createAccountMessage.getNickname());
+            CreateAccountMessage message = new CreateAccountMessage(null, nicknamesList.get(createAccountMessage.getNickname()));
+            message.setNickname(createAccountMessage.getNickname());
+            server.sendMessageTo(0, message);
+        }
+        else{
+            sendErrorMessage(null, 0, "Nickname already present please login yourself");
+        }
+    }
+
+    @Override
+    public void executeNewGame(NewGameMessage newGameMessage) {
 
     }
 
@@ -522,4 +488,30 @@ public class ServerController implements VisitorInterface {
         message.setError(error);
         server.sendMessageTo(message.getPlayerId(), message);
     }
+
+    @Override
+    public void executeLogin(LoginMessage login) {
+        if (nicknamesList.containsKey(login.getNickName())){
+            LoginMessage message = new LoginMessage(null, nicknamesList.get(login.getNickName()));
+            message.setNickName(login.getNickName());
+            server.sendMessageTo(0, message);
+        }
+        else{
+            sendErrorMessage(null, 0, "Nickname not present please create new account");
+        }
+    }
+
+
+
+    @Override
+    public void executeStartGame(StartGameMessage startGame) {
+        startGamePlayer(startGame.getGameId(), startGame.getPlayerId());
+    }
+
+    @Override
+    public void executeEndGame(EndGameMessage endGame) {
+
+    }
+
+
 }

@@ -1,8 +1,12 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class LoginMessage implements MessageInterface{
+public class LoginMessage extends Message implements MessageInterface{
 
     private String nickName;
+
+    public LoginMessage(Integer gameId, Integer playerId) {
+        super(gameId, playerId);
+    }
 
     @Override
     public void execute(VisitorInterface visitor) {

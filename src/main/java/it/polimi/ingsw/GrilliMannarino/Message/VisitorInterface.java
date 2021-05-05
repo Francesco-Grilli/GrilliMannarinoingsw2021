@@ -5,7 +5,6 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 public interface VisitorInterface {
 
     void executeLogin(LoginMessage login);
-    void executeGuest(GuestMessage account);
     void executeStartGame(StartGameMessage startGame);
     void executeLeaderCard(LeaderCardMessage leaderCard);
     void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage);
@@ -18,5 +17,6 @@ public interface VisitorInterface {
     void executeResource(ResourceMessage resourceMessage);
     void executeMoveResource(MoveResourceMessage moveResourceMessage);
     void executeCreateAccount(CreateAccountMessage createAccountMessage);
+    void executeNewGame(NewGameMessage newGameMessage);
 
 }

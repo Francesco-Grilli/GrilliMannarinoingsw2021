@@ -16,11 +16,6 @@ public class ClientController implements VisitorInterface {
     }
 
     @Override
-    public void executeGuest(GuestMessage account) {
-
-    }
-
-    @Override
     public void executeStartGame(StartGameMessage startGame) {
 
     }
@@ -138,6 +133,11 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeCreateAccount(CreateAccountMessage createAccountMessage) {
+
+    }
+
+    @Override
+    public void executeNewGame(NewGameMessage newGameMessage) {
 
     }
 }
