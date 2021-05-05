@@ -145,4 +145,6 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
     status.put("marbles",marbles);
     return status;
   }
+
+  public void setStatus(JSONObject status){}
 }

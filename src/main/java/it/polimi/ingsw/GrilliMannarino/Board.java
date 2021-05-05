@@ -333,4 +333,9 @@ public class Board {
     status.put("active_leader_cards",activeleadercards);
     return status;
   }
+
+  public void setStatus(JSONObject status){}
+
+
+
 }

@@ -56,6 +56,10 @@ public class ProductionLineLeaderCardResourceFaith extends ProductionLineLeaderC
     return getProductionLine().getStatus();
   }
 
+  public void setStatus(JSONObject status){
+    getProductionLine().setStatus(status);
+  }
+
   @Override
   public void execute(Board board) {
     this.setProductionLine(board.getProductionLine());

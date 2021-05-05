@@ -267,5 +267,11 @@ public class ResourceManager implements ResourceManagerBoardInterface {
     }
 
     @Override
+    public void setStatus(JSONObject status){
+        wareHouse.setStatus((JSONObject) status.get("warehouse"));
+        chest.setStatus((JSONObject) status.get("chest"));
+    }
+
+    @Override
     public void execute(Board board) {}
 }

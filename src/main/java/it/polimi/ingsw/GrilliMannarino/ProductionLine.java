@@ -71,12 +71,6 @@ public class ProductionLine implements ProductionLineBoardInterface{
 
     public JSONObject getStatus(){
         JSONObject status = new JSONObject();
-        JSONArray cards = new JSONArray();
-        this.productionCards.forEach((key,value)->{
-            JSONObject card = new JSONObject();
-            card.put("code", key.toString());
-            cards.add(card);
-        });
         JSONArray stacks = new JSONArray();
         this.activeCards.forEach((key,value)->{
             JSONObject stack = new JSONObject();
@@ -84,9 +78,19 @@ public class ProductionLine implements ProductionLineBoardInterface{
             stack.put("stack_value", value.getStatus());
             stacks.add(stack);
         });
-        status.put("raw_cards",cards);
         status.put("stacks", stacks);
         status.put("number_of_slots",maxProductionSlots);
         return status;
     }
+
+    public void setStatus(JSONObject status, GetCarder carder){
+        JSONArray stacks = (JSONArray) status.get("stacks");
+        stacks.forEach((value)->{
+            JSONObject stack = (JSONObject) value;
+            int i = Integer.parseInt((String) stack.get("stack_number"));
+            activeCards.get(i).setStatus((JSONObject) stack.get("stack_value"));
+        });
+    }
+
+    public void setStatus(JSONObject status){}
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Chest {
@@ -89,6 +90,12 @@ public class Chest {
             status.put(key.toString(),value.toString());
         });
         return status;
+    }
+
+    public void setStatus(JSONObject status){
+        Arrays.stream(Resource.values()).forEach(resource -> {
+            resources.put(resource, Integer.parseInt((String) status.get(resource.toString())));
+        });
     }
 
 }

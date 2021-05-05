@@ -181,5 +181,17 @@ public class PopeLine {
         return status;
     }
 
+    public void setStatus(JSONObject status){
+        this.faith = Integer.parseInt((String) status.get("faith"));
+        JSONArray faith_steps = (JSONArray) status.get("faith_steps");
+        faith_steps.forEach(t->parseIntoFaithStep((JSONObject) t));
+    }
+
+    private void parseIntoFaithStep(JSONObject t){
+        int i = Integer.parseInt((String) t.get("index"));
+        boolean faithstep = Boolean.parseBoolean((String) t.get("step"));
+        this.faithSteps[i] = faithstep;
+    }
+
 
 }

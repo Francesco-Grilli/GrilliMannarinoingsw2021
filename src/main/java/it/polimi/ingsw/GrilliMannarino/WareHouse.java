@@ -2,8 +2,10 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class WareHouse {
@@ -201,8 +203,31 @@ public class WareHouse {
     public JSONObject getStatus(){
         JSONObject status = new JSONObject();
         resources.forEach((key,value)->{
-            status.put(key.toString(),value.toString());
+            status.put(key.toString(),fromHashMapToJson(value));
         });
         return status;
+    }
+
+    private JSONObject fromHashMapToJson(HashMap hashMap){
+        JSONObject hash = new JSONObject();
+        hashMap.forEach((key,value)->{
+            hash.put(key.toString(),value.toString());
+        });
+        return hash;
+    }
+
+    public void setStatus(JSONObject status){
+        Arrays.stream(Row.values()).forEach(v->{
+            if(status.get(v.toString())!= null) {
+                HashMap<Resource,Integer> t = new HashMap<>();
+                Arrays.stream(Resource.values()).forEach((r)->{
+                    JSONObject p = (JSONObject) status.get(v.toString());
+                    if(p.get(r.toString())!= null){
+                        t.put(r,Integer.parseInt((String) p.get(r.toString())));
+                    }
+                });
+                resources.put(v, t);
+            }
+        });
     }
 }

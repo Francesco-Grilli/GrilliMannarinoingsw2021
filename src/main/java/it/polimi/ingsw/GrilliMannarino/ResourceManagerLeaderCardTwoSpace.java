@@ -210,6 +210,8 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         return status;
     }
 
+    public void setStatus(JSONObject status){}
+
     @Override
     public boolean canSwapLine(Row one, Row two) {
         boolean check = true;

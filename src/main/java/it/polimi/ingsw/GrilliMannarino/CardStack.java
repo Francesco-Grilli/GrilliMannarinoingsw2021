@@ -60,6 +60,11 @@ public class CardStack implements CreationCardGroup{
         return status;
     }
 
+    @Override
+    public void setStatus(JSONObject status) {
+
+    }
+
     public int getValue() {
         if(this.cards.isEmpty()){
             return 0;

@@ -18,4 +18,5 @@ public interface CreationCardGroup {
     boolean addCard(CreationCard card);
     CreationCard getCard();
     JSONObject getStatus();
+    void setStatus(JSONObject status);
 }

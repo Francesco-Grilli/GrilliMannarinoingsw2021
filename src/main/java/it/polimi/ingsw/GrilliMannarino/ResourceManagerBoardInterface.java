@@ -37,4 +37,6 @@ public interface ResourceManagerBoardInterface {
     HashMap<Resource, Integer> getResourceLine(Row line);
 
     JSONObject getStatus();
+
+    void setStatus(JSONObject status);
 }

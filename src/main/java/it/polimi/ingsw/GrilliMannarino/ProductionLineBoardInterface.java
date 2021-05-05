@@ -14,4 +14,5 @@ public interface ProductionLineBoardInterface {
   ArrayList<CreationCard> allUsedCards();
   int getPoints();
   JSONObject getStatus();
+  void setStatus(JSONObject status);
 }

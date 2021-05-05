@@ -71,4 +71,9 @@ public class CreationCard implements CreationCardGroup {
         status.put("top_card", cardCode);
         return status;
     }
+
+    @Override
+    public void setStatus(JSONObject status) {
+
+    }
 }
