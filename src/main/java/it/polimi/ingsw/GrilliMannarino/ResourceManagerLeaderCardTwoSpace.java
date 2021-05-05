@@ -4,6 +4,8 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -220,6 +222,20 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
 
         return resourceCopy;
     }
+
+    @Override
+    public JSONObject getStatus() {
+        JSONObject status = resourceManager.getStatus();
+        JSONObject leadercard = new JSONObject();
+        leadercard.put("card_code",getCardCode());
+        leadercard.put("card_resource_type", getDefinedResource().toString());
+        leadercard.put("resources_in_card", numberOfResource);
+        leadercard.put("row", currentRow.toString());
+        ((JSONArray) status.get("leader_cards")).add(leadercard);
+        return status;
+    }
+
+    public void setStatus(JSONObject status){}
 
     @Override
     public boolean canSwapLine(Row one, Row two) {

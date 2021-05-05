@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -40,4 +41,8 @@ public interface ResourceManagerBoardInterface {
     HashMap<Resource, Integer> getResourcesFromChest();
 
     HashMap<Row, HashMap<Resource, Integer>> getEachResourceFromWareHouse();
+
+    JSONObject getStatus();
+
+    void setStatus(JSONObject status);
 }

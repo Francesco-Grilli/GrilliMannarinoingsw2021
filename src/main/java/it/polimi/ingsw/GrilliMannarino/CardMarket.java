@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CardMarket implements CardMarketBoardInterface {
+public class CardMarket implements CardMarketBoardInterface, GetCarder {
   HashMap<Integer, CreationCard> cardsInGame;
   HashMap<Faction, HashMap<Integer, CardStack>> cardStacks;
   HashMap<Integer, CreationCard> playedCards;
@@ -132,5 +132,41 @@ public class CardMarket implements CardMarketBoardInterface {
     });
     return maxLevel.get();
   }
+
+  public JSONObject getStatus(){
+    JSONObject status = new JSONObject();
+    JSONArray cardsToSave = new JSONArray();
+    this.cardsInGame.forEach((key,value)->{
+      JSONObject cardToSave = new JSONObject();
+      cardToSave.put("card_code",key);
+      cardsToSave.add(cardToSave);
+    });
+    JSONArray playedCardsToSave = new JSONArray();
+    this.playedCards.forEach((key,value)->{
+      JSONObject playedCardToSave = new JSONObject();
+      playedCardToSave.put("card_code",key);
+      playedCardsToSave.add(playedCardToSave);
+    });
+    JSONArray factionLines = new JSONArray();
+    this.cardStacks.forEach((fac,line)->{
+      JSONObject jsonLine = new JSONObject();
+      JSONArray lineOfStacks = new JSONArray();
+      line.forEach((lev, stack)->{
+        JSONObject stackIdentity = new JSONObject();
+        stackIdentity.put("level",lev.toString());
+        stackIdentity.put("stack",stack.getStatus());
+        lineOfStacks.add(stackIdentity);
+      });
+      jsonLine.put("faction",fac.toString());
+      jsonLine.put("levels",lineOfStacks);
+      factionLines.add(jsonLine);
+    });
+    status.put("cards_in_game",cardsToSave);
+    status.put("cards_played",playedCardsToSave);
+    status.put("stacks_of_cards",factionLines);
+    return  status;
+  }
+
+  public void setStatus(JSONObject status){}
 
 }

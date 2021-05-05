@@ -250,7 +250,7 @@ public class CardStackTest {
     CreationCard test4 = new CreationCard(cardCode,cardLevel,value,faction,price4,input,output);
 
     CardStack test = new CardStack();
-    assertNull(test.getPrice());
+    assertEquals(new HashMap<>(),test.getPrice());
     test.pushCard(test1);
     assertEquals(priceOut1,test.getPrice());
     test.pushCard(test2);
@@ -309,7 +309,7 @@ public class CardStackTest {
     CreationCard test4 = new CreationCard(cardCode,cardLevel,value,faction,price,input4,output);
 
     CardStack test = new CardStack();
-    assertNull(test.getInput());
+    assertEquals(new HashMap<>(),test.getInput());
     test.pushCard(test1);
     assertEquals(inputOut1,test.getInput());
     test.pushCard(test2);
@@ -368,7 +368,7 @@ public class CardStackTest {
     CreationCard test4 = new CreationCard(cardCode,cardLevel,value,faction,price,input,output4);
 
     CardStack test = new CardStack();
-    assertNull(test.getOutput());
+    assertEquals(new HashMap<>(),test.getOutput());
     test.pushCard(test1);
     assertEquals(outputOut1,test1.getOutput());
     test.pushCard(test2);

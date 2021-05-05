@@ -126,4 +126,25 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
       }
     }
   }
+
+  public JSONObject getStatus(){
+    JSONObject status = new JSONObject();
+    JSONArray marbles = new JSONArray();
+    for(int i=0;i<sizeX ;i++){
+      for(int k=0; k<sizeY ;k++){
+        JSONObject marbleWithPosition = new JSONObject();
+        marbleWithPosition.put("x_coord",i);
+        marbleWithPosition.put("y_coord",k);
+        marbleWithPosition.put("marble",marbleBoard[i][k].toString());
+        marbles.add(marbleWithPosition);
+      }
+    }
+    status.put("marble_out", this.marbleOut.toString());
+    status.put("x_size", this.sizeX);
+    status.put("y_size", this.sizeY);
+    status.put("marbles",marbles);
+    return status;
+  }
+
+  public void setStatus(JSONObject status){}
 }

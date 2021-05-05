@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
@@ -16,4 +17,6 @@ public interface CreationCardGroup {
     boolean canAdd(CreationCard card);
     boolean addCard(CreationCard card);
     CreationCard getCard();
+    JSONObject getStatus();
+    void setStatus(JSONObject status);
 }

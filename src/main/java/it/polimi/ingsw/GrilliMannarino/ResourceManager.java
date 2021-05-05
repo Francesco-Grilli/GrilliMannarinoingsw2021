@@ -2,7 +2,10 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.awt.image.Kernel;
 import java.util.HashMap;
 
 public class ResourceManager implements ResourceManagerBoardInterface {
@@ -264,6 +267,22 @@ public class ResourceManager implements ResourceManagerBoardInterface {
 
     public HashMap<Resource, Integer> getResourceLine(Row line) {
         return wareHouse.getResources().get(line);
+    }
+
+    @Override
+    public JSONObject getStatus() {
+        JSONObject status = new JSONObject();
+        status.put("warehouse", wareHouse.getStatus());
+        status.put("chest", chest.getStatus());
+        JSONArray leaderCards = new JSONArray();
+        status.put("leader_cards", leaderCards);
+        return status;
+    }
+
+    @Override
+    public void setStatus(JSONObject status){
+        wareHouse.setStatus((JSONObject) status.get("warehouse"));
+        chest.setStatus((JSONObject) status.get("chest"));
     }
 
     @Override
