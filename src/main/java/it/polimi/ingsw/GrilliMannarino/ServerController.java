@@ -25,41 +25,18 @@ public class ServerController implements VisitorInterface {
     private Server server;
     private HashMap<Integer, Game> games;
     private HashMap<String, Integer> nicknamesList;
-    private Integer nextPlayerId = 0;
+    private Integer nextPlayerId = 1;
     private Integer nextGameId = 1;
     JSONObject nicknameListObj = new JSONObject();
 
     public ServerController(){
-        server = new Server();
-        games.put(nextGameId, new Game());
-        nextGameId++;
+        server = new Server(this);
         nicknamesList = new HashMap<>();
     }
 
-    public void startController(){
-
-        while(true){
-
-            server.getMessageFrom().execute(this);
-
-        }
-
-
+    public void receiveMessage(MessageInterface message){
+        message.execute(this);
     }
-
-    @Override
-    public void executeTurnPlayer(TurnMessage turn) {
-        Game game = games.get(turn.getGameId());
-
-        game.setLeaderCardAction(true);
-        game.setNormalAction(true);
-        game.turnExecution();
-
-        TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
-        message.setMyTurn(true);
-        server.sendMessageTo(message.getPlayerId(), message);
-    }
-
 
     private void startGamePlayer(Integer gameId, Integer playerId){
         ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
@@ -70,7 +47,7 @@ public class ServerController implements VisitorInterface {
         return nicknamesList.containsKey(nickname);
     }
 
-    public boolean addPlayer(String nickname){
+    public Integer addPlayer(String nickname){
         if(!nicknamesList.containsKey(nickname)){
             nicknamesList.put(nickname, nextPlayerId);
             JSONObject player = new JSONObject();
@@ -78,10 +55,19 @@ public class ServerController implements VisitorInterface {
             player.put("playerId", String.valueOf(nextPlayerId));
             nicknameListObj.put(String.valueOf(nextPlayerId), player);
             nextPlayerId++;
-            return true;
+            return nextPlayerId-1;
         }
+        else{
+            return null;
+        }
+
+    }
+
+    public Integer logInPlayer(String nickname){
+        if(nicknamesList.containsKey(nickname))
+            return nicknamesList.get(nickname);
         else
-            return false;
+            return null;
     }
 
     public void writeNickname(){
@@ -118,7 +104,18 @@ public class ServerController implements VisitorInterface {
         }
     }
 
+    @Override
+    public void executeTurnPlayer(TurnMessage turn) {
+        Game game = games.get(turn.getGameId());
 
+        game.setLeaderCardAction(true);
+        game.setNormalAction(true);
+        game.turnExecution();
+
+        TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
+        message.setMyTurn(true);
+        server.sendMessageTo(message.getPlayerId(), message);
+    }
 
     @Override
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
@@ -442,21 +439,56 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeCreateAccount(CreateAccountMessage createAccountMessage) {
-        if(!nicknamesList.containsKey(createAccountMessage.getNickname())){
-            addPlayer(createAccountMessage.getNickname());
-            CreateAccountMessage message = new CreateAccountMessage(null, nicknamesList.get(createAccountMessage.getNickname()));
-            message.setNickname(createAccountMessage.getNickname());
-            server.sendMessageTo(0, message);
-        }
-        else{
-            sendErrorMessage(null, 0, "Nickname already present please login yourself");
-        }
+    public void executeNewGame(NewGameMessage newGameMessage) {
+        Game game = new Game(nextGameId, newGameMessage.getNumberOfPlayer());
+        games.put(nextGameId, game);
+        nextGameId++;
+        game.setPlayer(newGameMessage.getPlayerId(), newGameMessage.getNickname());
+        NewGameMessage message = new NewGameMessage(game.getGameId(), newGameMessage.getPlayerId(), newGameMessage.getNickname());
+        message.setNewGame(true);
+        message.setMessageString("You have created a joined a new game with id: " + game.getGameId());
+        server.sendMessageTo(newGameMessage.getPlayerId(), message);
     }
 
     @Override
-    public void executeNewGame(NewGameMessage newGameMessage) {
+    public void executeEnterGame(EnterGameMessage enterGameMessage) {
+        boolean find = false;
+        int skip =0;
 
+        while(!find){
+            Game game = firstGameFree(skip);
+            if(game==null){
+                EnterGameMessage message = new EnterGameMessage(null, enterGameMessage.getPlayerId(), enterGameMessage.getNickname());
+                message.setMessageString("Error, no game available");
+                server.sendMessageTo(enterGameMessage.getPlayerId(), message);
+                return;
+            }
+            else {
+                if (game.setPlayer(enterGameMessage.getPlayerId(), enterGameMessage.getNickname())) {
+                    EnterGameMessage message = new EnterGameMessage(game.getGameId(), enterGameMessage.getPlayerId(), enterGameMessage.getNickname());
+                    message.setEnterGame(true);
+                    message.setMessageString("You have joined the game with id: " + game.getGameId());
+                    find=true;
+                    server.sendMessageTo(message.getPlayerId(), message);
+                }
+                else
+                    skip++;
+            }
+        }
+
+    }
+
+    private Game firstGameFree(int skip){
+        int got = 0;
+        for(Integer i : games.keySet()){
+            if(games.get(i).hasSpace()){
+                if(got >= skip)
+                    return games.get(i);
+                else
+                    got++;
+            }
+        }
+        return null;
     }
 
     private void updateResources(Game game){
@@ -488,20 +520,6 @@ public class ServerController implements VisitorInterface {
         message.setError(error);
         server.sendMessageTo(message.getPlayerId(), message);
     }
-
-    @Override
-    public void executeLogin(LoginMessage login) {
-        if (nicknamesList.containsKey(login.getNickName())){
-            LoginMessage message = new LoginMessage(null, nicknamesList.get(login.getNickName()));
-            message.setNickName(login.getNickName());
-            server.sendMessageTo(0, message);
-        }
-        else{
-            sendErrorMessage(null, 0, "Nickname not present please create new account");
-        }
-    }
-
-
 
     @Override
     public void executeStartGame(StartGameMessage startGame) {

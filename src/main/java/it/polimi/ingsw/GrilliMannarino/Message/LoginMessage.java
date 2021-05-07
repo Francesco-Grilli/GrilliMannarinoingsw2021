@@ -1,23 +1,58 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class LoginMessage extends Message implements MessageInterface{
+import java.io.Serializable;
 
-    private String nickName;
+public class LoginMessage implements Serializable {
 
-    public LoginMessage(Integer gameId, Integer playerId) {
-        super(gameId, playerId);
+    /**
+     * if the newAccount boolean is false, by default it will try to log into the server with the nickname and the server
+     * will check if there already is that nickname and will return the playerId associated
+     * if the newAccount is true then the client wants to create a new account with the nickname string. Server check
+     * if it is possible add that nickname and will return the playerId
+     */
+    private String nickname;
+    private Integer playerId;
+    private boolean newAccount = false;
+    private boolean correctLogin = false;
+    private String message;
+
+    public LoginMessage(String nickname){
+        this.nickname = nickname;
     }
 
-    @Override
-    public void execute(VisitorInterface visitor) {
-        visitor.executeLogin(this);
+    public String getNickname() {
+        return nickname;
     }
 
-    public String getNickName() {
-        return nickName;
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
+    }
+
+    public boolean isNewAccount() {
+        return newAccount;
+    }
+
+    public void setNewAccount(boolean newAccount) {
+        this.newAccount = newAccount;
+    }
+
+    public boolean isCorrectLogin() {
+        return correctLogin;
+    }
+
+    public void setCorrectLogin(boolean correctLogin) {
+        this.correctLogin = correctLogin;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

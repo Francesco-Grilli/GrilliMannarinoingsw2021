@@ -1,52 +1,109 @@
 package it.polimi.ingsw.GrilliMannarino.Internet;
 
+import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
+
 
 public class ClientHandler implements  Runnable{
 
     private final Socket socket;
     private final Server server;
-    private final int playerId;
-    private final String nickName;
+    private  Integer playerId;
+    private  String nickName;
+    
+    private InputStream is;
+    private OutputStream os;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
-    BufferedReader input = null;
-    InputStream is = null;
-    InputStreamReader in = null;
-
-    private ObjectOutputStream output;
-
-
-    public ClientHandler(Socket socket, Server server, int playerId, String nickName){
+    public ClientHandler(Socket socket, Server server){
         this.server=server;
         this.socket=socket;
-        this.playerId=playerId;
-        this.nickName=nickName;
     }
 
     @Override
     public void run() {
         setUpStream();
+        setUpInformation();
+        setUpGame();
+    }
+
+    private void setUpGame() {
+
+        while(!Thread.currentThread().isInterrupted()){
+            try{
+                MessageInterface message = (MessageInterface) in.readObject();
+                server.messageToController(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void setUpInformation() {
+        boolean login = false;
+
+        while(!login){
+            try{
+                LoginMessage message = (LoginMessage) in.readObject();
+
+                if(message.isNewAccount()){
+                    Integer playerId = server.createNewAccount(message.getNickname());
+                    if(playerId!=null){
+                        login = true;
+                        server.setHandlerList(playerId, this);
+                        LoginMessage messageOut = new LoginMessage(message.getNickname());
+                        messageOut.setPlayerId(playerId);
+                        this.playerId = playerId;
+                        this.nickName = message.getNickname();
+                        out.writeObject(messageOut);
+                    }
+                    else{
+                        LoginMessage messageOut = new LoginMessage(message.getNickname());
+                        messageOut.setMessage("Error with new account");
+                        out.writeObject(messageOut);
+                    }
+                }
+                else{
+                    Integer playerId = server.logIn(message.getNickname());
+                    if(playerId!=null){
+                        login = true;
+                        server.setHandlerList(playerId, this);
+                        LoginMessage messageOut = new LoginMessage(message.getNickname());
+                        messageOut.setPlayerId(playerId);
+                        this.playerId = playerId;
+                        this.nickName = message.getNickname();
+                        out.writeObject(messageOut);
+                    }
+                    else{
+                        LoginMessage messageOut = new LoginMessage(message.getNickname());
+                        messageOut.setMessage("Error with new login");
+                        out.writeObject(messageOut);
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setUpStream(){
         try {
+            
             is = socket.getInputStream();
-            in = new InputStreamReader(is);
-            input = new BufferedReader(in);
-            output = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendMessage(String message){
-        try {
-            output.write(message.getBytes(StandardCharsets.UTF_8));
-            output.flush();
+            os = socket.getOutputStream();
+            out = new ObjectOutputStream(os);
+            in = new ObjectInputStream(is);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,8 +111,7 @@ public class ClientHandler implements  Runnable{
 
     public void sendMessage(MessageInterface message) {
         try{
-            output.writeObject(message);
-            output.flush();
+            out.writeObject(message);
         } catch (IOException e) {
             e.printStackTrace();
         }

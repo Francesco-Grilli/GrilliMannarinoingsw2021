@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Game {
 
     final private Integer gameId;
+    private final Integer numberOfPlayer;
+    private boolean start = false;
     private final Map<Integer, Player> player;
     private final ArrayList<Integer> playerID;
     private final Map<Integer, Board> board;
@@ -30,8 +32,9 @@ public class Game {
     private boolean normalAction = true;
     private boolean endGame = true;
 
-    public Game(){
-        gameId = (int) (Math.random()*1000)+1;
+    public Game(Integer gameId, Integer numberOfPlayer){
+        this.gameId = gameId;
+        this.numberOfPlayer = numberOfPlayer;
         player = new ConcurrentHashMap<>();
         playerID = new ArrayList<>();
         board = new ConcurrentHashMap<>();
@@ -42,7 +45,7 @@ public class Game {
 
 
     public synchronized boolean setPlayer(Integer playerId, String nickName) {
-        if(player.size()<4 && !player.containsKey(playerId) && !board.containsKey(playerId)){
+        if(player.size()<numberOfPlayer && !player.containsKey(playerId) && !board.containsKey(playerId)){
             player.put(playerId, new Player(nickName, playerId));
             playerID.add(playerId);
             board.put(playerId, new Board(player.get(playerId), cardMarket, marbleMarket));
@@ -51,7 +54,9 @@ public class Game {
         return false;
     }
 
-
+    public synchronized boolean hasSpace(){
+        return (player.size() < numberOfPlayer && !start);
+    }
 
     private void setActivePlayer(){
         int p = playerID.get(countPlayer % playerID.size());

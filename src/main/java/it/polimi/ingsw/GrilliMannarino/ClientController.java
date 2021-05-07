@@ -11,11 +11,6 @@ public class ClientController implements VisitorInterface {
     }
 
     @Override
-    public void executeLogin(LoginMessage login) {
-
-    }
-
-    @Override
     public void executeStartGame(StartGameMessage startGame) {
 
     }
@@ -132,12 +127,12 @@ public class ClientController implements VisitorInterface {
     }
 
     @Override
-    public void executeCreateAccount(CreateAccountMessage createAccountMessage) {
+    public void executeNewGame(NewGameMessage newGameMessage) {
 
     }
 
     @Override
-    public void executeNewGame(NewGameMessage newGameMessage) {
+    public void executeEnterGame(EnterGameMessage enterGameMessage) {
 
     }
 }
