@@ -2,7 +2,9 @@ package it.polimi.ingsw.GrilliMannarino.Message;
 
 public class NewGameMessage extends Message implements MessageInterface{
 
-
+    /**
+     * newGame is true if have been added a new game
+     */
     private boolean newGame = false;
     private final String nickname;
     private int numberOfPlayer;

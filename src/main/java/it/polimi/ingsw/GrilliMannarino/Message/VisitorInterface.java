@@ -17,4 +17,5 @@ public interface VisitorInterface {
     void executeMoveResource(MoveResourceMessage moveResourceMessage);
     void executeNewGame(NewGameMessage newGameMessage);
     void executeEnterGame(EnterGameMessage enterGameMessage);
+    void executeSaveStatus(SaveStatusMessage saveStatusMessage);
 }

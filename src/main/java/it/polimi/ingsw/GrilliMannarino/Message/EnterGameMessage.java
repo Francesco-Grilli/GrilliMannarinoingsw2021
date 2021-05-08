@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class EnterGameMessage extends Message implements MessageInterface, Serializable {
 
+    /**
+     * if enterGame is false there is no game available for client to join
+     * otherwise if enterGame is true, client has joined the game
+     */
     private boolean enterGame = false;
     private final String nickname;
     private String messageString;

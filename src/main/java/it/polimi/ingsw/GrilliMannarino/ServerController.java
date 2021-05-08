@@ -41,6 +41,9 @@ public class ServerController implements VisitorInterface {
     private void startGamePlayer(Integer gameId, Integer playerId){
         ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
         player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, player.size())));
+        TurnMessage message = new TurnMessage(gameId, playerId);
+        message.setMyTurn(true);
+        server.sendMessageTo(playerId, message);
     }
 
     public boolean nicknameAlreadyPresent(String nickname) {
@@ -331,7 +334,7 @@ public class ServerController implements VisitorInterface {
                 message.setPlaceCardCorrect(true);
                 message.setSelectedCard(buyProductionCardMessage.getSelectedCard());
                 message.setPositionCard(buyProductionCardMessage.getPositionCard());
-                updateResources(game);
+                updateResources(game, buyProductionCardMessage.getPlayerId());
             }
             server.sendMessageTo(buyProductionCardMessage.getPlayerId(), message);
             return;
@@ -380,7 +383,7 @@ public class ServerController implements VisitorInterface {
             if(game.startProduction(cardList)){
                 game.setNormalAction(false);    //completed a normal action
                 message.setProductionCorrect(true);
-                updateResources(game);
+                updateResources(game, productionMessage.getPlayerId());
             }
             server.sendMessageTo(productionMessage.getPlayerId(), message);
             return;
@@ -426,7 +429,17 @@ public class ServerController implements VisitorInterface {
             if(moveResourceMessage.isForceSwap()){
                 message.setForceSwap(true);
                 game.forceSwapLine(one, two);
-            }else{
+                updateResources(game, moveResourceMessage.getPlayerId());
+            }
+            else{
+                if(game.canSwapLine(one, two)){
+                    game.forceSwapLine(one, two);
+                    message.setCanMove(true);
+                    updateResources(game, moveResourceMessage.getPlayerId());
+                }
+                else{
+                    message.setCanMove(false);
+                }
                 message.setCanMove(game.canSwapLine(one, two));
             }
             server.sendMessageTo(moveResourceMessage.getPlayerId(), message);
@@ -446,7 +459,7 @@ public class ServerController implements VisitorInterface {
         game.setPlayer(newGameMessage.getPlayerId(), newGameMessage.getNickname());
         NewGameMessage message = new NewGameMessage(game.getGameId(), newGameMessage.getPlayerId(), newGameMessage.getNickname());
         message.setNewGame(true);
-        message.setMessageString("You have created a joined a new game with id: " + game.getGameId());
+        message.setMessageString("You have created and joined a new game with id: " + game.getGameId());
         server.sendMessageTo(newGameMessage.getPlayerId(), message);
     }
 
@@ -478,6 +491,11 @@ public class ServerController implements VisitorInterface {
 
     }
 
+    @Override
+    public void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
+
+    }
+
     private Game firstGameFree(int skip){
         int got = 0;
         for(Integer i : games.keySet()){
@@ -491,8 +509,8 @@ public class ServerController implements VisitorInterface {
         return null;
     }
 
-    private void updateResources(Game game){
-        ResourceMessage message = new ResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+    private void updateResources(Game game, Integer playerId){
+        ResourceMessage message = new ResourceMessage(game.getGameId(), playerId);
 
         HashMap<String, Integer> chest;
         HashMap<String, HashMap<String, Integer>> wareHouse = new HashMap<>();
@@ -511,7 +529,7 @@ public class ServerController implements VisitorInterface {
 
         message.setChestResources(chest);
         message.setWareHouseResources(wareHouse);
-        server.sendMessageTo(game.getActivePlayer().getID(), message);
+        server.sendMessageTo(playerId, message);
 
     }
 

@@ -10,7 +10,7 @@ public interface ClientViewInterface {
 
     void sellingLeaderCard(Integer cardCode);
 
-    void sendError(String errorMessage);
+    void viewError(String errorMessage);
 
     void showMarbleMarket(String[][] marbleList, String marbleOut);
 
@@ -27,4 +27,16 @@ public interface ClientViewInterface {
     void checkPopeLine(boolean favorActive, Integer checkPosition, Integer faithPosition);
 
     void updateFaith(Integer faithPosition);
+
+    void startGame();
+
+    void updateResources(HashMap<String, Integer> chestResources, HashMap<String, HashMap<String, Integer>> wareHouseResources);
+
+    void moveApplied();
+
+    void looseResource();
+
+    void createdNewGame(String messageString, Integer gameId);
+
+    void enteredNewGame(String messageString, Integer gameId);
 }
