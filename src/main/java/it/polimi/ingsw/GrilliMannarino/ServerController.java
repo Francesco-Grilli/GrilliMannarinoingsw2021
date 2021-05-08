@@ -114,10 +114,23 @@ public class ServerController implements VisitorInterface {
         game.setLeaderCardAction(true);
         game.setNormalAction(true);
         game.turnExecution();
+        if(game.isEndGame()){
+            endGame(game);
+            games.remove(game.getGameId());
+        }
 
         TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
         message.setMyTurn(true);
         server.sendMessageTo(message.getPlayerId(), message);
+    }
+
+    private void endGame(Game game){
+        HashMap<String, Integer> ranking = new HashMap<>(game.getAllPoints());
+        for(Integer player : game.getPlayerID()){
+            EndGameMessage message = new EndGameMessage(game.getGameId(), player);
+            server.sendMessageTo(player, message);
+        }
+
     }
 
     @Override
@@ -148,6 +161,9 @@ public class ServerController implements VisitorInterface {
                 game.setLeaderCardAction(false);
             }
             server.sendMessageTo(leaderCard.getPlayerId(), message);
+            if(game.isActivatedEnd()){
+                broadcastMessage(game, "The End is near");
+            }
             return;
         }
         //code for selling the leaderCard
@@ -226,6 +242,9 @@ public class ServerController implements VisitorInterface {
                         else{
                             updateFaith(game);
                         }
+                    }
+                    if(game.isActivatedEnd()){
+                        broadcastMessage(game, "The End is near");
                     }
                     server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
                     return;
@@ -336,6 +355,9 @@ public class ServerController implements VisitorInterface {
                 message.setPositionCard(buyProductionCardMessage.getPositionCard());
                 updateResources(game, buyProductionCardMessage.getPlayerId());
             }
+            if(game.isActivatedEnd()){
+                broadcastMessage(game, "The End is near");
+            }
             server.sendMessageTo(buyProductionCardMessage.getPlayerId(), message);
             return;
 
@@ -385,6 +407,9 @@ public class ServerController implements VisitorInterface {
                 message.setProductionCorrect(true);
                 updateResources(game, productionMessage.getPlayerId());
             }
+            if(game.isActivatedEnd()){
+                broadcastMessage(game, "The End is near");
+            }
             server.sendMessageTo(productionMessage.getPlayerId(), message);
             return;
         }
@@ -430,6 +455,9 @@ public class ServerController implements VisitorInterface {
                 message.setForceSwap(true);
                 game.forceSwapLine(one, two);
                 updateResources(game, moveResourceMessage.getPlayerId());
+                if(game.isActivatedEnd()){
+                    broadcastMessage(game, "The End is near");
+                }
             }
             else{
                 if(game.canSwapLine(one, two)){
@@ -537,6 +565,14 @@ public class ServerController implements VisitorInterface {
         ErrorMessage message = new ErrorMessage(gameId, playerId);
         message.setError(error);
         server.sendMessageTo(message.getPlayerId(), message);
+    }
+
+    private void broadcastMessage(Game game, String error){
+        for(Integer player : game.getPlayerID()){
+            ErrorMessage message = new ErrorMessage(game.getGameId(), player);
+            message.setError(error);
+            server.sendMessageTo(player, message);
+        }
     }
 
     @Override

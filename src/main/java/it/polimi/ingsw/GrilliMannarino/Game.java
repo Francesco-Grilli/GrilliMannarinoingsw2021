@@ -30,7 +30,9 @@ public class Game {
 
     private boolean leaderCardAction = true;
     private boolean normalAction = true;
-    private boolean endGame = true;
+    private boolean activatedEnd = false;
+    private boolean endGame = false;
+    private int playerWasPlaying = 0;
 
     public Game(Integer gameId, Integer numberOfPlayer){
         this.gameId = gameId;
@@ -59,8 +61,21 @@ public class Game {
     }
 
     private void setActivePlayer(){
-        int p = playerID.get(countPlayer % playerID.size());
-        activePlayer =  player.getOrDefault(p, null);
+        if(!activatedEnd) {
+            countPlayer++;
+            int p = playerID.get(countPlayer % playerID.size());
+            activePlayer = player.getOrDefault(p, null);
+        }
+        else{
+            if(((countPlayer +1) % playerID.size()) == (playerWasPlaying % playerID.size())){
+                endGame = true;
+            }
+            else{
+                countPlayer++;
+                int p = playerID.get(countPlayer % playerID.size());
+                activePlayer = player.getOrDefault(p, null);
+            }
+        }
     }
 
     public void setActiveBoard(){
@@ -68,7 +83,6 @@ public class Game {
     }
 
     public void turnExecution(){
-        countPlayer++;
         setActivePlayer();
         setActiveBoard();
     }
@@ -133,8 +147,12 @@ public class Game {
         return activeBoard.showCardInProductionLine();
     }
 
-    public int getAllPoints(){
-        return activeBoard.getPoints();
+    public HashMap<String, Integer> getAllPoints(){
+        HashMap<String, Integer> playerPoints = new HashMap<>();
+        for(Integer playerId : player.keySet()){
+            playerPoints.put(player.get(playerId).getName(), board.get(playerId).getPoints());
+        }
+        return playerPoints;
     }
 
 
@@ -223,12 +241,8 @@ public class Game {
         this.normalAction = normalAction;
     }
 
-    public boolean isEndGame() {
-        return endGame;
-    }
-
-    public void setEndGame(boolean endGame) {
-        this.endGame = endGame;
+    public boolean isActivatedEnd() {
+        return activatedEnd;
     }
 
     public boolean addFaithExceptThis(Integer playerId, int numberOfResource) {
@@ -238,6 +252,10 @@ public class Game {
                 for (int i = 0; i < numberOfResource; i++) {
                     if(board.get(player).addPopeFaith())
                         check = true;
+                    if(board.get(player).getFaith() >= 24) {
+                        activatedEnd = true;
+                        playerWasPlaying = countPlayer;
+                    }
                 }
             }
         }
@@ -260,5 +278,17 @@ public class Game {
 
     public void forceSwapLine(Row one, Row two){
         activeBoard.forceSwapLineFromWareHouse(one, two);
+    }
+
+    public Integer getNumberOfPlayer() {
+        return numberOfPlayer;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public Map<Integer, Player> getPlayer() {
+        return player;
     }
 }

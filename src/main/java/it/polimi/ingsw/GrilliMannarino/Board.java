@@ -15,14 +15,14 @@ import java.util.stream.Stream;
 
 public class Board {
 
-  private final Player player;
-  private PopeLine popeLine;
-  private ResourceManagerBoardInterface resourceManager;
-  private ProductionLineBoardInterface productionLine;
-  private CardMarketBoardInterface cardMarket;
-  private MarbleMarketBoardInterface marbleMarket;
-  private HashMap<Integer, LeaderCard> boardLeaderCards;
-  private ArrayList<Integer> activeLeaderCards;
+  protected final Player player;
+  protected PopeLine popeLine;
+  protected ResourceManagerBoardInterface resourceManager;
+  protected ProductionLineBoardInterface productionLine;
+  protected CardMarketBoardInterface cardMarket;
+  protected MarbleMarketBoardInterface marbleMarket;
+  protected HashMap<Integer, LeaderCard> boardLeaderCards;
+  protected ArrayList<Integer> activeLeaderCards;
 
   public Board(Player player, CardMarketBoardInterface cardMarket, MarbleMarketBoardInterface marbleMarket){
     this.player = player;
@@ -226,7 +226,6 @@ public class Board {
     return popeLine.checkPopeFaith();
   }
 
-  //should remove?
   public void updateChecks(){
     PopeLine.updateChecks();
   }
@@ -243,22 +242,34 @@ public class Board {
     return popeLine.getFaithSteps();
   }
 
-  //should remove?
+
   public boolean[] getFaithChecks(){
     return PopeLine.getFaithChecks();
   }
 
   public void addLorenzoFaith(){
-    ((PopeLineSingle) popeLine).addLorenzoFaith();
+    try{
+      ((PopeLineSingle) popeLine).addLorenzoFaith();
+    }catch(ClassCastException e){
+      e.printStackTrace();
+    }
   }
 
   public void doubleAddLorenzoFaith(){
-    ((PopeLineSingle) popeLine).doubleAddLorenzoFaith();
+    try{
+      ((PopeLineSingle) popeLine).doubleAddLorenzoFaith();
+    }catch (ClassCastException e){
+      e.printStackTrace();
+    }
   }
 
-
   public int getLorenzoFaith(){
-    return ((PopeLineSingle) popeLine).getLorenzoFaith();
+    try{
+      return ((PopeLineSingle) popeLine).getLorenzoFaith();
+    }catch(ClassCastException e){
+      e.printStackTrace();
+    }
+    return -1;
   }
 
   public HashMap<Resource, Integer> getInputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){

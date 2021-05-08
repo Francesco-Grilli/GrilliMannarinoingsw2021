@@ -6,6 +6,7 @@ public class PopeLineSingle extends PopeLine{
     private PopeLine lorenzo;
 
     public PopeLineSingle(){
+        super();
         lorenzo = new PopeLine();
     }
 
