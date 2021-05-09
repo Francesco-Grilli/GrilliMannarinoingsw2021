@@ -71,11 +71,29 @@ public class Board {
     return resourceManager.canRemove(getInputOfConfiguration(cards));
   }
 
-  public void produce(ArrayList<CreationCard> cards){
+  public boolean produce(ArrayList<CreationCard> cards){
+    boolean check = false;
     if(canProduceWithConfiguration(cards)) {
       resourceManager.remove(getInputOfConfiguration(cards));
-      resourceManager.setResourcesFromProduction(getOutputOfConfiguration(cards));
+      HashMap<Resource, Integer> resourceProduct = getOutputOfConfiguration(cards);
+      int numberOfFaith=0;
+      if(resourceProduct.containsKey(Resource.FAITH)){
+        numberOfFaith = resourceProduct.get(Resource.FAITH);
+        resourceProduct.remove(Resource.FAITH);
+      }
+      resourceManager.setResourcesFromProduction(resourceProduct);
+      if(numberOfFaith>0){
+        for(int i=0; i<numberOfFaith; i++){
+          if(addPopeFaith())
+            check=true;
+        }
+      }
     }
+    return check;
+  }
+
+  public int getNumberOfCards(){
+    return productionLine.getNumberOfCards();
   }
 
 
@@ -247,20 +265,22 @@ public class Board {
     return PopeLine.getFaithChecks();
   }
 
-  public void addLorenzoFaith(){
+  public boolean addLorenzoFaith(){
     try{
-      ((PopeLineSingle) popeLine).addLorenzoFaith();
+      return ((PopeLineSingle) popeLine).addLorenzoFaith();
     }catch(ClassCastException e){
       e.printStackTrace();
     }
+    return false;
   }
 
-  public void doubleAddLorenzoFaith(){
+  public boolean doubleAddLorenzoFaith(){
     try{
-      ((PopeLineSingle) popeLine).doubleAddLorenzoFaith();
+      return ((PopeLineSingle) popeLine).doubleAddLorenzoFaith();
     }catch (ClassCastException e){
       e.printStackTrace();
     }
+    return false;
   }
 
   public int getLorenzoFaith(){

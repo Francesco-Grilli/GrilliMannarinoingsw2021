@@ -1,13 +1,37 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.Internet.Client;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ClientController implements VisitorInterface {
 
     private final ClientViewInterface view;
+    private Client client;
+    private String nickname;
+    private Integer playerId;
+    private Integer gameId;
+
+    private ArrayList<ArrayList<String>> returnedMarble;
+    private HashMap<String, HashMap<String, Integer>>warehouse;
+    private HashMap<String, Integer> chest;
+    private Integer faith;
+    private boolean[] faithMark = new boolean[3];
+    private final int[] faithValue = {2, 3, 4};
 
     public ClientController(ClientViewInterface view){
         this.view = view;
+        client = new Client(this);
+    }
+
+    public void sendMessageToServer(MessageInterface message){
+        client.sendMessageToServer(message);
+    }
+
+    public MessageInterface receiveMessageFromServer(){
+        return client.receiveMessageFromServer();
     }
 
     @Override
@@ -155,5 +179,29 @@ public class ClientController implements VisitorInterface {
     @Override
     public void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
 
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Integer getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
+    }
+
+    public Integer getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 }

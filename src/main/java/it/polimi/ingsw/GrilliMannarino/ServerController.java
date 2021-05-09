@@ -32,6 +32,7 @@ public class ServerController implements VisitorInterface {
     public ServerController(){
         server = new Server(this);
         nicknamesList = new HashMap<>();
+        server.startConnection();
     }
 
     public void receiveMessage(MessageInterface message){
@@ -43,6 +44,7 @@ public class ServerController implements VisitorInterface {
         player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, player.size())));
         TurnMessage message = new TurnMessage(gameId, playerId);
         message.setMyTurn(true);
+        games.get(gameId).setStart(true);
         server.sendMessageTo(playerId, message);
     }
 
@@ -402,7 +404,12 @@ public class ServerController implements VisitorInterface {
             for(Integer i : cardStringList){
                 cardList.add(game.getCardFromCode(i));
             }
-            if(game.startProduction(cardList)){
+            if(game.canProduce(cardList)){
+                if(game.startProduction(cardList)){
+                    updatePopeLine(game);
+                }
+                else
+                    updateFaith(game);
                 game.setNormalAction(false);    //completed a normal action
                 message.setProductionCorrect(true);
                 updateResources(game, productionMessage.getPlayerId());
@@ -480,7 +487,7 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeNewGame(NewGameMessage newGameMessage) {
+    public synchronized void executeNewGame(NewGameMessage newGameMessage) {
         Game game = new Game(nextGameId, newGameMessage.getNumberOfPlayer());
         games.put(nextGameId, game);
         nextGameId++;

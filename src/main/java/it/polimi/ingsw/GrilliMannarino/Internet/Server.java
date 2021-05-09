@@ -27,6 +27,11 @@ public class Server {
 
     }
 
+    public void startConnection(){
+        Thread thread = new Thread(new ConnectionHandler(this));
+        thread.start();
+    }
+
     public Server(ServerController controller){
         this.controller = controller;
     }

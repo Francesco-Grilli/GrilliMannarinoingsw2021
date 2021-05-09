@@ -93,4 +93,8 @@ public class ProductionLine implements ProductionLineBoardInterface{
     }
 
     public void setStatus(JSONObject status){}
+
+    public int getNumberOfCards(){
+        return productionCards.size();
+    }
 }

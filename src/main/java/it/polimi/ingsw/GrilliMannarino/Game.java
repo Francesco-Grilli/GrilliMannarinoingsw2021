@@ -13,26 +13,26 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
 
-    final private Integer gameId;
-    private final Integer numberOfPlayer;
-    private boolean start = false;
-    private final Map<Integer, Player> player;
-    private final ArrayList<Integer> playerID;
-    private final Map<Integer, Board> board;
+    final protected Integer gameId;
+    protected final Integer numberOfPlayer;
+    protected boolean start = false;
+    protected final Map<Integer, Player> player;
+    protected  ArrayList<Integer> playerID;
+    protected final Map<Integer, Board> board;
 
-    private Player activePlayer;
-    private Board activeBoard;
+    protected Player activePlayer;
+    protected Board activeBoard;
 
-    private int countPlayer = 0;
+    protected int countPlayer = 0;
 
-    private final CardMarketBoardInterface cardMarket;
-    private final MarbleMarketBoardInterface marbleMarket;
+    protected final CardMarketBoardInterface cardMarket;
+    protected final MarbleMarketBoardInterface marbleMarket;
 
-    private boolean leaderCardAction = true;
-    private boolean normalAction = true;
-    private boolean activatedEnd = false;
-    private boolean endGame = false;
-    private int playerWasPlaying = 0;
+    protected boolean leaderCardAction = true;
+    protected boolean normalAction = true;
+    protected boolean activatedEnd = false;
+    protected boolean endGame = false;
+    protected int playerWasPlaying = 0;
 
     public Game(Integer gameId, Integer numberOfPlayer){
         this.gameId = gameId;
@@ -60,7 +60,7 @@ public class Game {
         return (player.size() < numberOfPlayer && !start);
     }
 
-    private void setActivePlayer(){
+    protected void setActivePlayer(){
         if(!activatedEnd) {
             countPlayer++;
             int p = playerID.get(countPlayer % playerID.size());
@@ -78,7 +78,7 @@ public class Game {
         }
     }
 
-    public void setActiveBoard(){
+    protected void setActiveBoard(){
         activeBoard = board.get(activePlayer.getID());
     }
 
@@ -98,6 +98,10 @@ public class Game {
         if(activeBoard.canAddCard(cardPosition, card)){
             if(activeBoard.getCardFromMarket(card)!=null){
                 activeBoard.addCard(cardPosition, card);
+                if(activeBoard.getNumberOfCards()>=7){
+                    activatedEnd=true;
+                    playerWasPlaying = countPlayer;
+                }
                 return true;
             }
         }
@@ -134,10 +138,13 @@ public class Game {
 
     //METHOD TO BUY PRODUCE
 
+    public boolean canProduce(ArrayList<CreationCard> creationCards){
+        return activeBoard.canProduceWithConfiguration(creationCards);
+    }
+
     public boolean startProduction(ArrayList<CreationCard> creationCards){
         if(activeBoard.canProduceWithConfiguration(creationCards)){
-            activeBoard.produce(creationCards);
-            return true;
+            return activeBoard.produce(creationCards);
         }
         else
             return false;
@@ -175,7 +182,12 @@ public class Game {
     }
 
     public boolean sellLeaderCard(Integer cardCode){
-        return activeBoard.sellLeaderCard(cardCode);
+        boolean sell = activeBoard.sellLeaderCard(cardCode);
+        if(activeBoard.getFaith()>=24){
+            activatedEnd = true;
+            playerWasPlaying = countPlayer;
+        }
+        return sell;
     }
 
     public boolean canSellLeaderCard(Integer cardCode){
@@ -205,6 +217,10 @@ public class Game {
             playersFaith.put(i, board.get(i).getFaith());
 
         return playersFaith;
+    }
+
+    public Integer getLorenzoFaith(){
+        return null;
     }
 
     public Integer getPopeLinePosition(){
@@ -290,5 +306,13 @@ public class Game {
 
     public Map<Integer, Player> getPlayer() {
         return player;
+    }
+
+    public boolean isStart() {
+        return start;
+    }
+
+    public void setStart(boolean start) {
+        this.start = start;
     }
 }

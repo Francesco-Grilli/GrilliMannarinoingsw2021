@@ -15,4 +15,5 @@ public interface ProductionLineBoardInterface {
   int getPoints();
   JSONObject getStatus();
   void setStatus(JSONObject status);
+  int getNumberOfCards();
 }
