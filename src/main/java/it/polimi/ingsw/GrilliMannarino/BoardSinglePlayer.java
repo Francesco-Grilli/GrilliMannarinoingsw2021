@@ -13,7 +13,7 @@ public class BoardSinglePlayer extends Board{
 
     public boolean addLorenzoFaith(){
         try{
-            return ((PopeLineSingle) popeLine).addLorenzoFaith();
+            return popelineLorenzo.addLorenzoFaith();
         }catch(ClassCastException e){
             e.printStackTrace();
         }
@@ -22,7 +22,7 @@ public class BoardSinglePlayer extends Board{
 
     public boolean doubleAddLorenzoFaith(){
         try{
-            return ((PopeLineSingle) popeLine).doubleAddLorenzoFaith();
+            return popelineLorenzo.doubleAddLorenzoFaith();
         }catch (ClassCastException e){
             e.printStackTrace();
         }
@@ -31,7 +31,7 @@ public class BoardSinglePlayer extends Board{
 
     public int getLorenzoFaith(){
         try{
-            return ((PopeLineSingle) popeLine).getLorenzoFaith();
+            return popelineLorenzo.getLorenzoFaith();
         }catch(ClassCastException e){
             e.printStackTrace();
         }
