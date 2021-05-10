@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,23 +25,26 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
     private Integer columnRowValue;
     private boolean selectColumnRow = false;
     private boolean displayMarblesReturned = false;
-    private ArrayList<ArrayList<String>> returnedMarble;
+    private ArrayList<ArrayList<Marble>> returnedMarble;
 
     /**
      * addedResource is used by the client to tell the server that want put a resource into warehouse
      * addedResource is set true by the server to let client check if the resource war correctly added to warehouse or
      * not by checking addResourceCorrect
+     * returnedResource is passed between client and server. Server delete the resource placed into warehouse from
+     * returnedResource
      */
     private boolean addedResource = false;
-    private String marbleType;
-    private String insertRow;
+    private Resource resourceType;
+    private Row insertRow;
     private boolean addResourceCorrect = false;
+    private ArrayList<Resource> returnedResource;
 
     /**
      * destroyRemaining is set to true by the client if want to destroy the marble remained
      */
     private boolean destroyRemaining = false;
-    private ArrayList<String> returnedResource;
+
 
 
     public MarbleMarketMessage(Integer gameId, Integer playerId) {
@@ -107,19 +112,19 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
         this.columnRow = columnRow;
     }
 
-    public ArrayList<ArrayList<String>> getReturnedMarble() {
+    public ArrayList<ArrayList<Marble>> getReturnedMarble() {
         return returnedMarble;
     }
 
-    public void setReturnedMarble(ArrayList<ArrayList<String>> returnedMarble) {
+    public void setReturnedMarble(ArrayList<ArrayList<Marble>> returnedMarble) {
         this.returnedMarble = returnedMarble;
     }
 
-    public ArrayList<String> getReturnedResource() {
+    public ArrayList<Resource> getReturnedResource() {
         return returnedResource;
     }
 
-    public void setReturnedResource(ArrayList<String> returnedResource) {
+    public void setReturnedResource(ArrayList<Resource> returnedResource) {
         this.returnedResource = returnedResource;
     }
 
@@ -131,19 +136,19 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
         this.columnRowValue = columnRowValue;
     }
 
-    public String getMarbleType() {
-        return marbleType;
+    public Resource getResourceType() {
+        return resourceType;
     }
 
-    public void setMarbleType(String marbleType) {
-        this.marbleType = marbleType;
+    public void setResourceType(Resource resourceType) {
+        this.resourceType = resourceType;
     }
 
-    public String getInsertRow() {
+    public Row getInsertRow() {
         return insertRow;
     }
 
-    public void setInsertRow(String insertRow) {
+    public void setInsertRow(Row insertRow) {
         this.insertRow = insertRow;
     }
 

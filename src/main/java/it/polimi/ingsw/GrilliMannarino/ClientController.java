@@ -3,31 +3,20 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.Internet.Client;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class ClientController implements VisitorInterface {
 
-    private final ClientViewInterface view;
+    private final ClientView view;
     private Client client;
-    private String nickname;
-    private Integer playerId;
-    private Integer gameId;
 
-    private ArrayList<ArrayList<String>> returnedMarble;
-    private HashMap<String, HashMap<String, Integer>>warehouse;
-    private HashMap<String, Integer> chest;
-    private Integer faith;
-    private boolean[] faithMark = new boolean[3];
-    private final int[] faithValue = {2, 3, 4};
 
-    public ClientController(ClientViewInterface view){
+    public ClientController(ClientView view){
         this.view = view;
-        client = new Client(this);
+        client = new Client();
     }
 
     public void sendMessageToServer(MessageInterface message){
         client.sendMessageToServer(message);
+        client.receiveMessageFromServer().execute(this);
     }
 
     public MessageInterface receiveMessageFromServer(){
@@ -65,14 +54,16 @@ public class ClientController implements VisitorInterface {
         if(!marbleMarketMessage.isDisplayMarbleMarket()){
             if(!marbleMarketMessage.isDisplayMarblesReturned()){
                 if(!marbleMarketMessage.isAddedResource()){
-                    view.viewError("Error in MarbleMarket action");
-                    return;
+                    if(!marbleMarketMessage.isDestroyRemaining()) {
+                        view.viewError("Error in MarbleMarket action");
+                        return;
+                    }
+                    //code to check added resource
+                    view.finishedNormalAction();
                 }
                 //code to check added resource
-                if(marbleMarketMessage.isAddResourceCorrect())
-                    view.addedResource(marbleMarketMessage.getMarbleType(), marbleMarketMessage.getInsertRow());
-                else
-                    view.viewError("Resource could not be added to warehouse");
+
+                view.addedResource(marbleMarketMessage.getResourceType(), marbleMarketMessage.getInsertRow(), marbleMarketMessage.getReturnedResource(), marbleMarketMessage.isAddResourceCorrect());
                 return;
             }
             //code to select the marbles
@@ -179,29 +170,5 @@ public class ClientController implements VisitorInterface {
     @Override
     public void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
 
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public Integer getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(Integer playerId) {
-        this.playerId = playerId;
-    }
-
-    public Integer getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
     }
 }
