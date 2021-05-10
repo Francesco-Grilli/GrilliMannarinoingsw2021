@@ -1,11 +1,14 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+
 import java.util.HashMap;
 
 public class ResourceMessage extends Message implements MessageInterface{
 
-    private HashMap<String, HashMap<String, Integer>> wareHouseResources;
-    private HashMap<String, Integer> chestResources;
+    private HashMap<Row, HashMap<Resource, Integer>> wareHouseResources;
+    private HashMap<Resource, Integer> chestResources;
 
     public ResourceMessage(Integer gameId, Integer playerId) {
         super(gameId, playerId);
@@ -17,19 +20,19 @@ public class ResourceMessage extends Message implements MessageInterface{
     }
 
 
-    public HashMap<String, HashMap<String, Integer>> getWareHouseResources() {
+    public HashMap<Row, HashMap<Resource, Integer>> getWareHouseResources() {
         return wareHouseResources;
     }
 
-    public void setWareHouseResources(HashMap<String, HashMap<String, Integer>> wareHouseResources) {
+    public void setWareHouseResources(HashMap<Row, HashMap<Resource, Integer>> wareHouseResources) {
         this.wareHouseResources = wareHouseResources;
     }
 
-    public HashMap<String, Integer> getChestResources() {
+    public HashMap<Resource, Integer> getChestResources() {
         return chestResources;
     }
 
-    public void setChestResources(HashMap<String, Integer> chestResources) {
+    public void setChestResources(HashMap<Resource, Integer> chestResources) {
         this.chestResources = chestResources;
     }
 }

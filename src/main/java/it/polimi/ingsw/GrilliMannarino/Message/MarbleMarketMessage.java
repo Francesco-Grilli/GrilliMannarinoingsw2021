@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -9,8 +11,8 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
      * displayMarbleMarket is set true by client to ask the server to see the configuration of marbleMarket
      * server set displayMarbleMarket true to let client know that marbleList contains the configuration asked
      */
-    private String[][] marbleList;
-    private String marbleOut;
+    private Marble[][] marbleList;
+    private Marble marbleOut;
     private boolean displayMarbleMarket = false; //client ask to see the MarbleMarket
 
     /**
@@ -65,11 +67,11 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
         return addedResource;
     }
 
-    public String[][] getMarbleList() {
+    public Marble[][] getMarbleList() {
         return marbleList;
     }
 
-    public void setMarbleList(String[][] marbleList) {
+    public void setMarbleList(Marble[][] marbleList) {
         this.marbleList = marbleList;
     }
 
@@ -89,11 +91,11 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
         this.addedResource = addedResource;
     }
 
-    public String getMarbleOut() {
+    public Marble getMarbleOut() {
         return marbleOut;
     }
 
-    public void setMarbleOut(String marbleOut) {
+    public void setMarbleOut(Marble marbleOut) {
         this.marbleOut = marbleOut;
     }
 

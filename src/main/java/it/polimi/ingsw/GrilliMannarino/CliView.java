@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -28,7 +31,7 @@ public class CliView extends Application implements ClientViewInterface{
     }
 
     @Override
-    public void showMarbleMarket(String[][] marbleList, String marbleOut) {
+    public void showMarbleMarket(Marble[][] marbleList, Marble marbleOut) {
        /* System.out.println("Marble Market:");
         System.out.println();
         int y=0;
@@ -87,7 +90,7 @@ public class CliView extends Application implements ClientViewInterface{
     }
 
     @Override
-    public void updateResources(HashMap<String, Integer> chestResources, HashMap<String, HashMap<String, Integer>> wareHouseResources) {
+    public void updateResources(HashMap<Resource, Integer> chestResources, HashMap<Row, HashMap<Resource, Integer>> wareHouseResources) {
 
     }
 

@@ -308,16 +308,10 @@ public class ServerController implements VisitorInterface {
         //code to show marble market
 
         Marble[][] marbles = game.displayMarbleMarket();
-        String[][] marbleString = new String[marbles.length][marbles[0].length];
-        for (int x=0; x<marbles.length;x++){
-            for (int y=0; y<marbles[x].length; y++){
-                marbleString[x][y] = marbles[x][y].toString();
-            }
-        }
         MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-        message.setMarbleList(marbleString);
+        message.setMarbleList(marbles);
         message.setDisplayMarbleMarket(true);
-        message.setMarbleOut(game.displayMarbleOut().toString());
+        message.setMarbleOut(game.displayMarbleOut());
         server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
     }
 
@@ -453,11 +447,12 @@ public class ServerController implements VisitorInterface {
         }
 
         try {
-            Row one = Row.valueOf(moveResourceMessage.getRowOne());
-            Row two = Row.valueOf(moveResourceMessage.getRowTwo());
+            Row one = moveResourceMessage.getRowOne();
+            Row two = moveResourceMessage.getRowTwo();
 
             MoveResourceMessage message = new MoveResourceMessage(moveResourceMessage.getGameId(), moveResourceMessage.getPlayerId());
-
+            message.setRowOne(one);
+            message.setRowTwo(two);
             if(moveResourceMessage.isForceSwap()){
                 message.setForceSwap(true);
                 game.forceSwapLine(one, two);
@@ -547,23 +542,10 @@ public class ServerController implements VisitorInterface {
     private void updateResources(Game game, Integer playerId){
         ResourceMessage message = new ResourceMessage(game.getGameId(), playerId);
 
-        HashMap<String, Integer> chest;
-        HashMap<String, HashMap<String, Integer>> wareHouse = new HashMap<>();
         HashMap<Resource, Integer> chestResource = new HashMap<>(game.getResourcesFromChest());
         HashMap<Row, HashMap<Resource, Integer>> wareHouseResource = new HashMap<>(game.getResourcesFromWareHouse());
-
-        chest = chestResource.keySet().stream().collect(Collectors.toMap(Enum::toString, chestResource::get, (a, b) -> b, HashMap::new));
-
-        for(Row row : wareHouseResource.keySet()){
-            HashMap<String, Integer> copy = new HashMap<>();
-            for(Resource res : wareHouseResource.get(row).keySet()){
-                copy.put(res.toString(), wareHouseResource.get(row).get(res));
-            }
-            wareHouse.put(row.toString(), new HashMap<String, Integer>(copy));
-        }
-
-        message.setChestResources(chest);
-        message.setWareHouseResources(wareHouse);
+        message.setChestResources(chestResource);
+        message.setWareHouseResources(wareHouseResource);
         server.sendMessageTo(playerId, message);
 
     }

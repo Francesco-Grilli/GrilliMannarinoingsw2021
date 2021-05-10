@@ -1,5 +1,9 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,7 +16,7 @@ public interface ClientViewInterface {
 
     void viewError(String errorMessage);
 
-    void showMarbleMarket(String[][] marbleList, String marbleOut);
+    void showMarbleMarket(Marble[][] marbleList, Marble marbleOut);
 
     void selectMarble(ArrayList<ArrayList<String>> returnedMarble);
 
@@ -30,7 +34,7 @@ public interface ClientViewInterface {
 
     void startGame();
 
-    void updateResources(HashMap<String, Integer> chestResources, HashMap<String, HashMap<String, Integer>> wareHouseResources);
+    void updateResources(HashMap<Resource, Integer> chestResources, HashMap<Row, HashMap<Resource, Integer>> wareHouseResources);
 
     void moveApplied();
 

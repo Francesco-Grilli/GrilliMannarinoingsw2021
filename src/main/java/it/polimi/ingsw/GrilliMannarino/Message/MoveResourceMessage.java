@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+
 public class MoveResourceMessage extends Message implements MessageInterface{
 
     /**
@@ -7,8 +9,8 @@ public class MoveResourceMessage extends Message implements MessageInterface{
      * forceSwap is used by the server to force the swap of the lines, server can set it to true to let client
      * know that the swap was correct
      */
-    private String rowOne;
-    private String rowTwo;
+    private Row rowOne;
+    private Row rowTwo;
     private boolean canMove = false;
     private boolean forceSwap = false;
 
@@ -21,19 +23,19 @@ public class MoveResourceMessage extends Message implements MessageInterface{
         visitor.executeMoveResource(this);
     }
 
-    public String getRowOne() {
+    public Row getRowOne() {
         return rowOne;
     }
 
-    public void setRowOne(String rowOne) {
+    public void setRowOne(Row rowOne) {
         this.rowOne = rowOne;
     }
 
-    public String getRowTwo() {
+    public Row getRowTwo() {
         return rowTwo;
     }
 
-    public void setRowTwo(String rowTwo) {
+    public void setRowTwo(Row rowTwo) {
         this.rowTwo = rowTwo;
     }
 
