@@ -19,7 +19,7 @@ public class Main {
         marble[1] = new Marble[]{Marble.WHITE, Marble.RED, Marble.WHITE, Marble.WHITE};
         marble[2] = new Marble[]{Marble.WHITE, Marble.GREY, Marble.YELLOW, Marble.YELLOW};
         cli.showMarbleMarket(marble, Marble.BLACK);*/
-        ArrayList<ArrayList<Marble>> marbleList = new ArrayList<>();
+        /*ArrayList<ArrayList<Marble>> marbleList = new ArrayList<>();
         Map<Row, HashMap<Resource, Integer>> warehouse = new TreeMap<>();
         HashMap<Resource, Integer> res = new HashMap<>();
         res.put(Resource.FAITH, 2);
@@ -35,8 +35,6 @@ public class Main {
         cli.setWarehouse(warehouse);
         ArrayList<Marble> marble = new ArrayList<>();
         marble.add(Marble.PURPLE);
-        marble.add(Marble.BLUE);
-        marble.add(Marble.WHITE);
         marbleList.add(marble);
         ArrayList<Marble> marble2 = new ArrayList<>();
         marble2.add(Marble.GREY);
@@ -44,5 +42,11 @@ public class Main {
         marble2.add(Marble.BLUE);
         marbleList.add(marble2);
         cli.selectMarble(marbleList);
+        cli.selectAction();*/
+        ArrayList<Integer> cards = new ArrayList<>();
+        cards.add(1);
+        cards.add(7);
+        cli.startGame();
+        cli.showProductionCard(cards);
     }
 }

@@ -22,7 +22,6 @@ public abstract class ClientView {
     protected Integer faith;
     protected boolean[] faithMark = new boolean[3];
     protected final int[] faithValue = {2, 3, 4};
-    protected ArrayList<String> leaderCard = new ArrayList<>();
 
     abstract void activateLeaderCard(Integer activatedCard);
 
@@ -36,7 +35,7 @@ public abstract class ClientView {
 
     abstract void addedResource(Resource resourceType, Row insertRow, ArrayList<Resource> remainingResource, boolean addResourceCorrect);
 
-    abstract void showProductionCard(HashMap<Integer, Boolean> buyableCard);
+    abstract void showProductionMarket(HashMap<Integer, Boolean> buyableCard);
 
     abstract void setCardIntoProductionLine(Integer selectedCard, Integer positionCard);
 
@@ -63,4 +62,8 @@ public abstract class ClientView {
     }
 
     public abstract void finishedNormalAction();
+
+    public abstract void showLeaderCard(ArrayList<Integer> cards);
+
+    public abstract void showProductionCard(ArrayList<Integer> productionCard);
 }

@@ -19,10 +19,6 @@ public class ClientController implements VisitorInterface {
         client.receiveMessageFromServer().execute(this);
     }
 
-    public MessageInterface receiveMessageFromServer(){
-        return client.receiveMessageFromServer();
-    }
-
     @Override
     public void executeStartGame(StartGameMessage startGame) {
         view.startGame();
@@ -30,23 +26,28 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
-        if(!leaderCard.isActivateCard()){
-            if(!leaderCard.isSellingCard()){
-                view.viewError("Error on LeaderCard action");
+        if(!leaderCard.isShowLeaderCard()) {
+            if (!leaderCard.isActivateCard()) {
+                if (!leaderCard.isSellingCard()) {
+                    view.viewError("Error on LeaderCard action");
+                    return;
+                }
+                //code to selling card
+                if (leaderCard.isActivationSellingCorrect())
+                    view.sellingLeaderCard(leaderCard.getCardCode());
+                else
+                    view.viewError("LeaderCard has not been sold");
                 return;
             }
-            //code to selling card
-            if(leaderCard.isActivationSellingCorrect())
-                view.sellingLeaderCard(leaderCard.getCardCode());
+            //code to activate card
+            if (leaderCard.isActivationSellingCorrect())
+                view.activateLeaderCard(leaderCard.getCardCode());
             else
-                view.viewError("LeaderCard has not been sold");
+                view.viewError("leaderCard has not been activated");
             return;
         }
-        //code to activate card
-        if(leaderCard.isActivationSellingCorrect())
-            view.activateLeaderCard(leaderCard.getCardCode());
-        else
-            view.viewError("leaderCard has not been activated");
+        //code to show leaderCard
+        view.showLeaderCard(leaderCard.getCards());
     }
 
     @Override
@@ -89,18 +90,23 @@ public class ClientController implements VisitorInterface {
             return;
         }
         //code to display card
-        view.showProductionCard(buyProductionCardMessage.getBuyableCard());
+        view.showProductionMarket(buyProductionCardMessage.getBuyableCard());
     }
 
     @Override
     public void executeProduction(ProductionMessage productionMessage) {
-        if(!productionMessage.isSelectCard()){
-            view.viewError("Error on Production action");
+        if(!productionMessage.isSelectCard()) {
+            if (!productionMessage.isSelectCard()) {
+                view.viewError("Error on Production action");
+                return;
+            }
+            //code to check if the production was successful
+            if (!productionMessage.isProductionCorrect())
+                view.viewError("Production configuration wasn't correct");
             return;
         }
-        //code to check if the production was successful
-        if(!productionMessage.isProductionCorrect())
-            view.viewError("Production configuration wasn't correct");
+        //code to show card into production
+        view.showProductionCard(productionMessage.getProductionCard());
     }
 
     @Override

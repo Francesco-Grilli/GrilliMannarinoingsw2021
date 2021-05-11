@@ -14,7 +14,7 @@ public class GameSinglePlayer extends Game{
         if(player.size()<numberOfPlayer && !player.containsKey(playerId) && !board.containsKey(playerId)){
             player.put(playerId, new Player(nickName, playerId));
             playerID.add(playerId);
-            board.put(playerId, new BoardSinglePlayer(player.get(playerId), cardMarket, marbleMarket));
+            board.put(playerId, new BoardSinglePlayer(player.get(playerId), , marbleMarket));
             return true;
         }
         return false;

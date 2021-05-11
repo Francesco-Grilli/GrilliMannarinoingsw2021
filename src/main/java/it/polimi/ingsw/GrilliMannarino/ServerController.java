@@ -146,39 +146,48 @@ public class ServerController implements VisitorInterface {
             sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "No active Leader Card or No action left!");
             return;
         }
+        if(!leaderCard.isShowLeaderCard()) {
+            if (!leaderCard.isSellingCard()) {
+                if (!leaderCard.isActivateCard()) {
+                    sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on Leader Card action");
+                    return;
+                }
+                //code to activate leaderCard
 
-        if(!leaderCard.isSellingCard()){
-            if(!leaderCard.isActivateCard()){
-                sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on Leader Card action");
+                LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
+                message.setActivateCard(true);
+                message.setCardCode(leaderCard.getCardCode());
+                if (game.activateLeaderCard(leaderCard.getCardCode())) {
+                    message.setActivationSellingCorrect(true);
+                    game.setLeaderCardAction(false);
+                }
+                server.sendMessageTo(leaderCard.getPlayerId(), message);
+                if (game.isActivatedEnd()) {
+                    broadcastMessage(game, "The End is near");
+                }
                 return;
             }
-            //code to activate leaderCard
+            //code for selling the leaderCard
 
             LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
-            message.setActivateCard(true);
+            message.setSellingCard(true);
             message.setCardCode(leaderCard.getCardCode());
-            if (game.activateLeaderCard(leaderCard.getCardCode())) {
+            if (game.canSellLeaderCard(leaderCard.getCardCode())) {
                 message.setActivationSellingCorrect(true);
                 game.setLeaderCardAction(false);
+                if (game.sellLeaderCard(leaderCard.getCardCode())) {
+                    updatePopeLine(game);
+                }
             }
             server.sendMessageTo(leaderCard.getPlayerId(), message);
-            if(game.isActivatedEnd()){
-                broadcastMessage(game, "The End is near");
-            }
             return;
         }
-        //code for selling the leaderCard
+        //code to show leadercard
 
-        LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
-        message.setSellingCard(true);
-        message.setCardCode(leaderCard.getCardCode());
-        if(game.canSellLeaderCard(leaderCard.getCardCode())){
-            message.setActivationSellingCorrect(true);
-            game.setLeaderCardAction(false);
-            if(game.sellLeaderCard(leaderCard.getCardCode())){
-                updatePopeLine(game);
-            }
-        }
+        ArrayList<Integer> cards = new ArrayList<>(game.getLeaderCard());
+        LeaderCardMessage message = new LeaderCardMessage(leaderCard.getPlayerId(), leaderCard.getGameId());
+        message.setShowLeaderCard(true);
+        message.setCards(cards);
         server.sendMessageTo(leaderCard.getPlayerId(), message);
 
     }

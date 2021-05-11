@@ -3,9 +3,15 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
-import it.polimi.ingsw.GrilliMannarino.Message.BuyProductionCardMessage;
-import it.polimi.ingsw.GrilliMannarino.Message.MarbleMarketMessage;
+import it.polimi.ingsw.GrilliMannarino.Message.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -15,6 +21,7 @@ public class CliView extends ClientView {
 
     private Scanner scanner;
     private ClientController controller;
+    private HashMap<Integer, JSONObject> jsonCardsProduction = new HashMap<>();
 
     public CliView(){
         scanner = new Scanner(System.in);
@@ -35,6 +42,7 @@ public class CliView extends ClientView {
     @Override
     public void viewError(String errorMessage) {
         System.out.println(errorMessage.toUpperCase(Locale.ROOT));
+        selectAction();
     }
 
     @Override
@@ -105,27 +113,31 @@ public class CliView extends ClientView {
         System.out.println("For each Row you have to select the Marble you prefer");
         ArrayList<Marble> toReturn = new ArrayList<>();
         for(ArrayList<Marble> arr : returnedMarble){
-            ArrayList<Marble> marble = new ArrayList<>();
-            for(int x=0; x<arr.size(); x++){
-                System.out.format("%15s", arr.get(x).toString());
-                marble.add(arr.get(x));
+            if(arr.size()==1){
+                toReturn.add(arr.get(0));
             }
-            System.out.println();
-            Marble m = null;
-            try {
-                m = Marble.valueOf(scanner.nextLine());
-            }
-            catch(IllegalArgumentException e){
-            }
-            while(!marble.contains(m)){
-                System.out.println("Invalid Input");
+            else {
+                ArrayList<Marble> marble = new ArrayList<>();
+                for (int x = 0; x < arr.size(); x++) {
+                    System.out.format("%15s", arr.get(x).toString());
+                    marble.add(arr.get(x));
+                }
+                System.out.println();
+                Marble m = null;
                 try {
                     m = Marble.valueOf(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
                 }
-                catch(IllegalArgumentException e){
+                while (!marble.contains(m)) {
+                    System.out.println("Invalid Input");
+                    try {
+                        m = Marble.valueOf(scanner.nextLine());
+                    } catch (IllegalArgumentException e) {
+                    }
                 }
+                toReturn.add(m);
             }
-            toReturn.add(m);
+
         }
 
         ArrayList<Resource> resources = new ArrayList<>();
@@ -224,6 +236,7 @@ public class CliView extends ClientView {
             System.out.println("You have finished the resource to place");
             MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
             message.setDestroyRemaining(true);
+            message.setReturnedResource(new ArrayList<>());
             controller.sendMessageToServer(message);
             return;
         }
@@ -231,7 +244,7 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public void showProductionCard(HashMap<Integer, Boolean> buyableCard) {
+    public void showProductionMarket(HashMap<Integer, Boolean> buyableCard) {
 
     }
 
@@ -240,27 +253,97 @@ public class CliView extends ClientView {
 
     }
 
-    @Override
-    public void isYourTurn() {
-        System.out.println("This is your turn! Play it wisely");
+    public void selectAction(){
         System.out.println("What do you want to do?");
         System.out.println("B for buying a card to the market");
         System.out.println("M for going to the Marble market");
         System.out.println("L for Leader card action");
         System.out.println("S for swapping resources from your warehouse");
+        System.out.println("N for next turn");
         String s = scanner.nextLine();
-        switch (s){
-            case "M":
+        boolean check = true;
+        while(check) {
+            if ("M".equals(s)) {
                 MarbleMarketMessage marbleMessage = new MarbleMarketMessage(this.gameId, this.playerId);
                 marbleMessage.setDisplayMarbleMarket(true);
+                check = false;
                 controller.sendMessageToServer(marbleMessage);
-                break;
-            case "B":
+            } else if ("B".equals(s)) {
                 BuyProductionCardMessage buyProductionMessage = new BuyProductionCardMessage(this.gameId, this.playerId);
                 buyProductionMessage.setDisplayCard(true);
+                check = false;
                 controller.sendMessageToServer(buyProductionMessage);
-                break;
+            } else if ("L".equals(s)) {
+                LeaderCardMessage leaderMessage = new LeaderCardMessage(this.gameId, this.playerId);
+                leaderMessage.setShowLeaderCard(true);
+                check = false;
+                controller.sendMessageToServer(leaderMessage);
+            } else if ("S".equals(s)) {
+                check = false;
+                moveResource();
+            }else if("N".equals(s)){
+                TurnMessage turnMessage = new TurnMessage(this.gameId, this.playerId);
+                check = false;
+                controller.sendMessageToServer(turnMessage);
+            }else {
+                System.out.println("Invalid Input");
+                s = scanner.nextLine();
+            }
+
         }
+    }
+
+    private void moveResource() {
+        MoveResourceMessage moveMessage = new MoveResourceMessage(this.gameId, this.playerId);
+        System.out.println("Warehouse: ");
+        printWareHouse();
+        System.out.println("Select two row to reverse");
+        System.out.println("Select first row: ");
+        Row one = null, two = null;
+        try{
+            one = Row.valueOf(scanner.nextLine());
+        }
+        catch(IllegalArgumentException e){
+        }
+        while(!this.warehouse.containsKey(one)){
+            System.out.println("Invalid Input");
+            try{
+                one = Row.valueOf(scanner.nextLine());
+            }
+            catch(IllegalArgumentException e){
+            }
+        }
+        System.out.println("Select second row: ");
+        try{
+            two = Row.valueOf(scanner.nextLine());
+        }
+        catch(IllegalArgumentException e){
+        }
+        while(!this.warehouse.containsKey(two)){
+            System.out.println("Invalid Input");
+            try{
+                two = Row.valueOf(scanner.nextLine());
+            }
+            catch(IllegalArgumentException e){
+            }
+        }
+
+        System.out.println("You have selected rows: " + one.toString() + " and " + two.toString());
+        moveMessage.setRowOne(one);
+        moveMessage.setRowTwo(two);
+        System.out.println("Do you want to force the reverse? Doing some resources may be lost. Y/N");
+        if(scanner.nextLine().equals("Y")){
+            moveMessage.setForceSwap(true);
+        }
+        controller.sendMessageToServer(moveMessage);
+
+    }
+
+
+    @Override
+    public void isYourTurn() {
+        System.out.println("This is your turn! Play it wisely");
+        selectAction();
     }
 
     @Override
@@ -275,7 +358,22 @@ public class CliView extends ClientView {
 
     @Override
     public void startGame() {
-
+        JSONArray array;
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader file = new FileReader("creation_cards.json");
+            array = (JSONArray) parser.parse(file);
+            for(Object o : array){
+                JSONObject jsonObject = (JSONObject) ((JSONObject) o).get("card");
+                jsonCardsProduction.put(Integer.parseInt((String) jsonObject.get("card_code")), jsonObject);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -306,6 +404,83 @@ public class CliView extends ClientView {
     @Override
     public void finishedNormalAction() {
 
+    }
+
+    @Override
+    public void showLeaderCard(ArrayList<Integer> cards) {
+
+    }
+
+    @Override
+    public void showProductionCard(ArrayList<Integer> productionCard) {
+        showCard(productionCard);
+        System.out.println("Insert the Card codes you want use to produce. If you want to stop write -1");
+        Integer cardCode = null;
+        ArrayList<Integer> producingCard = new ArrayList<>();
+        try{
+            cardCode = Integer.parseInt(scanner.nextLine());
+        }catch(NumberFormatException e){
+            cardCode = 0;
+        }
+        while(!cardCode.equals(-1)){
+            if(productionCard.contains(cardCode)){
+                producingCard.add(cardCode);
+                productionCard.remove(cardCode);
+                System.out.println("Added card to production with card code " + cardCode);
+            }
+            else
+                System.out.println("Card cannot be added to production");
+            try{
+                cardCode = Integer.parseInt(scanner.nextLine());
+            }catch(NumberFormatException e){
+                cardCode = 0;
+            }
+        }
+
+        ProductionMessage message = new ProductionMessage(this.gameId, this.playerId);
+        message.setSelectCard(true);
+        message.setSelectedCard(producingCard);
+        controller.sendMessageToServer(message);
+    }
+
+    private void showCard(ArrayList<Integer> cards){
+        for(Integer i : cards){
+            JSONObject card = jsonCardsProduction.get(i);
+            System.out.println("Card code: " + ((String)card.get("card_code")) );
+            System.out.println("Card value: " + ((String)card.get("card_value")));
+            System.out.println("Card faction: " + ((String)card.get("card_faction")));
+            System.out.println("Card value: " + ((String)card.get("card_value")));
+            HashMap<Resource, Integer> price = parseHashMapResources((JSONObject) card.get("card_price"));
+            System.out.print("Card price: ");
+            for(Resource res : price.keySet()){
+                System.out.print(res.toString() + " " + price.get(res) + " ");
+            }
+            System.out.println();
+            HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("card_input"));
+            System.out.print("Card input: ");
+            for(Resource res : input.keySet()){
+                System.out.print(res.toString() + " " + input.get(res) + " ");
+            }
+            System.out.println();
+            HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
+            System.out.print("Card price: ");
+            for(Resource res : output.keySet()){
+                System.out.print(res.toString() + " " + output.get(res) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private HashMap<Resource, Integer> parseHashMapResources(JSONObject resources){
+        Resource[] keys = Resource.values();
+        HashMap<Resource, Integer> temp = new HashMap<>();
+        for(Resource key : keys){
+            String resource = key.toString().toLowerCase();
+            if(( resources.get(resource)) != null){
+                temp.put(key, Integer.parseInt((String) resources.get(resource)));
+            }
+        }
+        return temp;
     }
 
 

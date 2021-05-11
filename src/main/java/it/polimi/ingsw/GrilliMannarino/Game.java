@@ -173,6 +173,10 @@ public class Game {
 
     //METHOD TO WORK WITH LEADERCARDS
 
+    public ArrayList<Integer> getLeaderCard(){
+        return activeBoard.getLeaderCards();
+    }
+
     public boolean activateLeaderCard(int cardCode){
         return activeBoard.activateLeaderCard(cardCode);
     }
