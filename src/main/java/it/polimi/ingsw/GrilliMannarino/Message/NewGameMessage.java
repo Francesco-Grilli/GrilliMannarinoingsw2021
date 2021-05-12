@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public class NewGameMessage extends Message implements MessageInterface{
+import java.io.Serializable;
+
+public class NewGameMessage extends Message implements MessageInterface, Serializable {
 
     /**
      * newGame is true if have been added a new game

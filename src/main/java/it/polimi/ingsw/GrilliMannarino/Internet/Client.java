@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino.Internet;
 
 import it.polimi.ingsw.GrilliMannarino.CliView;
 import it.polimi.ingsw.GrilliMannarino.ClientController;
+import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 
 import java.io.*;
@@ -15,6 +16,7 @@ public class Client {
     private OutputStream os;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    private ClientController controller;
 
     public Client(){
 
@@ -22,12 +24,15 @@ public class Client {
 
     public void start(){
         setUpStream();
-        setUpInformation();
     }
 
-    private void setUpInformation() {
+    public void setUpInformation(LoginMessage message) {
 
-
+        try {
+            output.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -48,8 +53,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        if(args[0]=="CLI")
-            new ClientController(new CliView());
+        new ClientController(new CliView());
         //else the GuiView
     }
 
@@ -72,4 +76,15 @@ public class Client {
         return null;
     }
 
+    public LoginMessage getUpInformation() {
+        try {
+            return (LoginMessage) input.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

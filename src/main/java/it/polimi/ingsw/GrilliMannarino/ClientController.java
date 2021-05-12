@@ -11,7 +11,22 @@ public class ClientController implements VisitorInterface {
 
     public ClientController(ClientView view){
         this.view = view;
+        view.setController(this);
         client = new Client();
+        client.start();
+        information();
+        view.setUpGame();
+    }
+
+    private void information(){
+        LoginMessage message = null;
+        do{
+            client.setUpInformation(view.setUpInformation());
+            message = client.getUpInformation();
+            view.getUpInformation(message);
+            System.out.println("Controller: " + message.isCorrectLogin());
+        }while(!message.isCorrectLogin());
+
     }
 
     public void sendMessageToServer(MessageInterface message){
@@ -34,16 +49,16 @@ public class ClientController implements VisitorInterface {
                 }
                 //code to selling card
                 if (leaderCard.isActivationSellingCorrect())
-                    view.sellingLeaderCard(leaderCard.getCardCode());
+                    view.viewError("Leader Card has been correctly sold");
                 else
-                    view.viewError("LeaderCard has not been sold");
+                    view.viewError("Leader Card has not been sold");
                 return;
             }
             //code to activate card
             if (leaderCard.isActivationSellingCorrect())
-                view.activateLeaderCard(leaderCard.getCardCode());
+                view.viewError("Leader Card has been correctly activated");
             else
-                view.viewError("leaderCard has not been activated");
+                view.viewError("Leader Card has not been activated");
             return;
         }
         //code to show leaderCard
@@ -60,7 +75,7 @@ public class ClientController implements VisitorInterface {
                         return;
                     }
                     //code to check added resource
-                    view.finishedNormalAction();
+                    view.finishedNormalAction("Production configuration was correct");
                 }
                 //code to check added resource
 
@@ -90,7 +105,7 @@ public class ClientController implements VisitorInterface {
             return;
         }
         //code to display card
-        view.showProductionMarket(buyProductionCardMessage.getBuyableCard());
+        view.showCardMarket(buyProductionCardMessage.getBuyableCard());
     }
 
     @Override
@@ -103,6 +118,8 @@ public class ClientController implements VisitorInterface {
             //code to check if the production was successful
             if (!productionMessage.isProductionCorrect())
                 view.viewError("Production configuration wasn't correct");
+            else
+                view.finishedNormalAction("Production configuration was correct, you have produced");
             return;
         }
         //code to show card into production
@@ -160,7 +177,12 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeNewGame(NewGameMessage newGameMessage) {
-        view.createdNewGame(newGameMessage.getMessageString(), newGameMessage.getGameId());
+        if(newGameMessage.isNewGame()){
+            view.createdNewGame(newGameMessage.getMessageString(), newGameMessage.getGameId());
+        }
+        else
+            view.setUpGame();
+
     }
 
     @Override

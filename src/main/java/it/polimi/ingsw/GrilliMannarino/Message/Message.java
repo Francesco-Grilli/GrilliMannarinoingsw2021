@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
-public abstract class Message {
+import java.io.Serializable;
+
+public abstract class Message implements Serializable {
 
     private final Integer gameId;
     private final Integer playerId;

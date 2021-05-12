@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino.Message;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProductionMessage extends Message implements MessageInterface, Serializable {
 
@@ -9,8 +10,9 @@ public class ProductionMessage extends Message implements MessageInterface, Seri
      * displayCard is set to true by the client if it wants to see the card in the productionLine to produce
      * is set true by the server to let the client understand that the field productionCard contains all the
      * creation card that can be selected
+     * productionCard is <CardCode, Position>
      */
-    private ArrayList<Integer> productionCard;
+    private HashMap<Integer, Integer> productionCard;
     private boolean displayCard = false;
 
     /**
@@ -40,11 +42,11 @@ public class ProductionMessage extends Message implements MessageInterface, Seri
         this.displayCard = displayCard;
     }
 
-    public ArrayList<Integer> getProductionCard() {
+    public HashMap<Integer, Integer> getProductionCard() {
         return productionCard;
     }
 
-    public void setProductionCard(ArrayList<Integer> productionCard) {
+    public void setProductionCard(HashMap<Integer, Integer> productionCard) {
         this.productionCard = productionCard;
     }
 

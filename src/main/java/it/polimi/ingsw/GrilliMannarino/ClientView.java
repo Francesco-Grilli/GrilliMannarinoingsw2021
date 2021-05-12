@@ -3,11 +3,14 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
+import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 
 import java.util.*;
 
 public abstract class ClientView {
 
+    protected ClientController controller;
     protected String nickname;
     protected Integer playerId;
     protected Integer gameId;
@@ -22,6 +25,9 @@ public abstract class ClientView {
     protected Integer faith;
     protected boolean[] faithMark = new boolean[3];
     protected final int[] faithValue = {2, 3, 4};
+    protected HashMap<Integer, Integer> productionLine = new HashMap<>();
+    protected boolean normalAction = false;
+    protected boolean leaderAction = false;
 
     abstract void activateLeaderCard(Integer activatedCard);
 
@@ -35,7 +41,7 @@ public abstract class ClientView {
 
     abstract void addedResource(Resource resourceType, Row insertRow, ArrayList<Resource> remainingResource, boolean addResourceCorrect);
 
-    abstract void showProductionMarket(HashMap<Integer, Boolean> buyableCard);
+    abstract void showCardMarket(HashMap<Integer, Boolean> buyableCard);
 
     abstract void setCardIntoProductionLine(Integer selectedCard, Integer positionCard);
 
@@ -61,9 +67,19 @@ public abstract class ClientView {
         this.warehouse = warehouse;
     }
 
-    public abstract void finishedNormalAction();
+    public abstract void finishedNormalAction(String message);
 
     public abstract void showLeaderCard(ArrayList<Integer> cards);
 
-    public abstract void showProductionCard(ArrayList<Integer> productionCard);
+    public abstract void showProductionCard(HashMap<Integer, Integer> productionCard);
+
+    public abstract LoginMessage setUpInformation();
+
+    public abstract void getUpInformation(LoginMessage message);
+
+    public abstract void setUpGame();
+
+    public void setController(ClientController controller) {
+        this.controller = controller;
+    }
 }

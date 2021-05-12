@@ -12,8 +12,8 @@ public class LoginMessage implements Serializable {
      */
     private String nickname;
     private Integer playerId;
-    private boolean newAccount = false;
-    private boolean correctLogin = false;
+    private Boolean newAccount = false;
+    private Boolean correctLogin = false;
     private String message;
 
     public LoginMessage(String nickname){
@@ -32,19 +32,19 @@ public class LoginMessage implements Serializable {
         this.playerId = playerId;
     }
 
-    public boolean isNewAccount() {
+    public Boolean isNewAccount() {
         return newAccount;
     }
 
-    public void setNewAccount(boolean newAccount) {
+    public void setNewAccount(Boolean newAccount) {
         this.newAccount = newAccount;
     }
 
-    public boolean isCorrectLogin() {
+    public Boolean isCorrectLogin() {
         return correctLogin;
     }
 
-    public void setCorrectLogin(boolean correctLogin) {
+    public void setCorrectLogin(Boolean correctLogin) {
         this.correctLogin = correctLogin;
     }
 

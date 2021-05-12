@@ -85,8 +85,16 @@ public class Game {
     public void turnExecution(){
         setActivePlayer();
         setActiveBoard();
+        normalAction = true;
+        leaderCardAction = true;
     }
 
+    public void startGame(){
+        start = true;
+        int p = playerID.get(countPlayer % playerID.size());
+        activePlayer  = player.getOrDefault(p, null);
+        setActiveBoard();
+    }
 
     //METHOD TO BUY CREATION CARD
 

@@ -31,6 +31,7 @@ public class ServerController implements VisitorInterface {
     public ServerController(){
         server = new Server(this);
         nicknamesList = new HashMap<>();
+        games = new HashMap<>();
         server.startConnection();
     }
 
@@ -40,10 +41,10 @@ public class ServerController implements VisitorInterface {
 
     private void startGamePlayer(Integer gameId, Integer playerId){
         ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
-        player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, player.size())));
+        player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p)));
         TurnMessage message = new TurnMessage(gameId, playerId);
         message.setMyTurn(true);
-        games.get(gameId).setStart(true);
+        games.get(gameId).startGame();
         server.sendMessageTo(playerId, message);
     }
 
@@ -64,7 +65,6 @@ public class ServerController implements VisitorInterface {
         else{
             return null;
         }
-
     }
 
     public Integer logInPlayer(String nickname){
@@ -111,9 +111,6 @@ public class ServerController implements VisitorInterface {
     @Override
     public void executeTurnPlayer(TurnMessage turn) {
         Game game = games.get(turn.getGameId());
-
-        game.setLeaderCardAction(true);
-        game.setNormalAction(true);
         game.turnExecution();
         if(game.isEndGame()){
             endGame(game);
@@ -410,10 +407,11 @@ public class ServerController implements VisitorInterface {
         }
         //code to display card into production to the client
         HashMap<Integer, CreationCard> cards = game.displayCardInProductionLine();
-        ArrayList<Integer> cardList = new ArrayList<>(cards.keySet());
+        HashMap<Integer, Integer> cardToReturn = new HashMap<>();
+        cards.forEach((pos, card) -> cardToReturn.put(card.getCardCode(), pos));
         ProductionMessage message = new ProductionMessage(productionMessage.getGameId(), productionMessage.getPlayerId());
         message.setDisplayCard(true);
-        message.setProductionCard(cardList);
+        message.setProductionCard(cardToReturn);
         server.sendMessageTo(productionMessage.getPlayerId(), message);
 
     }

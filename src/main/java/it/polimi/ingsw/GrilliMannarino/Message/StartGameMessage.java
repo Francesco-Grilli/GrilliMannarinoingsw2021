@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 public class StartGameMessage extends Message implements MessageInterface, Serializable {
 
-    private Integer numberOfPlayer;
 
-    public StartGameMessage(Integer gameId, Integer playerId, Integer numberOfPlayer){
+    public StartGameMessage(Integer gameId, Integer playerId){
         super(gameId, playerId);
-        this.numberOfPlayer=numberOfPlayer;
     }
 
 
@@ -19,8 +17,4 @@ public class StartGameMessage extends Message implements MessageInterface, Seria
         visitor.executeStartGame(this);
     }
 
-
-    public Integer getNumberOfPlayer() {
-        return numberOfPlayer;
-    }
 }

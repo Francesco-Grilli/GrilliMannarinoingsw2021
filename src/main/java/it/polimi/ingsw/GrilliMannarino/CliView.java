@@ -12,16 +12,13 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class CliView extends ClientView {
 
     private Scanner scanner;
-    private ClientController controller;
     private HashMap<Integer, JSONObject> jsonCardsProduction = new HashMap<>();
+    private HashMap<Integer, JSONObject> jsonLeaderCards = new HashMap<>();
 
     public CliView(){
         scanner = new Scanner(System.in);
@@ -244,9 +241,56 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public void showProductionMarket(HashMap<Integer, Boolean> buyableCard) {
+    public void showCardMarket(HashMap<Integer, Boolean> buyableCard) {
+        if(buyableCard!=null) {
+            showBuyableCard(buyableCard);
 
+            System.out.println("Enter the card code of the production card you want to buy");
+            Integer cardCode = null;
+            try {
+                cardCode = Integer.parseInt(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+                cardCode = 0;
+            }
+            while (!buyableCard.containsKey(cardCode) || !buyableCard.get(cardCode)) {
+                if(!buyableCard.containsKey(cardCode))
+                    System.out.println("Invalid Input");
+                else
+                    System.out.println("You can't buy that card");
+                try {
+                    cardCode = Integer.parseInt(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                    cardCode = 0;
+                }
+            }
+
+            BuyProductionCardMessage message = new BuyProductionCardMessage(this.gameId, this.playerId);
+            message.setSelectedCard(cardCode);
+            showCardInProductionLine(this.productionLine);
+            Integer position = null;
+            System.out.println("Enter the position you want to place your card");
+            try{
+                position = Integer.parseInt(scanner.nextLine());
+            }catch (IllegalArgumentException e){
+                position = -1;
+            }
+            while(position<0){
+                System.out.println("Invalid position");
+                try{
+                    position = Integer.parseInt(scanner.nextLine());
+                }catch (IllegalArgumentException e){
+                    position = -1;
+                }
+            }
+
+            message.setPositionCard(position);
+            controller.sendMessageToServer(message);
+
+        }
+        else
+            viewError("No card in the market to show");
     }
+
 
     @Override
     public void setCardIntoProductionLine(Integer selectedCard, Integer positionCard) {
@@ -255,25 +299,28 @@ public class CliView extends ClientView {
 
     public void selectAction(){
         System.out.println("What do you want to do?");
-        System.out.println("B for buying a card to the market");
-        System.out.println("M for going to the Marble market");
-        System.out.println("L for Leader card action");
+        if(this.normalAction) {
+            System.out.println("B for buying a card to the market");
+            System.out.println("M for going to the Marble market");
+        }
+        if(this.leaderAction)
+            System.out.println("L for Leader card action");
         System.out.println("S for swapping resources from your warehouse");
         System.out.println("N for next turn");
         String s = scanner.nextLine();
         boolean check = true;
         while(check) {
-            if ("M".equals(s)) {
+            if ("M".equals(s) && this.normalAction) {
                 MarbleMarketMessage marbleMessage = new MarbleMarketMessage(this.gameId, this.playerId);
                 marbleMessage.setDisplayMarbleMarket(true);
                 check = false;
                 controller.sendMessageToServer(marbleMessage);
-            } else if ("B".equals(s)) {
+            } else if ("B".equals(s) && this.normalAction) {
                 BuyProductionCardMessage buyProductionMessage = new BuyProductionCardMessage(this.gameId, this.playerId);
                 buyProductionMessage.setDisplayCard(true);
                 check = false;
                 controller.sendMessageToServer(buyProductionMessage);
-            } else if ("L".equals(s)) {
+            } else if ("L".equals(s) && this.leaderAction) {
                 LeaderCardMessage leaderMessage = new LeaderCardMessage(this.gameId, this.playerId);
                 leaderMessage.setShowLeaderCard(true);
                 check = false;
@@ -343,6 +390,8 @@ public class CliView extends ClientView {
     @Override
     public void isYourTurn() {
         System.out.println("This is your turn! Play it wisely");
+        this.normalAction = true;
+        this.leaderAction = true;
         selectAction();
     }
 
@@ -356,12 +405,36 @@ public class CliView extends ClientView {
 
     }
 
-    @Override
-    public void startGame() {
+    private void loadProductionCard(){
         JSONArray array;
         JSONParser parser = new JSONParser();
         try {
             FileReader file = new FileReader("creation_cards.json");
+            array = (JSONArray) parser.parse(file);
+            for(Object o : array){
+                JSONObject jsonObject = (JSONObject) ((JSONObject) o).get("card");
+                jsonCardsProduction.put(Integer.parseInt((String) jsonObject.get("card_code")), jsonObject);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void startGame() {
+        loadProductionCard();
+        loadLeaderCard();
+    }
+
+    private void loadLeaderCard() {
+        JSONArray array;
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader file = new FileReader("leader_card.json");
             array = (JSONArray) parser.parse(file);
             for(Object o : array){
                 JSONObject jsonObject = (JSONObject) ((JSONObject) o).get("card");
@@ -393,7 +466,16 @@ public class CliView extends ClientView {
 
     @Override
     public void createdNewGame(String messageString, Integer gameId) {
-
+        System.out.println(messageString);
+        this.gameId = gameId;
+        System.out.println("Whenever you want to start your game enter START");
+        String start = scanner.nextLine().toUpperCase(Locale.ROOT);
+        while(!start.equals("START")){
+            System.out.println("Invalid Input");
+            start = scanner.nextLine().toUpperCase(Locale.ROOT);
+        }
+        StartGameMessage message = new StartGameMessage(this.gameId, this.playerId);
+        controller.sendMessageToServer(message);
     }
 
     @Override
@@ -402,54 +484,184 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public void finishedNormalAction() {
-
+    public void finishedNormalAction(String message) {
+        System.out.println(message);
+        this.normalAction = false;
     }
 
     @Override
     public void showLeaderCard(ArrayList<Integer> cards) {
+        if(cards!=null) {
+            showCardInLeaderCard(cards); //NEED MODIFIED
+            System.out.println("Enter the Card code of the leader card");
+            Integer cardCode = null;
+            try {
+                cardCode = Integer.parseInt(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+                cardCode = 0;
+            }
+            while (!cards.contains(cardCode)) {
+                System.out.println("Invalid Input");
+                try {
+                    cardCode = Integer.parseInt(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                    cardCode = 0;
+                }
+            }
 
+            LeaderCardMessage message = new LeaderCardMessage(this.gameId, this.playerId);
+            message.setCardCode(cardCode);
+            System.out.println("Enter S for selling card or A for activating it");
+            String action = null;
+            try {
+                action = scanner.nextLine();
+            } catch (Exception e) {
+                action = "Z";
+            }
+            while (!action.equals("A") && !action.equals("S")) {
+                if (action.equals("A"))
+                    message.setActivateCard(true);
+                else if (action.equals("S"))
+                    message.setSellingCard(true);
+                else {
+                    try {
+                        action = scanner.nextLine();
+                    } catch (Exception e) {
+                        action = "Z";
+                    }
+                }
+            }
+            controller.sendMessageToServer(message);
+        }
+        else
+            viewError("No leader card available");
     }
 
     @Override
-    public void showProductionCard(ArrayList<Integer> productionCard) {
-        showCard(productionCard);
-        System.out.println("Insert the Card codes you want use to produce. If you want to stop write -1");
-        Integer cardCode = null;
-        ArrayList<Integer> producingCard = new ArrayList<>();
-        try{
-            cardCode = Integer.parseInt(scanner.nextLine());
-        }catch(NumberFormatException e){
-            cardCode = 0;
-        }
-        while(!cardCode.equals(-1)){
-            if(productionCard.contains(cardCode)){
-                producingCard.add(cardCode);
-                productionCard.remove(cardCode);
-                System.out.println("Added card to production with card code " + cardCode);
-            }
-            else
-                System.out.println("Card cannot be added to production");
-            try{
+    public void showProductionCard(HashMap<Integer, Integer> productionCard) {
+        if(productionCard!=null) {
+            this.productionLine = new HashMap<>(productionCard);
+            showCardInProductionLine(productionCard);
+
+            System.out.println("Enter the Card codes you want use to produce. If you want to stop write -1");
+            Integer cardCode = null;
+            ArrayList<Integer> producingCard = new ArrayList<>();
+            try {
                 cardCode = Integer.parseInt(scanner.nextLine());
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 cardCode = 0;
             }
-        }
+            while (!cardCode.equals(-1)) {
+                if (productionCard.containsKey(cardCode)) {
+                    producingCard.add(cardCode);
+                    productionCard.remove(cardCode);
+                    System.out.println("Added card to production with card code " + cardCode);
+                } else
+                    System.out.println("Card cannot be added to production");
+                try {
+                    cardCode = Integer.parseInt(scanner.nextLine());
+                } catch (NumberFormatException e) {
+                    cardCode = 0;
+                }
+            }
 
-        ProductionMessage message = new ProductionMessage(this.gameId, this.playerId);
-        message.setSelectCard(true);
-        message.setSelectedCard(producingCard);
-        controller.sendMessageToServer(message);
+            ProductionMessage message = new ProductionMessage(this.gameId, this.playerId);
+            message.setSelectCard(true);
+            message.setSelectedCard(producingCard);
+            controller.sendMessageToServer(message);
+        }
+        else
+            viewError("No production card available");
     }
 
-    private void showCard(ArrayList<Integer> cards){
-        for(Integer i : cards){
-            JSONObject card = jsonCardsProduction.get(i);
-            System.out.println("Card code: " + ((String)card.get("card_code")) );
-            System.out.println("Card value: " + ((String)card.get("card_value")));
-            System.out.println("Card faction: " + ((String)card.get("card_faction")));
-            System.out.println("Card value: " + ((String)card.get("card_value")));
+    @Override
+    public LoginMessage setUpInformation() {
+        System.out.println("Do you want to create a new account or log in to an existing one?");
+        System.out.println("N for new account or L for log in");
+        String action = null;
+        try{
+            action = scanner.nextLine();
+        }catch(Exception e){
+            action = "";
+        }
+        while(!action.equals("N") && !action.equals("L")){
+            System.out.println("Invalid Input");
+            try{
+                action = scanner.nextLine();
+            }catch(Exception e){
+                action = "";
+            }
+        }
+        System.out.println("Please insert your nickname");
+        String nickname = scanner.nextLine();
+        LoginMessage message = new LoginMessage(nickname);
+        if(action.equals("N"))
+            message.setNewAccount(true);
+
+        return message;
+    }
+
+    @Override
+    public void getUpInformation(LoginMessage message) {
+        if (message.isCorrectLogin()) {
+            this.playerId = message.getPlayerId();
+            this.nickname = message.getNickname();
+        }
+        System.out.println(message.getMessage());
+    }
+
+    @Override
+    public void setUpGame() {
+        System.out.println("Do you want to create a new game or join an existing one?");
+        System.out.println("N for new game, J for joining one");
+        String gameAction = null;
+        try{
+            gameAction = scanner.nextLine();
+        }catch (Exception e){
+            gameAction = "";
+        }
+        while(!gameAction.equals("N") && !gameAction.equals("J")){
+            System.out.println("Invalid Input");
+            try{
+                gameAction = scanner.nextLine();
+            }catch (Exception e){
+                gameAction = "";
+            }
+        }
+        if(gameAction.equals("N")){
+            System.out.println("Please enter the maximum number of player from 1 to 4");
+            Integer nop = null;
+            try{
+                nop = Integer.parseInt(scanner.nextLine());
+            }catch(NumberFormatException e){
+                nop = -1;
+            }
+            while(nop>4 || nop<1){
+                System.out.println("Invalid Input");
+                try{
+                    nop = Integer.parseInt(scanner.nextLine());
+                }catch(NumberFormatException e){
+                    nop = -1;
+                }
+            }
+            NewGameMessage newGame = new NewGameMessage(null, this.playerId, this.nickname);
+            newGame.setNumberOfPlayer(nop);
+            controller.sendMessageToServer(newGame);
+        }
+        else if(gameAction.equals("J")){
+            EnterGameMessage enterGame = new EnterGameMessage(null, this.playerId, this.nickname);
+            controller.sendMessageToServer(enterGame);
+        }
+    }
+
+    private void showCardInProductionLine(HashMap<Integer, Integer> cards){
+        for(Integer code : cards.keySet()){
+            JSONObject card = jsonCardsProduction.get(code);
+            System.out.format("CARD CODE: %s %5s",((String)card.get("card_code")), "");
+            System.out.format("POSITION: %s \n", cards.get(code));
+            System.out.format("Card level: %s %5s", ((String)card.get("card_level")), "");
+            System.out.format("Card faction: %s %5s", ((String)card.get("card_faction")), "");
+            System.out.format("Card value: %s %5s", ((String)card.get("card_value")), "");
             HashMap<Resource, Integer> price = parseHashMapResources((JSONObject) card.get("card_price"));
             System.out.print("Card price: ");
             for(Resource res : price.keySet()){
@@ -461,13 +673,74 @@ public class CliView extends ClientView {
             for(Resource res : input.keySet()){
                 System.out.print(res.toString() + " " + input.get(res) + " ");
             }
-            System.out.println();
+            System.out.format("%7s", "");
             HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
-            System.out.print("Card price: ");
+            System.out.print("Card output: ");
             for(Resource res : output.keySet()){
                 System.out.print(res.toString() + " " + output.get(res) + " ");
             }
+            System.out.print("\n\n");
+        }
+    }
+
+    private void showBuyableCard(HashMap<Integer, Boolean> cards){
+        for(Integer code : cards.keySet()){
+            JSONObject card = jsonCardsProduction.get(code);
+            System.out.format("CARD CODE: %s %5s", ((String)card.get("card_code")), "" );
+            if(cards.get(code))
+                System.out.format("BUYABLE: YES \n");
+            else
+                System.out.format("BUYABLE: NO \n");
+
+            System.out.format("Card level: %s %5s", ((String)card.get("card_level")), "");
+            System.out.format("Card faction: %s %5s", ((String)card.get("card_faction")), "");
+            System.out.format("Card value: %s %5s", ((String)card.get("card_value")), "");
+            HashMap<Resource, Integer> price = parseHashMapResources((JSONObject) card.get("card_price"));
+            System.out.print("Card price: ");
+            for(Resource res : price.keySet()){
+                System.out.print(res.toString() + " " + price.get(res) + " ");
+            }
             System.out.println();
+            HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("card_input"));
+            System.out.print("Card input: ");
+            for(Resource res : input.keySet()){
+                System.out.print(res.toString() + " " + input.get(res) + " ");
+            }
+            System.out.format("%7s", "");
+            HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
+            System.out.print("Card output: ");
+            for(Resource res : output.keySet()){
+                System.out.print(res.toString() + " " + output.get(res) + " ");
+            }
+            System.out.println("\n\n");
+        }
+    }
+
+    private void showCardInLeaderCard(ArrayList<Integer> cards){
+        for(Integer code : cards){
+            JSONObject card = jsonCardsProduction.get(code);
+            System.out.format("CARD CODE: %s %5s", ((String)card.get("card_code")), "" );
+            System.out.format("Card level: %s %5s", ((String)card.get("card_level")), "");
+            System.out.format("Card faction: %s %5s", ((String)card.get("card_faction")), "");
+            System.out.format("Card value: %s %5s", ((String)card.get("card_value")), "");
+            HashMap<Resource, Integer> price = parseHashMapResources((JSONObject) card.get("card_price"));
+            System.out.print("Card price: ");
+            for(Resource res : price.keySet()){
+                System.out.print(res.toString() + " " + price.get(res) + " ");
+            }
+            System.out.println();
+            HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("card_input"));
+            System.out.print("Card input: ");
+            for(Resource res : input.keySet()){
+                System.out.print(res.toString() + " " + input.get(res) + " ");
+            }
+            System.out.format("%7s", "");
+            HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
+            System.out.print("Card output: ");
+            for(Resource res : output.keySet()){
+                System.out.print(res.toString() + " " + output.get(res) + " ");
+            }
+            System.out.println("\n\n");
         }
     }
 

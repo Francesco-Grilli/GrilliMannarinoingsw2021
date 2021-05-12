@@ -32,15 +32,17 @@ public class ClientHandler implements  Runnable{
     }
 
     private void setUpGame() {
-
-        while(!Thread.currentThread().isInterrupted()){
+        boolean goOn = true;
+        while(goOn){
             try{
                 MessageInterface message = (MessageInterface) in.readObject();
                 server.messageToController(message);
             } catch (IOException e) {
                 e.printStackTrace();
+                goOn = false;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+                goOn = false;
             }
         }
 
@@ -62,6 +64,8 @@ public class ClientHandler implements  Runnable{
                         messageOut.setPlayerId(playerId);
                         this.playerId = playerId;
                         this.nickName = message.getNickname();
+                        messageOut.setMessage("Account created");
+                        messageOut.setCorrectLogin(true);
                         out.writeObject(messageOut);
                     }
                     else{
@@ -79,11 +83,13 @@ public class ClientHandler implements  Runnable{
                         messageOut.setPlayerId(playerId);
                         this.playerId = playerId;
                         this.nickName = message.getNickname();
+                        messageOut.setMessage("Login was correct");
+                        messageOut.setCorrectLogin(true);
                         out.writeObject(messageOut);
                     }
                     else{
                         LoginMessage messageOut = new LoginMessage(message.getNickname());
-                        messageOut.setMessage("Error with new login");
+                        messageOut.setMessage("Error with login");
                         out.writeObject(messageOut);
                     }
                 }
