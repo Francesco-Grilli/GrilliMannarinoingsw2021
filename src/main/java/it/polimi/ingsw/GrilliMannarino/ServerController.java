@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ServerController implements VisitorInterface {
     //implements all method needed to communicate with client
@@ -147,39 +146,48 @@ public class ServerController implements VisitorInterface {
             sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "No active Leader Card or No action left!");
             return;
         }
+        if(!leaderCard.isShowLeaderCard()) {
+            if (!leaderCard.isSellingCard()) {
+                if (!leaderCard.isActivateCard()) {
+                    sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on Leader Card action");
+                    return;
+                }
+                //code to activate leaderCard
 
-        if(!leaderCard.isSellingCard()){
-            if(!leaderCard.isActivateCard()){
-                sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on Leader Card action");
+                LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
+                message.setActivateCard(true);
+                message.setCardCode(leaderCard.getCardCode());
+                if (game.activateLeaderCard(leaderCard.getCardCode())) {
+                    message.setActivationSellingCorrect(true);
+                    game.setLeaderCardAction(false);
+                }
+                server.sendMessageTo(leaderCard.getPlayerId(), message);
+                if (game.isActivatedEnd()) {
+                    broadcastMessage(game, "The End is near");
+                }
                 return;
             }
-            //code to activate leaderCard
+            //code for selling the leaderCard
 
             LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
-            message.setActivateCard(true);
+            message.setSellingCard(true);
             message.setCardCode(leaderCard.getCardCode());
-            if (game.activateLeaderCard(leaderCard.getCardCode())) {
+            if (game.canSellLeaderCard(leaderCard.getCardCode())) {
                 message.setActivationSellingCorrect(true);
                 game.setLeaderCardAction(false);
+                if (game.sellLeaderCard(leaderCard.getCardCode())) {
+                    updatePopeLine(game);
+                }
             }
             server.sendMessageTo(leaderCard.getPlayerId(), message);
-            if(game.isActivatedEnd()){
-                broadcastMessage(game, "The End is near");
-            }
             return;
         }
-        //code for selling the leaderCard
+        //code to show leadercard
 
-        LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
-        message.setSellingCard(true);
-        message.setCardCode(leaderCard.getCardCode());
-        if(game.canSellLeaderCard(leaderCard.getCardCode())){
-            message.setActivationSellingCorrect(true);
-            game.setLeaderCardAction(false);
-            if(game.sellLeaderCard(leaderCard.getCardCode())){
-                updatePopeLine(game);
-            }
-        }
+        ArrayList<Integer> cards = new ArrayList<>(game.getLeaderCard());
+        LeaderCardMessage message = new LeaderCardMessage(leaderCard.getPlayerId(), leaderCard.getGameId());
+        message.setShowLeaderCard(true);
+        message.setCards(cards);
         server.sendMessageTo(leaderCard.getPlayerId(), message);
 
     }
@@ -253,54 +261,40 @@ public class ServerController implements VisitorInterface {
 
                 }
                 //code to add one resource at a time
-
-                try {
-                    Marble res = Marble.valueOf(marbleMarketMessage.getMarbleType());
-                    Row row = Row.valueOf(marbleMarketMessage.getInsertRow());
-                    if(game.placeResource(row, Marble.getResource(res))){
-                        MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                        message.setAddResourceCorrect(true);
-                        message.setAddedResource(true);
-                        message.setMarbleType(marbleMarketMessage.getMarbleType());
-                        message.setInsertRow(marbleMarketMessage.getInsertRow());
-                        server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
-                    }
-                    else{
-                        MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                        message.setAddedResource(true);
-                        server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
-                    }
-                    return;
+                Resource res = marbleMarketMessage.getResourceType();
+                Row row = marbleMarketMessage.getInsertRow();
+                MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                message.setAddedResource(true);
+                message.setResourceType(marbleMarketMessage.getResourceType());
+                message.setInsertRow(marbleMarketMessage.getInsertRow());
+                message.setReturnedResource(marbleMarketMessage.getReturnedResource());
+                if(game.placeResource(row, res) && marbleMarketMessage.getReturnedResource().contains(res)){
+                    message.setAddResourceCorrect(true);
+                    marbleMarketMessage.getReturnedResource().remove(res);
+                    updateResources(game, marbleMarketMessage.getPlayerId());
                 }
-                catch(IllegalArgumentException e){
-                    e.printStackTrace();
-                    sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on setting the resource into warehouse");
-                    return;
-                }
-
+                server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
+                return;
             }
             // code to select column or row
 
             ArrayList<MarbleOption> marbles;
-            if(marbleMarketMessage.getColumnRow().equals("column")){
+            if(marbleMarketMessage.getColumnRow().equals("C")){
                 marbles = game.selectMarbleColumn(marbleMarketMessage.getColumnRowValue());
             }
             else{
                 marbles = game.selectMarbleRow(marbleMarketMessage.getColumnRowValue());
             }
 
-            ArrayList<ArrayList<String>> marbleList = new ArrayList<>();
+            ArrayList<ArrayList<Marble>> marbleList = new ArrayList<>();
             for (MarbleOption marble : marbles) {
                 ArrayList<Marble> tempArray = new ArrayList<>(marble.getMarbles());
-                ArrayList<String> tempArrayString = new ArrayList<>();
-                for (Marble m : tempArray) {
-                    tempArrayString.add(m.toString());
-                }
-                marbleList.add(tempArrayString);
+                marbleList.add(tempArray);
             }
             MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
             message.setDisplayMarblesReturned(true);
             message.setReturnedMarble(marbleList);
+            updateResources(game, marbleMarketMessage.getPlayerId());
             server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
             return;
 

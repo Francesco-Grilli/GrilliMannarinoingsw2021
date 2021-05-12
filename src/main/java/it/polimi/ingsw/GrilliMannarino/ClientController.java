@@ -3,35 +3,20 @@ package it.polimi.ingsw.GrilliMannarino;
 import it.polimi.ingsw.GrilliMannarino.Internet.Client;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class ClientController implements VisitorInterface {
 
-    private final ClientViewInterface view;
+    private final ClientView view;
     private Client client;
-    private String nickname;
-    private Integer playerId;
-    private Integer gameId;
 
-    private ArrayList<ArrayList<String>> returnedMarble;
-    private HashMap<String, HashMap<String, Integer>>warehouse;
-    private HashMap<String, Integer> chest;
-    private Integer faith;
-    private boolean[] faithMark = new boolean[3];
-    private final int[] faithValue = {2, 3, 4};
 
-    public ClientController(ClientViewInterface view){
+    public ClientController(ClientView view){
         this.view = view;
-        client = new Client(this);
+        client = new Client();
     }
 
     public void sendMessageToServer(MessageInterface message){
         client.sendMessageToServer(message);
-    }
-
-    public MessageInterface receiveMessageFromServer(){
-        return client.receiveMessageFromServer();
+        client.receiveMessageFromServer().execute(this);
     }
 
     @Override
@@ -41,23 +26,28 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
-        if(!leaderCard.isActivateCard()){
-            if(!leaderCard.isSellingCard()){
-                view.viewError("Error on LeaderCard action");
+        if(!leaderCard.isShowLeaderCard()) {
+            if (!leaderCard.isActivateCard()) {
+                if (!leaderCard.isSellingCard()) {
+                    view.viewError("Error on LeaderCard action");
+                    return;
+                }
+                //code to selling card
+                if (leaderCard.isActivationSellingCorrect())
+                    view.sellingLeaderCard(leaderCard.getCardCode());
+                else
+                    view.viewError("LeaderCard has not been sold");
                 return;
             }
-            //code to selling card
-            if(leaderCard.isActivationSellingCorrect())
-                view.sellingLeaderCard(leaderCard.getCardCode());
+            //code to activate card
+            if (leaderCard.isActivationSellingCorrect())
+                view.activateLeaderCard(leaderCard.getCardCode());
             else
-                view.viewError("LeaderCard has not been sold");
+                view.viewError("leaderCard has not been activated");
             return;
         }
-        //code to activate card
-        if(leaderCard.isActivationSellingCorrect())
-            view.activateLeaderCard(leaderCard.getCardCode());
-        else
-            view.viewError("leaderCard has not been activated");
+        //code to show leaderCard
+        view.showLeaderCard(leaderCard.getCards());
     }
 
     @Override
@@ -65,14 +55,16 @@ public class ClientController implements VisitorInterface {
         if(!marbleMarketMessage.isDisplayMarbleMarket()){
             if(!marbleMarketMessage.isDisplayMarblesReturned()){
                 if(!marbleMarketMessage.isAddedResource()){
-                    view.viewError("Error in MarbleMarket action");
-                    return;
+                    if(!marbleMarketMessage.isDestroyRemaining()) {
+                        view.viewError("Error in MarbleMarket action");
+                        return;
+                    }
+                    //code to check added resource
+                    view.finishedNormalAction();
                 }
                 //code to check added resource
-                if(marbleMarketMessage.isAddResourceCorrect())
-                    view.addedResource(marbleMarketMessage.getMarbleType(), marbleMarketMessage.getInsertRow());
-                else
-                    view.viewError("Resource could not be added to warehouse");
+
+                view.addedResource(marbleMarketMessage.getResourceType(), marbleMarketMessage.getInsertRow(), marbleMarketMessage.getReturnedResource(), marbleMarketMessage.isAddResourceCorrect());
                 return;
             }
             //code to select the marbles
@@ -98,18 +90,23 @@ public class ClientController implements VisitorInterface {
             return;
         }
         //code to display card
-        view.showProductionCard(buyProductionCardMessage.getBuyableCard());
+        view.showProductionMarket(buyProductionCardMessage.getBuyableCard());
     }
 
     @Override
     public void executeProduction(ProductionMessage productionMessage) {
-        if(!productionMessage.isSelectCard()){
-            view.viewError("Error on Production action");
+        if(!productionMessage.isSelectCard()) {
+            if (!productionMessage.isSelectCard()) {
+                view.viewError("Error on Production action");
+                return;
+            }
+            //code to check if the production was successful
+            if (!productionMessage.isProductionCorrect())
+                view.viewError("Production configuration wasn't correct");
             return;
         }
-        //code to check if the production was successful
-        if(!productionMessage.isProductionCorrect())
-            view.viewError("Production configuration wasn't correct");
+        //code to show card into production
+        view.showProductionCard(productionMessage.getProductionCard());
     }
 
     @Override
@@ -179,29 +176,5 @@ public class ClientController implements VisitorInterface {
     @Override
     public void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
 
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public Integer getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(Integer playerId) {
-        this.playerId = playerId;
-    }
-
-    public Integer getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
     }
 }

@@ -1,8 +1,12 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class LeaderCardMessage extends Message implements MessageInterface, Serializable {
+
+    private boolean showLeaderCard = false;
+    private ArrayList<Integer> cards;
 
     /**
      * activateCard and sellingCard is used by the client and the server to activate that action
@@ -54,5 +58,21 @@ public class LeaderCardMessage extends Message implements MessageInterface, Seri
 
     public void setActivationSellingCorrect(boolean activationSellingCorrect) {
         this.activationSellingCorrect = activationSellingCorrect;
+    }
+
+    public boolean isShowLeaderCard() {
+        return showLeaderCard;
+    }
+
+    public void setShowLeaderCard(boolean showLeaderCard) {
+        this.showLeaderCard = showLeaderCard;
+    }
+
+    public ArrayList<Integer> getCards() {
+        return cards;
+    }
+
+    public void setCards(ArrayList<Integer> cards) {
+        this.cards = cards;
     }
 }

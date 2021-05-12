@@ -11,14 +11,13 @@ import java.net.UnknownHostException;
 public class Client {
 
     private Socket socket;
-    private ClientController controller;
     private InputStream is;
     private OutputStream os;
     private ObjectInputStream input;
     private ObjectOutputStream output;
 
-    public Client(ClientController controller){
-        this.controller = controller;
+    public Client(){
+
     }
 
     public void start(){
