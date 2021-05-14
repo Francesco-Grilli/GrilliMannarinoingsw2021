@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino;
 
-public interface CardMarketBoardInterfaceSingle extends CardMarketBoardInterface{
+import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 
+public interface CardMarketBoardInterfaceSingle extends CardMarketBoardInterface{
+  void deleteTwoCards(Faction faction);
 }

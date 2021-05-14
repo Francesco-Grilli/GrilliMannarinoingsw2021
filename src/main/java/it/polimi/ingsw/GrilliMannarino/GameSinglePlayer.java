@@ -2,9 +2,14 @@ package it.polimi.ingsw.GrilliMannarino;
 
 public class GameSinglePlayer extends Game{
 
+    private CardMarketBoardInterfaceSingle cardMarketSingle;
+    private BoardSinglePlayer boardSingle;
+    private Player playersingle;
 
-    public GameSinglePlayer(Integer gameId, Integer numberOfPlayer) {
-        super(gameId, numberOfPlayer);
+    public GameSinglePlayer(Integer gameId) {
+        super(gameId, 1);
+        this.cardMarketSingle = new CardMarket();
+        this.cardMarket = this.cardMarketSingle;
         setActivePlayer();
         setActiveBoard();
     }
@@ -14,7 +19,7 @@ public class GameSinglePlayer extends Game{
         if(player.size()<numberOfPlayer && !player.containsKey(playerId) && !board.containsKey(playerId)){
             player.put(playerId, new Player(nickName, playerId));
             playerID.add(playerId);
-            board.put(playerId, new BoardSinglePlayer(player.get(playerId), , marbleMarket));
+            board.put(playerId, new BoardSinglePlayer(player.get(playerId), cardMarketSingle, marbleMarket));
             return true;
         }
         return false;
@@ -40,8 +45,8 @@ public class GameSinglePlayer extends Game{
 
     @Override
     public boolean sellLeaderCard(Integer cardCode) {
-        boolean sell = activeBoard.sellLeaderCard(cardCode);
-        if(activeBoard.getFaith()>=24){
+        boolean sell = boardSingle.sellLeaderCard(cardCode);
+        if(boardSingle.getFaith()>=24){
             endGame = true;
         }
         return sell;
@@ -49,14 +54,14 @@ public class GameSinglePlayer extends Game{
 
     @Override
     public Integer getLorenzoFaith() {
-        return activeBoard.getLorenzoFaith();
+        return boardSingle.getLorenzoFaith();
     }
 
     @Override
     public boolean addFaithExceptThis(Integer playerId, int numberOfResource) {
         boolean check = false;
         for(int i=0; i<numberOfResource; i++){
-            if(activeBoard.addLorenzoFaith())
+            if(boardSingle.addLorenzoFaith())
                 check=true;
         }
         return check;

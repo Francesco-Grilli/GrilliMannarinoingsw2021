@@ -25,7 +25,7 @@ public class Game {
 
     protected int countPlayer = 0;
 
-    protected final CardMarketBoardInterface cardMarket;
+    protected CardMarketBoardInterface cardMarket;
     protected final MarbleMarketBoardInterface marbleMarket;
 
     protected boolean leaderCardAction = true;
