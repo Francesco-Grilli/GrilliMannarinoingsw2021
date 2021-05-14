@@ -18,25 +18,30 @@ public class ClientController implements VisitorInterface {
         view.setUpGame();
     }
 
+    public void receiveMessageFromServer(){
+        client.receiveMessageFromServer().execute(this);
+    }
+
     private void information(){
         LoginMessage message = null;
         do{
             client.setUpInformation(view.setUpInformation());
             message = client.getUpInformation();
             view.getUpInformation(message);
-            System.out.println("Controller: " + message.isCorrectLogin());
         }while(!message.isCorrectLogin());
 
     }
 
     public void sendMessageToServer(MessageInterface message){
         client.sendMessageToServer(message);
-        client.receiveMessageFromServer().execute(this);
+        MessageInterface exec = client.receiveMessageFromServer();
+        exec.execute(this);
     }
 
     @Override
     public void executeStartGame(StartGameMessage startGame) {
         view.startGame();
+        receiveMessageFromServer();
     }
 
     @Override
@@ -49,14 +54,14 @@ public class ClientController implements VisitorInterface {
                 }
                 //code to selling card
                 if (leaderCard.isActivationSellingCorrect())
-                    view.viewError("Leader Card has been correctly sold");
+                    view.finishedLeaderAction("Leader Card has been correctly sold");
                 else
                     view.viewError("Leader Card has not been sold");
                 return;
             }
             //code to activate card
             if (leaderCard.isActivationSellingCorrect())
-                view.viewError("Leader Card has been correctly activated");
+                view.finishedLeaderAction("Leader Card has been correctly activated, you have finished Leader action");
             else
                 view.viewError("Leader Card has not been activated");
             return;
@@ -75,7 +80,7 @@ public class ClientController implements VisitorInterface {
                         return;
                     }
                     //code to check added resource
-                    view.finishedNormalAction("Production configuration was correct");
+                    view.finishedNormalAction("You have finished Marble action");
                 }
                 //code to check added resource
 
@@ -98,8 +103,10 @@ public class ClientController implements VisitorInterface {
                 return;
             }
             //code to check placed correct into productionLine
-            if(buyProductionCardMessage.isPlaceCardCorrect())
-                view.setCardIntoProductionLine(buyProductionCardMessage.getSelectedCard(), buyProductionCardMessage.getPositionCard());
+            if(buyProductionCardMessage.isPlaceCardCorrect()) {
+                view.setCardIntoProductionLine(buyProductionCardMessage.getSelectedCard(), buyProductionCardMessage.getPositionCard(), buyProductionCardMessage.getCardInProductionline());
+                view.finishedNormalAction("You have placed the card correctly");
+            }
             else
                 view.viewError("Card cannot be placed or bought");
             return;
@@ -180,18 +187,21 @@ public class ClientController implements VisitorInterface {
         if(newGameMessage.isNewGame()){
             view.createdNewGame(newGameMessage.getMessageString(), newGameMessage.getGameId());
         }
-        else
+        else {
+            view.printInformation("Error on creating a new game");
             view.setUpGame();
-
+        }
     }
 
     @Override
     public void executeEnterGame(EnterGameMessage enterGameMessage) {
         if(enterGameMessage.isEnterGame()){
             view.enteredNewGame(enterGameMessage.getMessageString(), enterGameMessage.getGameId());
+            receiveMessageFromServer();
         }
         else{
-            view.viewError(enterGameMessage.getMessageString());
+            view.printInformation(enterGameMessage.getMessageString());
+            view.setUpGame();
         }
     }
 

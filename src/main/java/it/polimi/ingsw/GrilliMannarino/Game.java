@@ -237,12 +237,12 @@ public class Game {
 
     public Integer getPopeLinePosition(){
         boolean[] arr = PopeLine.getFaithChecks();
-        int checkPosition;
-        for(checkPosition=0; checkPosition<arr.length; checkPosition++){
-            if(arr[checkPosition])
+        int checkPosition=-1;
+        for(int i=0; i<arr.length; i++){
+            if(arr[i])
                 checkPosition++;
         }
-        return checkPosition-1;   //if check position is -1 means no favor has been ever activate
+        return checkPosition;   //if check position is -1 means no favor has been ever activate
     }
 
     public Player getActivePlayer() {

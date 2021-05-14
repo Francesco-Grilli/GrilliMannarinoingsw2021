@@ -4,7 +4,6 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
-import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 
 import java.util.*;
 
@@ -21,7 +20,7 @@ public abstract class ClientView {
         else
             return 0;
     });
-    protected HashMap<Marble, Integer> chest;
+    protected HashMap<Resource, Integer> chest;
     protected Integer faith;
     protected boolean[] faithMark = new boolean[3];
     protected final int[] faithValue = {2, 3, 4};
@@ -29,13 +28,9 @@ public abstract class ClientView {
     protected boolean normalAction = false;
     protected boolean leaderAction = false;
 
-    abstract void activateLeaderCard(Integer activatedCard);
-
-    abstract void sellingLeaderCard(Integer cardCode);
-
     abstract void viewError(String errorMessage);
 
-    abstract void showMarbleMarket(Marble[][] marbleList, Marble marbleOut);
+    abstract void showMarbleMarket(ArrayList<ArrayList<Marble>> marbleList, Marble marbleOut);
 
     abstract void selectMarble(ArrayList<ArrayList<Marble>> returnedMarble);
 
@@ -43,7 +38,7 @@ public abstract class ClientView {
 
     abstract void showCardMarket(HashMap<Integer, Boolean> buyableCard);
 
-    abstract void setCardIntoProductionLine(Integer selectedCard, Integer positionCard);
+    abstract void setCardIntoProductionLine(Integer selectedCard, Integer positionCard, HashMap<Integer, Integer> cardInProductionline);
 
     abstract void isYourTurn();
 
@@ -82,4 +77,8 @@ public abstract class ClientView {
     public void setController(ClientController controller) {
         this.controller = controller;
     }
+
+    public abstract void printInformation(String message);
+
+    public abstract void finishedLeaderAction(String s);
 }

@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class ServerController implements VisitorInterface {
@@ -286,12 +287,13 @@ public class ServerController implements VisitorInterface {
             ArrayList<ArrayList<Marble>> marbleList = new ArrayList<>();
             for (MarbleOption marble : marbles) {
                 ArrayList<Marble> tempArray = new ArrayList<>(marble.getMarbles());
-                marbleList.add(tempArray);
+                if (tempArray.size() != 1 || !tempArray.get(0).equals(Marble.WHITE)) {
+                    marbleList.add(tempArray);
+                }
             }
             MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
             message.setDisplayMarblesReturned(true);
             message.setReturnedMarble(marbleList);
-            updateResources(game, marbleMarketMessage.getPlayerId());
             server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
             return;
 
@@ -300,7 +302,15 @@ public class ServerController implements VisitorInterface {
 
         Marble[][] marbles = game.displayMarbleMarket();
         MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-        message.setMarbleList(marbles);
+        ArrayList<ArrayList<Marble>> marblesToReturn = new ArrayList<>();
+        for(int x =0; x<marbles.length; x++){
+            ArrayList<Marble> temp = new ArrayList<>();
+            for(int y=0; y<marbles[x].length; y++){
+                temp.add(y, marbles[x][y]);
+            }
+            marblesToReturn.add(temp);
+        }
+        message.setMarbleList(marblesToReturn);
         message.setDisplayMarbleMarket(true);
         message.setMarbleOut(game.displayMarbleOut());
         server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
@@ -340,6 +350,10 @@ public class ServerController implements VisitorInterface {
                 message.setPlaceCardCorrect(true);
                 message.setSelectedCard(buyProductionCardMessage.getSelectedCard());
                 message.setPositionCard(buyProductionCardMessage.getPositionCard());
+                HashMap<Integer, CreationCard> cards = game.displayCardInProductionLine();
+                HashMap<Integer, Integer> cardToReturn = new HashMap<>();
+                cards.forEach((pos, c) -> cardToReturn.put(c.getCardCode(), pos));
+                message.setCardInProductionline(cardToReturn);
                 updateResources(game, buyProductionCardMessage.getPlayerId());
             }
             if(game.isActivatedEnd()){
@@ -353,8 +367,8 @@ public class ServerController implements VisitorInterface {
         HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard, Boolean>>> cards = game.displayCreationCard();
         HashMap<Integer, Boolean> returnedCards = new HashMap<>();
         for(Faction fac : cards.keySet()){
-            for(Integer cardCode : cards.get(fac).keySet()){
-                returnedCards.put(cardCode, cards.get(fac).get(cardCode).getValue());
+            for(Integer value : cards.get(fac).keySet()){
+                returnedCards.put(cards.get(fac).get(value).getKey().getCardCode(), cards.get(fac).get(value).getValue());
             }
         }
         BuyProductionCardMessage message = new BuyProductionCardMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId());

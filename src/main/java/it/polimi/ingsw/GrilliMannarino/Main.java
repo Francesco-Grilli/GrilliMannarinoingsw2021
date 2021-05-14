@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
@@ -35,14 +36,29 @@ public class Main {
         marbleList.add(marble2);
         cli.selectMarble(marbleList);
         cli.selectAction();*/
-        /*ArrayList<Integer> cards = new ArrayList<>();
-        cards.add(1);
-        cards.add(7);*/
-        HashMap<Integer, Boolean> cards = new HashMap<>();
+        ArrayList<Integer> cards = new ArrayList<>();
+        cards.add(49);
+        cards.add(50);
+        cards.add(51);
+        cards.add(52);
+        cards.add(53);
+        cards.add(54);
+        cards.add(55);
+        cards.add(56);
+        cards.add(57);
+        cards.add(58);
+        cards.add(59);
+        cards.add(60);
+        cards.add(61);
+        cards.add(62);
+        cards.add(63);
+        cards.add(64);
+        /*HashMap<Integer, Boolean> cards = new HashMap<>();
         cards.put(3, true);
         cards.put(7, false);
-        cards.put(4, true);
+        cards.put(4, true);*/
         cli.startGame();
-        cli.showCardMarket(cards);
+        cli.showLeaderCard(cards);
+
     }
 }

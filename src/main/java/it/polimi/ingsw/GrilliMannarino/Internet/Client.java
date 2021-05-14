@@ -16,7 +16,6 @@ public class Client {
     private OutputStream os;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private ClientController controller;
 
     public Client(){
 

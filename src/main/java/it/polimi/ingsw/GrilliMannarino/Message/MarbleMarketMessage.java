@@ -13,7 +13,7 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
      * displayMarbleMarket is set true by client to ask the server to see the configuration of marbleMarket
      * server set displayMarbleMarket true to let client know that marbleList contains the configuration asked
      */
-    private Marble[][] marbleList;
+    private ArrayList<ArrayList<Marble>> marbleList;
     private Marble marbleOut;
     private boolean displayMarbleMarket = false; //client ask to see the MarbleMarket
 
@@ -72,11 +72,11 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
         return addedResource;
     }
 
-    public Marble[][] getMarbleList() {
+    public ArrayList<ArrayList<Marble>> getMarbleList() {
         return marbleList;
     }
 
-    public void setMarbleList(Marble[][] marbleList) {
+    public void setMarbleList(ArrayList<ArrayList<Marble>> marbleList) {
         this.marbleList = marbleList;
     }
 

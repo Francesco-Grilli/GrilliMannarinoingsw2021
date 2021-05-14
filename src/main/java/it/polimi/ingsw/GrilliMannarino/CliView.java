@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
@@ -25,17 +26,6 @@ public class CliView extends ClientView {
     }
 
 
-
-    @Override
-    public void activateLeaderCard(Integer activatedCard) {
-
-    }
-
-    @Override
-    public void sellingLeaderCard(Integer cardCode) {
-
-    }
-
     @Override
     public void viewError(String errorMessage) {
         System.out.println(errorMessage.toUpperCase(Locale.ROOT));
@@ -43,7 +33,7 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public void showMarbleMarket(Marble[][] marbleList, Marble marbleOut) {
+    public void showMarbleMarket(ArrayList<ArrayList<Marble>> marbleList, Marble marbleOut) {
         String rowColumn;
         int number;
 
@@ -52,18 +42,17 @@ public class CliView extends ClientView {
         String s = "";
         int i=0;
         System.out.format("%15s", s);
-        for(int x=0; x<marbleList[0].length; x++){
+        for(int x=0; x<marbleList.size(); x++){
             String column = "Column:" + (x+1);
             System.out.format("%15s", column);
-
         }
         System.out.println();
-        for (int x=0; x<marbleList.length; x++){
+        for (int x=0; x<marbleList.get(0).size(); x++){
             String row = "Row: " + (i+1);
             System.out.format("%15s", row);
             i++;
-            for(int y=0; y<marbleList[x].length; y++){
-                System.out.format("%15s", marbleList[x][y].toString());
+            for(int y=0; y<marbleList.size(); y++){
+                System.out.format("%15s", marbleList.get(y).get(x).toString());
             }
             System.out.println();
         }
@@ -72,28 +61,41 @@ public class CliView extends ClientView {
         System.out.println();
 
         System.out.println("Insert R for Row and C for Column");
-        String scan = scanner.nextLine();
-        while(!scan.equals("C") && !scan.equals("R")){
+        rowColumn = scanner.nextLine();
+        while(!rowColumn.equals("C") && !rowColumn.equals("R")){
             System.out.println("Error, Invalid Input");
-            scan = scanner.nextLine();
+            rowColumn = scanner.nextLine();
         }
         System.out.println("Insert number of Row/Column");
-        rowColumn = scan;
-        if(scan.equals("R")){
-            int row = scanner.nextInt();
-            while(row > 3 || row < 1){
-                System.out.println("Error, Invalid Input");
-                row = scanner.nextInt();
+        if(rowColumn.equals("R")){
+            try{
+                number = Integer.parseInt(scanner.nextLine());
+            }catch (NumberFormatException e){
+                number=0;
             }
-            number = row;
+            while(number > 3 || number < 1){
+                System.out.println("Error, Invalid Input");
+                try{
+                    number = Integer.parseInt(scanner.nextLine());
+                }catch (NumberFormatException e){
+                    number=0;
+                }
+            }
         }
         else{
-            int column = scanner.nextInt();
-            while(column > 4 || column < 1){
-                System.out.println("Error, Invalid Input");
-                column = scanner.nextInt();
+            try{
+                number = Integer.parseInt(scanner.nextLine());
+            }catch (NumberFormatException e){
+                number=0;
             }
-            number = column;
+            while(number > 4 || number < 1){
+                System.out.println("Error, Invalid Input");
+                try{
+                    number = Integer.parseInt(scanner.nextLine());
+                }catch (NumberFormatException e){
+                    number=0;
+                }
+            }
         }
 
         MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
@@ -101,8 +103,6 @@ public class CliView extends ClientView {
         message.setColumnRow(rowColumn);
         message.setColumnRowValue(number);
         controller.sendMessageToServer(message);
-
-
     }
 
     @Override
@@ -134,24 +134,27 @@ public class CliView extends ClientView {
                 }
                 toReturn.add(m);
             }
-
         }
 
         ArrayList<Resource> resources = new ArrayList<>();
         toReturn.forEach((m) -> resources.add(Marble.getResource(m)));
 
         printWareHouse();
-        System.out.println("Resources needed to be placed: ");
-        resources.forEach(res -> System.out.format("%15s", res.toString()));
-        System.out.println();
-
         getResourceToPlace(resources);
     }
 
     private void getResourceToPlace(ArrayList<Resource> resources) {
 
+        System.out.println("Resources needed to be placed: ");
+        resources.forEach(res -> System.out.format("%15s", res.toString()));
+        System.out.println();
         System.out.println("Do you want to add Resources into warehouse? Otherwise they will be lost, Y/N");
-        if(scanner.nextLine().equals("N")){
+        String s = scanner.nextLine();
+        while(!s.equals("Y") && !s.equals("N")){
+            System.out.println("Invalid Input");
+            s = scanner.nextLine();
+        }
+        if(s.equals("N")){
             MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
             message.setReturnedResource(resources);
             message.setDestroyRemaining(true);
@@ -201,6 +204,7 @@ public class CliView extends ClientView {
     }
 
     private void printWareHouse(){
+        System.out.println("Warehouse: ");
         for(Row r : this.warehouse.keySet()){
             System.out.format("%15s", r.toString());
             if(this.warehouse.get(r).isEmpty()){
@@ -223,11 +227,20 @@ public class CliView extends ClientView {
         }
     }
 
+    private void printChest(){
+        System.out.println("Chest: ");
+        for(Resource res : this.chest.keySet()){
+            System.out.format("%s %d\n", res.toString(), this.chest.get(res));
+        }
+    }
+
     @Override
     public void addedResource(Resource resourceType, Row insertRow, ArrayList<Resource> remainingResource, boolean addResourceCorrect) {
         if(addResourceCorrect){
             System.out.println("The resource selected: " + resourceType.toString() + " has been added correctly");
-            printWareHouse();
+        }
+        else{
+            System.out.println("The resource selected: " + resourceType.toString() + " was not placed!!");
         }
         if(remainingResource.isEmpty()){
             System.out.println("You have finished the resource to place");
@@ -246,13 +259,14 @@ public class CliView extends ClientView {
             showBuyableCard(buyableCard);
 
             System.out.println("Enter the card code of the production card you want to buy");
+            System.out.println("Enter -1 to exit");
             Integer cardCode = null;
             try {
                 cardCode = Integer.parseInt(scanner.nextLine());
             } catch (IllegalArgumentException e) {
                 cardCode = 0;
             }
-            while (!buyableCard.containsKey(cardCode) || !buyableCard.get(cardCode)) {
+            while ((!buyableCard.containsKey(cardCode) || !buyableCard.get(cardCode)) && cardCode!=-1) {
                 if(!buyableCard.containsKey(cardCode))
                     System.out.println("Invalid Input");
                 else
@@ -264,27 +278,31 @@ public class CliView extends ClientView {
                 }
             }
 
-            BuyProductionCardMessage message = new BuyProductionCardMessage(this.gameId, this.playerId);
-            message.setSelectedCard(cardCode);
-            showCardInProductionLine(this.productionLine);
-            Integer position = null;
-            System.out.println("Enter the position you want to place your card");
-            try{
-                position = Integer.parseInt(scanner.nextLine());
-            }catch (IllegalArgumentException e){
-                position = -1;
-            }
-            while(position<0){
-                System.out.println("Invalid position");
-                try{
+            if(cardCode!=-1) {
+                BuyProductionCardMessage message = new BuyProductionCardMessage(this.gameId, this.playerId);
+                message.setSelectedCard(cardCode);
+                showCardInProductionLine(this.productionLine);
+                Integer position = null;
+                System.out.println("Enter the position you want to place your card");
+                try {
                     position = Integer.parseInt(scanner.nextLine());
-                }catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     position = -1;
                 }
-            }
+                while (position < 0) {
+                    System.out.println("Invalid position");
+                    try {
+                        position = Integer.parseInt(scanner.nextLine());
+                    } catch (IllegalArgumentException e) {
+                        position = -1;
+                    }
+                }
 
-            message.setPositionCard(position);
-            controller.sendMessageToServer(message);
+                message.setPositionCard(position);
+                controller.sendMessageToServer(message);
+            }
+            else
+                viewError("Exiting from buying production card");
 
         }
         else
@@ -293,8 +311,8 @@ public class CliView extends ClientView {
 
 
     @Override
-    public void setCardIntoProductionLine(Integer selectedCard, Integer positionCard) {
-
+    public void setCardIntoProductionLine(Integer selectedCard, Integer positionCard, HashMap<Integer, Integer> cardInProductionline) {
+        showCardInProductionLine(cardInProductionline);
     }
 
     public void selectAction(){
@@ -342,7 +360,6 @@ public class CliView extends ClientView {
 
     private void moveResource() {
         MoveResourceMessage moveMessage = new MoveResourceMessage(this.gameId, this.playerId);
-        System.out.println("Warehouse: ");
         printWareHouse();
         System.out.println("Select two row to reverse");
         System.out.println("Select first row: ");
@@ -397,12 +414,42 @@ public class CliView extends ClientView {
 
     @Override
     public void checkPopeLine(boolean favorActive, Integer checkPosition, Integer faithPosition) {
-
+        if(favorActive){
+            System.out.format("You have activated the pope favor number: %d", (checkPosition+1));
+            this.faith = faithPosition;
+            this.faithMark[checkPosition]=true;
+            printPopeLine();
+        }
+        else {
+            System.out.format("You have discharged the pope favor number: %d", (checkPosition + 1));
+            this.faith = faithPosition;
+            printPopeLine();
+        }
+        controller.receiveMessageFromServer();
     }
 
     @Override
     public void updateFaith(Integer faithPosition) {
+        this.faith = faithPosition;
+        printPopeLine();
+        controller.receiveMessageFromServer();
+    }
 
+    private void printPopeLine() {
+        System.out.println("Popeline: ");
+        for (int i = 1; i<=24; i++){
+            System.out.format("%5d", i);
+        }
+        System.out.println();
+        System.out.println("Your faith is: " + this.faith);
+        System.out.format("Favor active: ");
+        for(boolean b : this.faithMark){
+            if(b)
+                System.out.format("%15s", "Active");
+            else
+                System.out.format("%15s", "Inactive");
+        }
+        System.out.println();
     }
 
     private void loadProductionCard(){
@@ -428,16 +475,20 @@ public class CliView extends ClientView {
     public void startGame() {
         loadProductionCard();
         loadLeaderCard();
+        this.warehouse.put(Row.FIRST, new HashMap<>());
+        this.warehouse.put(Row.SECOND, new HashMap<>());
+        this.warehouse.put(Row.THIRD, new HashMap<>());
+        System.out.println("Game has started!");
     }
 
     private void loadLeaderCard() {
         JSONArray array;
         JSONParser parser = new JSONParser();
         try {
-            FileReader file = new FileReader("leader_card.json");
+            FileReader file = new FileReader("leader_cards.json");
             array = (JSONArray) parser.parse(file);
             for(Object o : array){
-                JSONObject jsonObject = (JSONObject) ((JSONObject) o).get("card");
+                JSONObject jsonObject = (JSONObject) ((JSONObject) o).get("leader_card");
                 jsonCardsProduction.put(Integer.parseInt((String) jsonObject.get("card_code")), jsonObject);
             }
         } catch (FileNotFoundException e) {
@@ -451,7 +502,11 @@ public class CliView extends ClientView {
 
     @Override
     public void updateResources(HashMap<Resource, Integer> chestResources, HashMap<Row, HashMap<Resource, Integer>> wareHouseResources) {
-
+        this.chest = chestResources;
+        this.warehouse = wareHouseResources;
+        printWareHouse();
+        printChest();
+        controller.receiveMessageFromServer();
     }
 
     @Override
@@ -480,13 +535,15 @@ public class CliView extends ClientView {
 
     @Override
     public void enteredNewGame(String messageString, Integer gameId) {
-
+        System.out.println(messageString);
+        this.gameId = gameId;
     }
 
     @Override
     public void finishedNormalAction(String message) {
         System.out.println(message);
         this.normalAction = false;
+        selectAction();
     }
 
     @Override
@@ -654,6 +711,18 @@ public class CliView extends ClientView {
         }
     }
 
+    @Override
+    public void printInformation(String message) {
+        System.out.println(message);
+    }
+
+    @Override
+    public void finishedLeaderAction(String s) {
+        System.out.println(s);
+        this.leaderAction = false;
+        selectAction();
+    }
+
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){
         for(Integer code : cards.keySet()){
             JSONObject card = jsonCardsProduction.get(code);
@@ -720,26 +789,21 @@ public class CliView extends ClientView {
         for(Integer code : cards){
             JSONObject card = jsonCardsProduction.get(code);
             System.out.format("CARD CODE: %s %5s", ((String)card.get("card_code")), "" );
-            System.out.format("Card level: %s %5s", ((String)card.get("card_level")), "");
-            System.out.format("Card faction: %s %5s", ((String)card.get("card_faction")), "");
             System.out.format("Card value: %s %5s", ((String)card.get("card_value")), "");
-            HashMap<Resource, Integer> price = parseHashMapResources((JSONObject) card.get("card_price"));
-            System.out.print("Card price: ");
-            for(Resource res : price.keySet()){
-                System.out.print(res.toString() + " " + price.get(res) + " ");
+            System.out.format("Specified resource: %s %5s", ((String)card.get("specified_resource")), "");
+            System.out.format("Card type: %s %5s\n", ((String) card.get("card_type")), "");
+            HashMap<Faction, Map.Entry<Integer, Integer>> price = parseHashMapFaction((JSONObject) card.get("price_cards"));
+            System.out.print("Price cards: ");
+            for(Faction fac : price.keySet()){
+                System.out.print(fac.toString() + " Value: " + price.get(fac).getKey() + " Quantity: " + price.get(fac).getValue() + "\n");
             }
             System.out.println();
-            HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("card_input"));
-            System.out.print("Card input: ");
+            HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("price_resources"));
+            System.out.print("Price resource: ");
             for(Resource res : input.keySet()){
                 System.out.print(res.toString() + " " + input.get(res) + " ");
             }
             System.out.format("%7s", "");
-            HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
-            System.out.print("Card output: ");
-            for(Resource res : output.keySet()){
-                System.out.print(res.toString() + " " + output.get(res) + " ");
-            }
             System.out.println("\n\n");
         }
     }
@@ -751,6 +815,25 @@ public class CliView extends ClientView {
             String resource = key.toString().toLowerCase();
             if(( resources.get(resource)) != null){
                 temp.put(key, Integer.parseInt((String) resources.get(resource)));
+            }
+        }
+        return temp;
+    }
+
+    private HashMap<Faction, Map.Entry<Integer, Integer>> parseHashMapFaction(JSONObject faction){
+        Faction[] keys = Faction.values();
+        HashMap<Faction, Map.Entry<Integer, Integer>> temp = new HashMap<>();
+        Integer[] cardValue = {0, 1, 2, 3};
+        for(Faction key : keys){
+            String fac = key.toString().toLowerCase();
+            if(faction.get(fac)!=null){
+                JSONObject t = (JSONObject) faction.get(fac);
+                for(Integer i : cardValue){
+                    String value = i.toString();
+                    if(t.get(value)!=null){
+                        temp.put(key, new AbstractMap.SimpleEntry<Integer, Integer>(i, Integer.parseInt((String) t.get(value))));
+                    }
+                }
             }
         }
         return temp;

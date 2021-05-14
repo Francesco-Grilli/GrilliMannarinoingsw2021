@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BuyProductionCardMessage extends Message implements MessageInterface, Serializable {
@@ -22,6 +23,7 @@ public class BuyProductionCardMessage extends Message implements MessageInterfac
     private Integer selectedCard;
     private Integer positionCard;
     private boolean placeCardCorrect = false;
+    private HashMap<Integer, Integer> cardInProductionline;
 
 
 
@@ -81,5 +83,13 @@ public class BuyProductionCardMessage extends Message implements MessageInterfac
 
     public void setPositionCard(Integer positionCard) {
         this.positionCard = positionCard;
+    }
+
+    public HashMap<Integer, Integer> getCardInProductionline() {
+        return cardInProductionline;
+    }
+
+    public void setCardInProductionline(HashMap<Integer, Integer> cardInProductionline) {
+        this.cardInProductionline = cardInProductionline;
     }
 }

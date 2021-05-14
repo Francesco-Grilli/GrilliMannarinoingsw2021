@@ -37,10 +37,7 @@ public class ClientHandler implements  Runnable{
             try{
                 MessageInterface message = (MessageInterface) in.readObject();
                 server.messageToController(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-                goOn = false;
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 goOn = false;
             }
