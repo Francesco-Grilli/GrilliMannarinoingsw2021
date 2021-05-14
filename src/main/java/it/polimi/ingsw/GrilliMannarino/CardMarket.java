@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CardMarket implements CardMarketBoardInterface, GetCarder {
+public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMarketBoardInterfaceSingle {
   HashMap<Integer, CreationCard> cardsInGame;
   HashMap<Faction, HashMap<Integer, CardStack>> cardStacks;
   HashMap<Integer, CreationCard> playedCards;
@@ -169,4 +169,8 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder {
 
   public void setStatus(JSONObject status){}
 
+  @Override
+  public void deleteTwoCards(Faction faction) {
+
+  }
 }
