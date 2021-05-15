@@ -395,8 +395,13 @@ public class CliView extends ClientView {
         System.out.println("You have selected rows: " + one.toString() + " and " + two.toString());
         moveMessage.setRowOne(one);
         moveMessage.setRowTwo(two);
-        System.out.println("Do you want to force the reverse? Doing some resources may be lost. Y/N");
-        if(scanner.nextLine().equals("Y")){
+        System.out.println("Do you want to force the reverse? Doing so some resources may be lost. Y/N");
+        String s = scanner.nextLine();
+        while(!s.equals("N") && !s.equals("Y")){
+            System.out.println("Invalid Input");
+            s = scanner.nextLine();
+        }
+        if(s.equals("Y")){
             moveMessage.setForceSwap(true);
         }
         controller.sendMessageToServer(moveMessage);
@@ -511,12 +516,14 @@ public class CliView extends ClientView {
 
     @Override
     public void moveApplied() {
-
+        System.out.println("Resource has been moved correctly");
+        selectAction();
     }
 
     @Override
     public void looseResource() {
-
+        System.out.println("Attention: some resources will be lost!!");
+        moveResource();
     }
 
     @Override

@@ -4,7 +4,6 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;

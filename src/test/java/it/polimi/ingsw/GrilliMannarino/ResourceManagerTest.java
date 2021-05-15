@@ -240,4 +240,16 @@ class ResourceManagerTest {
         assertTrue(manager2.canSwapLine(Row.FIRST, Row.SECOND));
         manager2.canSwapLine(Row.FIRST, Row.SECOND);
     }
+
+    @Test
+    public void swapLineTest(){
+        ResourceManager manager = new ResourceManager();
+        manager.setResourcesFromMarket(Row.FIRST, Resource.STONE, 1);
+        manager.setResourcesFromMarket(Row.SECOND, Resource.SERVANT, 1);
+        manager.setResourcesFromMarket(Row.THIRD, Resource.SHIELD, 1);
+        assertTrue(manager.canSwapLine(Row.FIRST, Row.SECOND));
+        manager.forceSwapLine(Row.FIRST, Row.SECOND);
+        manager.getResourceLine(Row.FIRST).get(Resource.SERVANT);
+        manager.getResourceLine(Row.SECOND).get(Resource.STONE);
+    }
 }
