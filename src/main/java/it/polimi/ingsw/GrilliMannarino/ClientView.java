@@ -13,13 +13,7 @@ public abstract class ClientView {
     protected String nickname;
     protected Integer playerId;
     protected Integer gameId;
-    protected Map<Row, HashMap<Resource, Integer>> warehouse = new TreeMap<>((o1, o2) -> {
-        if(o1.getValue()>o2.getValue()){
-            return 1;
-        }
-        else
-            return 0;
-    });
+    protected Map<Row, HashMap<Resource, Integer>> warehouse = new HashMap<>();
     protected HashMap<Resource, Integer> chest;
     protected Integer faith;
     protected boolean[] faithMark = new boolean[3];
