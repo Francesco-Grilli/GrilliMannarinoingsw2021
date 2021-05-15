@@ -93,6 +93,7 @@ public class Game {
         int p = playerID.get(countPlayer % playerID.size());
         activePlayer  = player.getOrDefault(p, null);
         setActiveBoard();
+        //method to set leadercard
     }
 
     //METHOD TO BUY CREATION CARD
@@ -128,6 +129,7 @@ public class Game {
 
     public ArrayList<MarbleOption> selectMarbleColumn(int column){
         return activeBoard.getColumn(column);
+        //add faith remove and remove white marble
     }
 
     public ArrayList<MarbleOption> selectMarbleRow(int row){

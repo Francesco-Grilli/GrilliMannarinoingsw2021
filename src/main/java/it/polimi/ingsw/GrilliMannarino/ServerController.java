@@ -14,10 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class ServerController implements VisitorInterface {
     //implements all method needed to communicate with client
@@ -28,12 +25,28 @@ public class ServerController implements VisitorInterface {
     private Integer nextPlayerId = 1;
     private Integer nextGameId = 1;
     JSONObject nicknameListObj = new JSONObject();
+    Scanner scan;
 
     public ServerController(){
         server = new Server(this);
         nicknamesList = new HashMap<>();
         games = new HashMap<>();
+        scan = new Scanner(System.in);
         server.startConnection();
+        loadNickname();
+        stopServer();
+    }
+
+    private void stopServer(){
+        System.out.println("If you want to stop the server properly please enter CLOSE");
+        String s = scan.nextLine();
+        while(!s.equals("CLOSE")){
+            System.out.println("Invalid Input");
+            s = scan.nextLine();
+        }
+        writeNickname();
+        System.exit(0);
+
     }
 
     public void receiveMessage(MessageInterface message){
@@ -41,12 +54,18 @@ public class ServerController implements VisitorInterface {
     }
 
     private void startGamePlayer(Integer gameId, Integer playerId){
-        ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
-        player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p)));
-        TurnMessage message = new TurnMessage(gameId, playerId);
-        message.setMyTurn(true);
-        games.get(gameId).startGame();
-        server.sendMessageTo(playerId, message);
+        Game g = games.get(gameId);
+        if(g.getPlayerID().size()==g.getNumberOfPlayer()) {
+            ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
+            player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, true)));
+            TurnMessage message = new TurnMessage(gameId, playerId);
+            message.setMyTurn(true);
+            games.get(gameId).startGame();
+            server.sendMessageTo(playerId, message);
+        }
+        else{
+            server.sendMessageTo(playerId, new StartGameMessage(gameId, playerId, false));
+        }
     }
 
     public boolean nicknameAlreadyPresent(String nickname) {
@@ -352,7 +371,11 @@ public class ServerController implements VisitorInterface {
                 message.setPositionCard(buyProductionCardMessage.getPositionCard());
                 HashMap<Integer, CreationCard> cards = game.displayCardInProductionLine();
                 HashMap<Integer, Integer> cardToReturn = new HashMap<>();
-                cards.forEach((pos, c) -> cardToReturn.put(c.getCardCode(), pos));
+                for(Integer pos : cards.keySet()){
+                    if(cards.get(pos)!=null){
+                        cardToReturn.put(cards.get(pos).getCardCode(), pos);
+                    }
+                }
                 message.setCardInProductionline(cardToReturn);
                 updateResources(game, buyProductionCardMessage.getPlayerId());
             }

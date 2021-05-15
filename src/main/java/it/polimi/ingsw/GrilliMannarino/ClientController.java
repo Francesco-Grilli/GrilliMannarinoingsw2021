@@ -40,8 +40,13 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeStartGame(StartGameMessage startGame) {
-        view.startGame();
-        receiveMessageFromServer();
+        if(startGame.isStart()) {
+            view.startGame();
+            receiveMessageFromServer();
+        }
+        else{
+            view.createdNewGame("Wait not enough player", startGame.getGameId());
+        }
     }
 
     @Override

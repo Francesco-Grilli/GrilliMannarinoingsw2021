@@ -174,10 +174,10 @@ public class WareHouse {
         resourceCopy.get(line).clear();
 
         boolean checkPresence =true;
-        for(Row l : resourceCopy.keySet()){
+        /*for(Row l : resourceCopy.keySet()){
             if((resourceCopy.get(l).containsKey(res) && l!=line))
                 checkPresence=false;
-        }
+        }*/
 
         if(value<=line.getValue() && checkPresence) {
             resources.get(line).clear();

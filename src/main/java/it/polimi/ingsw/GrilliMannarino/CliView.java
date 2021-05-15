@@ -289,7 +289,7 @@ public class CliView extends ClientView {
                 } catch (IllegalArgumentException e) {
                     position = -1;
                 }
-                while (position < 0) {
+                while (position <= 0) {
                     System.out.println("Invalid position");
                     try {
                         position = Integer.parseInt(scanner.nextLine());
@@ -298,7 +298,8 @@ public class CliView extends ClientView {
                     }
                 }
 
-                message.setPositionCard(position);
+                message.setPositionCard(position-1);
+                message.setSelectCard(true);
                 controller.sendMessageToServer(message);
             }
             else
@@ -536,7 +537,7 @@ public class CliView extends ClientView {
             System.out.println("Invalid Input");
             start = scanner.nextLine().toUpperCase(Locale.ROOT);
         }
-        StartGameMessage message = new StartGameMessage(this.gameId, this.playerId);
+        StartGameMessage message = new StartGameMessage(this.gameId, this.playerId, true);
         controller.sendMessageToServer(message);
     }
 
@@ -732,30 +733,35 @@ public class CliView extends ClientView {
 
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){
         for(Integer code : cards.keySet()){
-            JSONObject card = jsonCardsProduction.get(code);
-            System.out.format("CARD CODE: %s %5s",((String)card.get("card_code")), "");
-            System.out.format("POSITION: %s \n", cards.get(code));
-            System.out.format("Card level: %s %5s", ((String)card.get("card_level")), "");
-            System.out.format("Card faction: %s %5s", ((String)card.get("card_faction")), "");
-            System.out.format("Card value: %s %5s", ((String)card.get("card_value")), "");
-            HashMap<Resource, Integer> price = parseHashMapResources((JSONObject) card.get("card_price"));
-            System.out.print("Card price: ");
-            for(Resource res : price.keySet()){
-                System.out.print(res.toString() + " " + price.get(res) + " ");
+            if(code.equals(0)){
+                System.out.println("This is the base production card");
             }
-            System.out.println();
-            HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("card_input"));
-            System.out.print("Card input: ");
-            for(Resource res : input.keySet()){
-                System.out.print(res.toString() + " " + input.get(res) + " ");
+            else {
+                JSONObject card = jsonCardsProduction.get(code);
+                System.out.format("CARD CODE: %s %5s", ((String) card.get("card_code")), "");
+                System.out.format("POSITION: %s \n", cards.get(code));
+                System.out.format("Card level: %s %5s", ((String) card.get("card_level")), "");
+                System.out.format("Card faction: %s %5s", ((String) card.get("card_faction")), "");
+                System.out.format("Card value: %s %5s", ((String) card.get("card_value")), "");
+                HashMap<Resource, Integer> price = parseHashMapResources((JSONObject) card.get("card_price"));
+                System.out.print("Card price: ");
+                for (Resource res : price.keySet()) {
+                    System.out.print(res.toString() + " " + price.get(res) + " ");
+                }
+                System.out.println();
+                HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("card_input"));
+                System.out.print("Card input: ");
+                for (Resource res : input.keySet()) {
+                    System.out.print(res.toString() + " " + input.get(res) + " ");
+                }
+                System.out.format("%7s", "");
+                HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
+                System.out.print("Card output: ");
+                for (Resource res : output.keySet()) {
+                    System.out.print(res.toString() + " " + output.get(res) + " ");
+                }
+                System.out.print("\n\n");
             }
-            System.out.format("%7s", "");
-            HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
-            System.out.print("Card output: ");
-            for(Resource res : output.keySet()){
-                System.out.print(res.toString() + " " + output.get(res) + " ");
-            }
-            System.out.print("\n\n");
         }
     }
 

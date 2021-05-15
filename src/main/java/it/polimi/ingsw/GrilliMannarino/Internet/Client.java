@@ -28,7 +28,8 @@ public class Client {
     public void setUpInformation(LoginMessage message) {
 
         try {
-            output.writeObject(message);
+            output.reset();
+            output.writeUnshared(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +59,8 @@ public class Client {
 
     public void sendMessageToServer(MessageInterface message){
         try{
-            output.writeObject(message);
+            output.reset();
+            output.writeUnshared(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,7 +68,7 @@ public class Client {
 
     public MessageInterface receiveMessageFromServer(){
         try{
-            return (MessageInterface) input.readObject();
+            return (MessageInterface) input.readUnshared();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -77,7 +79,7 @@ public class Client {
 
     public LoginMessage getUpInformation() {
         try {
-            return (LoginMessage) input.readObject();
+            return (LoginMessage) input.readUnshared();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

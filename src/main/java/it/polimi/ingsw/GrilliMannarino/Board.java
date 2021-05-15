@@ -61,6 +61,7 @@ public class Board {
 
   public CreationCard getCardFromMarket(CreationCard card){
     if(canBuyCard(card)) {
+      resourceManager.remove(card.getPrice());
       return cardMarket.buyCard(card.getFaction(), card.getCardLevel());
     }
     return null;

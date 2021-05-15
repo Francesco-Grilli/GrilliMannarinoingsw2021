@@ -35,7 +35,7 @@ public class ClientHandler implements  Runnable{
         boolean goOn = true;
         while(goOn){
             try{
-                MessageInterface message = (MessageInterface) in.readObject();
+                MessageInterface message = (MessageInterface) in.readUnshared();
                 server.messageToController(message);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -50,7 +50,7 @@ public class ClientHandler implements  Runnable{
 
         while(!login){
             try{
-                LoginMessage message = (LoginMessage) in.readObject();
+                LoginMessage message = (LoginMessage) in.readUnshared();
 
                 if(message.isNewAccount()){
                     Integer playerId = server.createNewAccount(message.getNickname());
@@ -63,12 +63,12 @@ public class ClientHandler implements  Runnable{
                         this.nickName = message.getNickname();
                         messageOut.setMessage("Account created");
                         messageOut.setCorrectLogin(true);
-                        out.writeObject(messageOut);
+                        out.writeUnshared(messageOut);
                     }
                     else{
                         LoginMessage messageOut = new LoginMessage(message.getNickname());
                         messageOut.setMessage("Error with new account");
-                        out.writeObject(messageOut);
+                        out.writeUnshared(messageOut);
                     }
                 }
                 else{
@@ -82,12 +82,12 @@ public class ClientHandler implements  Runnable{
                         this.nickName = message.getNickname();
                         messageOut.setMessage("Login was correct");
                         messageOut.setCorrectLogin(true);
-                        out.writeObject(messageOut);
+                        out.writeUnshared(messageOut);
                     }
                     else{
                         LoginMessage messageOut = new LoginMessage(message.getNickname());
                         messageOut.setMessage("Error with login");
-                        out.writeObject(messageOut);
+                        out.writeUnshared(messageOut);
                     }
                 }
 
@@ -114,7 +114,8 @@ public class ClientHandler implements  Runnable{
 
     public void sendMessage(MessageInterface message) {
         try{
-            out.writeObject(message);
+            out.reset();
+            out.writeUnshared(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
