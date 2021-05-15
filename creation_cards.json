@@ -1,4 +1,5 @@
-[{"card":{"card_code":"1","card_level":"1","card_value":"1","card_faction":"green","card_price":{"shield":"2"},"card_input":{"coin":"1"},"card_output":{"faith":"1"}}},
+[{"card": {"card_code":"0", "card_level:":"0", "card_value": "0", "card_faction":"none","card_price":{},"card_input":{"unknown":"2"},"card_output":{"unknown":"1"}}},
+  {"card":{"card_code":"1","card_level":"1","card_value":"1","card_faction":"green","card_price":{"shield":"2"},"card_input":{"coin":"1"},"card_output":{"faith":"1"}}},
   {"card":{"card_code":"2","card_level":"1","card_value":"1","card_faction":"purple","card_price":{"servant":"2"},"card_input":{"stone":"1"},"card_output":{"faith":"1"}}},
   {"card":{"card_code":"3","card_level":"1","card_value":"1","card_faction":"blue","card_price":{"coin":"2"},"card_input":{"shield":"1"},"card_output":{"faith":"1"}}},
   {"card":{"card_code":"4","card_level":"1","card_value":"1","card_faction":"yellow","card_price":{"stone":"2"},"card_input":{"servant":"1"},"card_output":{"faith":"1"}}},
