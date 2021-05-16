@@ -47,43 +47,16 @@ public class ServerController implements VisitorInterface {
     private synchronized void startGamePlayer(Integer gameId, Integer playerId){
         Game g = games.get(gameId);
         if(g.getPlayerID().size()==g.getNumberOfPlayer()) {
-            ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
+            Integer startingPlayer = g.startGame();
+            ArrayList<Integer> player = g.getPlayerID();
             player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, true)));
-            Integer startingPlayer = games.get(gameId).startGame();
-            //set resource at start game
-            setResourceAtStart(startingPlayer, g);
             TurnMessage message = new TurnMessage(gameId, startingPlayer);
             message.setMyTurn(true);
+            g.setStartingResource();
             server.sendMessageTo(startingPlayer, message);
         }
         else{
             server.sendMessageTo(playerId, new StartGameMessage(gameId, playerId, false));
-        }
-    }
-
-    private void setResourceAtStart(Integer startingPlayer, Game game) {
-        ArrayList<Integer> playerInGame = game.getPlayerID();
-        int startingPos = playerInGame.indexOf(startingPlayer);
-        if (playerInGame.size() == 1) {
-        } else if (playerInGame.size() == 2) {
-            Integer p = playerInGame.get((startingPos + 1) % playerInGame.size());
-            ArrayList<ArrayList<Marble>> marbleToReturn = new ArrayList<>();
-            ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
-            marbleToReturn.add(m);
-            MarbleMarketMessage message = new MarbleMarketMessage(game.getGameId(), p);
-            message.setDisplayMarblesReturned(true);
-            message.setReturnedMarble(marbleToReturn);
-            server.sendMessageTo(p, message);
-        } else if (playerInGame.size() == 3) {
-            Integer p = playerInGame.get((startingPos + 1) % playerInGame.size());
-            ArrayList<ArrayList<Marble>> marbleToReturn = new ArrayList<>();
-            ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
-            marbleToReturn.add(m);
-            MarbleMarketMessage message = new MarbleMarketMessage(game.getGameId(), p);
-            message.setDisplayMarblesReturned(true);
-            message.setReturnedMarble(marbleToReturn);
-            server.sendMessageTo(p, message);
-            game
         }
     }
 
@@ -158,10 +131,53 @@ public class ServerController implements VisitorInterface {
             endGame(game);
             games.remove(game.getGameId());
         }
-
-        TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
-        message.setMyTurn(true);
-        server.sendMessageTo(message.getPlayerId(), message);
+        if (!game.isStartingResource()) {
+            game.setStartingResource();
+            ArrayList<Integer> player = new ArrayList<>(game.getPlayerID());
+            int index = player.indexOf(game.getActivePlayer().getID());
+            if(index == 1){
+                ArrayList<ArrayList<Marble>> marbles = new ArrayList<>();
+                ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+                marbles.add(m);
+                StartingResourceMessage message = new StartingResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+                message.setResource(true);
+                message.setMarblesToSelect(marbles);
+                message.setMessageToShow("You are entitled to one resource");
+                server.sendMessageTo(message.getPlayerId(), message);
+            }
+            else if (index == 2){
+                ArrayList<ArrayList<Marble>> marbles = new ArrayList<>();
+                ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+                marbles.add(m);
+                game.addFaithTo(game.getActivePlayer().getID());
+                StartingResourceMessage message = new StartingResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+                message.setResource(true);
+                message.setMarblesToSelect(marbles);
+                message.setMessageToShow("You are entitled to one resource and one point of faith");
+                message.setFaith(true);
+                message.setFaithToAdd(game.getPlayersFaith().get(message.getPlayerId()));
+                server.sendMessageTo(message.getPlayerId(), message);
+            }
+            else if (index == 3){
+                ArrayList<ArrayList<Marble>> marbles = new ArrayList<>();
+                ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+                marbles.add(m);
+                marbles.add(m);
+                game.addFaithTo(game.getActivePlayer().getID());
+                StartingResourceMessage message = new StartingResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+                message.setResource(true);
+                message.setMarblesToSelect(marbles);
+                message.setMessageToShow("You are entitled to two resources and one point of faith");
+                message.setFaith(true);
+                message.setFaithToAdd(game.getPlayersFaith().get(message.getPlayerId()));
+                server.sendMessageTo(message.getPlayerId(), message);
+            }
+        }
+        else{
+            TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
+            message.setMyTurn(true);
+            server.sendMessageTo(message.getPlayerId(), message);
+        }
     }
 
     private synchronized void endGame(Game game){
@@ -575,6 +591,31 @@ public class ServerController implements VisitorInterface {
     @Override
     public synchronized void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
 
+    }
+
+    @Override
+    public void executeStartingResource(StartingResourceMessage startingResource) {
+        Game game = games.get(startingResource.getGameId());
+        if(startingResource.isPlaceResource()){
+            Row row = startingResource.getRowToPlace();
+            Resource res = startingResource.getResourceToPlace();
+            StartingResourceMessage message = new StartingResourceMessage(startingResource.getGameId(), startingResource.getPlayerId());
+            message.setPlaceResource(true);
+            message.setRowToPlace(row);
+            message.setResourceToPlace(res);
+            message.setResourcesLeft(startingResource.getResourcesLeft());
+            if(game.placeResource(row, res) && startingResource.getResourcesLeft().contains(res)){
+                message.setAddResourceCorrect(true);
+                message.getResourcesLeft().remove(res);
+                updateResources(game, startingResource.getPlayerId());
+            }
+            server.sendMessageTo(startingResource.getPlayerId(), message);
+        }
+        else{
+            TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
+            message.setMyTurn(true);
+            server.sendMessageTo(message.getPlayerId(), message);
+        }
     }
 
     private synchronized Game firstGameFree(int skip){

@@ -162,6 +162,7 @@ public class ClientController implements VisitorInterface {
             }
             //code to update faith
             view.updateFaith(popeLineMessage.getFaithPosition());
+            receiveMessageFromServer();
         }
         //code to check the popeline
         view.checkPopeLine(popeLineMessage.isFavorActive(), popeLineMessage.getCheckPosition(), popeLineMessage.getFaithPosition());
@@ -213,5 +214,23 @@ public class ClientController implements VisitorInterface {
     @Override
     public void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
 
+    }
+
+    @Override
+    public void executeStartingResource(StartingResourceMessage startingResource) {
+        if(startingResource.isFaith())
+            view.updateFaith(startingResource.getFaithToAdd());
+        if(startingResource.isResource()){
+            view.printInformation(startingResource.getMessageToShow());
+            view.selectMarbleStarting(startingResource.getMarblesToSelect());
+        }
+        else if(startingResource.isPlaceResource()){
+            if(startingResource.isAddResourceCorrect()){
+                view.printInformation("Resource has been placed correctly!");
+            }
+            else
+                view.printInformation("Resource has NOT been placed!");
+            view.placeResourceStarting(startingResource.getResourcesLeft());
+        }
     }
 }

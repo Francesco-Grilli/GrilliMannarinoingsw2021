@@ -23,6 +23,7 @@ public class Board {
   protected MarbleMarketBoardInterface marbleMarket;
   protected HashMap<Integer, LeaderCard> boardLeaderCards;
   protected ArrayList<Integer> activeLeaderCards;
+  private boolean startingResource = false;
 
   public Board(Player player, CardMarketBoardInterface cardMarket, MarbleMarketBoardInterface marbleMarket){
     this.player = player;
@@ -399,5 +400,11 @@ public class Board {
   public void setStatus(JSONObject status){}
 
 
+  public boolean isStartingResource() {
+    return startingResource;
+  }
 
+  public void setStartingResource(boolean startingResource) {
+    this.startingResource = startingResource;
+  }
 }

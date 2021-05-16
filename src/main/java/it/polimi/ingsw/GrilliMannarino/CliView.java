@@ -437,7 +437,6 @@ public class CliView extends ClientView {
     public void updateFaith(Integer faithPosition) {
         this.faith = faithPosition;
         printPopeLine();
-        controller.receiveMessageFromServer();
     }
 
     private void printPopeLine() {
@@ -729,6 +728,92 @@ public class CliView extends ClientView {
         System.out.println(s);
         this.leaderAction = false;
         selectAction();
+    }
+
+    @Override
+    public void selectMarbleStarting(ArrayList<ArrayList<Marble>> marblesToSelect) {
+        System.out.println("For each Row you have to select the Marble you prefer");
+        ArrayList<Marble> toReturn = new ArrayList<>();
+        for(ArrayList<Marble> arr : marblesToSelect){
+            if(arr.size()==1){
+                toReturn.add(arr.get(0));
+            }
+            else {
+                ArrayList<Marble> marble = new ArrayList<>();
+                for (int x = 0; x < arr.size(); x++) {
+                    System.out.format("%15s", arr.get(x).toString());
+                    marble.add(arr.get(x));
+                }
+                System.out.println();
+                Marble m = null;
+                try {
+                    m = Marble.valueOf(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                }
+                while (!marble.contains(m)) {
+                    System.out.println("Invalid Input");
+                    try {
+                        m = Marble.valueOf(scanner.nextLine());
+                    } catch (IllegalArgumentException e) {
+                    }
+                }
+                toReturn.add(m);
+            }
+        }
+
+        ArrayList<Resource> resources = new ArrayList<>();
+        toReturn.forEach((m) -> resources.add(Marble.getResource(m)));
+
+        printWareHouse();
+        placeResourceStarting(resources);
+    }
+
+    @Override
+    public void placeResourceStarting(ArrayList<Resource> resourcesLeft) {
+        if(!resourcesLeft.isEmpty()){
+            System.out.println("Resources needed to be placed: ");
+            resourcesLeft.forEach(res -> System.out.format("%15s", res.toString()));
+            System.out.println();
+            System.out.println("Select the Resource to place into warehouse");
+            Resource resource = null;
+            Row row = null;
+            try {
+                resource = Resource.valueOf(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+            }
+            while (!resourcesLeft.contains(resource)) {
+                System.out.println("Invalid Input");
+                try {
+                    resource = Resource.valueOf(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                }
+            }
+            System.out.println("Now select the row you want to put in");
+            try {
+                row = Row.valueOf(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+            }
+            while (!this.warehouse.containsKey(row)) {
+                System.out.println("Invalid Input");
+                try {
+                    row = Row.valueOf(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                }
+            }
+
+            System.out.println("You selected " + resource.toString() + " resource to put into " + row.toString() + " row");
+            StartingResourceMessage message = new StartingResourceMessage(this.gameId, this.playerId);
+            message.setPlaceResource(true);
+            message.setRowToPlace(row);
+            message.setResourceToPlace(resource);
+            message.setResourcesLeft(resourcesLeft);
+            controller.sendMessageToServer(message);
+        }
+        else{
+            System.out.print("You have placed all resources!");
+            StartingResourceMessage message = new StartingResourceMessage(this.gameId, this.playerId);
+            controller.sendMessageToServer(message);
+        }
     }
 
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){

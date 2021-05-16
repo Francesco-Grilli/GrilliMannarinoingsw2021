@@ -4,10 +4,8 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
@@ -90,9 +88,8 @@ public class Game {
 
     public Integer startGame(){
         start = true;
-        int p = (int) (Math.random()*playerID.size());
-        countPlayer = p;
-        int playerId = playerID.get(p);
+        Collections.shuffle(playerID);
+        int playerId = playerID.get(0);
         activePlayer  = player.getOrDefault(playerId, null);
         setActiveBoard();
         //method to set leadercard
@@ -145,6 +142,14 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    public boolean isStartingResource(){
+        return activeBoard.isStartingResource();
+    }
+
+    public void setStartingResource(){
+        activeBoard.setStartingResource(true);
     }
 
 
@@ -296,7 +301,10 @@ public class Game {
     }
 
     public boolean addFaithTo(Integer playerId){
-        if()
+        if(board.containsKey(playerId)){
+            return board.get(playerId).addPopeFaith();
+        }
+        return false;
     }
 
     //METHOD TO WORK WITH RESOURCEMANAGER

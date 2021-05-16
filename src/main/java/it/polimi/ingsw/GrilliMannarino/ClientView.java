@@ -75,4 +75,8 @@ public abstract class ClientView {
     public abstract void printInformation(String message);
 
     abstract void finishedLeaderAction(String s);
+
+    public abstract void selectMarbleStarting(ArrayList<ArrayList<Marble>> marblesToSelect);
+
+    public abstract void placeResourceStarting(ArrayList<Resource> resourcesLeft);
 }
