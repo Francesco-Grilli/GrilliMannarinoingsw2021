@@ -16,15 +16,15 @@ public class ProductionLineTest {
     HashMap<Resource,Integer> price = new HashMap<>(),input1 = new HashMap<>(),output2 = new HashMap<>();
 
     assertTrue(test.addCard(0,new CreationCard(1,1,1, Faction.BLUE,price, input1, output2)));
-    assertTrue(test.addCard(1,new CreationCard(1,1,1, Faction.BLUE,price, input1, output2)));
-    assertTrue(test.addCard(2,new CreationCard(1,1,1, Faction.BLUE,price, input1, output2)));
-    assertFalse(test.addCard(3,new CreationCard(1,1,1, Faction.BLUE,price, input1, output2)));
-    assertFalse(test.addCard(0,new CreationCard(1,1,1, Faction.BLUE,price, input1, output2)));
-    assertTrue(test.addCard(3,new CreationCard(1,2,1, Faction.BLUE,price, input1, output2)));
-    assertFalse(test.addCard(0,new CreationCard(1,2,1, Faction.BLUE,price, input1, output2)));
-    assertTrue(test.addCard(1,new CreationCard(1,2,1, Faction.BLUE,price, input1, output2)));
-    assertFalse(test.addCard(1,new CreationCard(1,1,1, Faction.BLUE,price, input1, output2)));
-    assertTrue(test.addCard(1,new CreationCard(1,3,1, Faction.BLUE,price, input1, output2)));
+    assertTrue(test.addCard(1,new CreationCard(2,1,1, Faction.BLUE,price, input1, output2)));
+    assertTrue(test.addCard(2,new CreationCard(3,1,1, Faction.BLUE,price, input1, output2)));
+    assertFalse(test.addCard(3,new CreationCard(4,1,1, Faction.BLUE,price, input1, output2)));
+    assertFalse(test.addCard(0,new CreationCard(5,1,1, Faction.BLUE,price, input1, output2)));
+    assertTrue(test.addCard(3,new CreationCard(6,2,1, Faction.BLUE,price, input1, output2)));
+    assertFalse(test.addCard(0,new CreationCard(7,2,1, Faction.BLUE,price, input1, output2)));
+    assertTrue(test.addCard(1,new CreationCard(8,2,1, Faction.BLUE,price, input1, output2)));
+    assertFalse(test.addCard(1,new CreationCard(9,1,1, Faction.BLUE,price, input1, output2)));
+    assertTrue(test.addCard(1,new CreationCard(10,3,1, Faction.BLUE,price, input1, output2)));
   }
 
   @Test

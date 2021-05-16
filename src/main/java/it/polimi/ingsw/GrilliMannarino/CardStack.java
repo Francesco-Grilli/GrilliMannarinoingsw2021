@@ -66,49 +66,49 @@ public class CardStack implements CreationCardGroup{
     }
 
     public int getValue() {
-        if(this.cards.isEmpty()){
+        if(this.cards.isEmpty()||this.size==-1){
             return 0;
         }
         return cards.get(size).getValue();
     }
 
     public Faction getFaction() {
-        if(this.cards.isEmpty()){
+        if(this.cards.isEmpty()||this.size==-1){
             return Faction.NONE;
         }
         return cards.get(size).getFaction();
     }
 
     public int getCardLevel() {
-        if(this.cards.isEmpty()){
+        if(this.cards.isEmpty()||this.size==-1){
             return 0;
         }
         return cards.get(size).getCardLevel();
     }
 
     public int getCardCode() {
-        if(this.cards.isEmpty()){
+        if(this.cards.isEmpty()||this.size==-1){
             return 0;
         }
         return cards.get(size).getCardCode();
     }
 
     public HashMap<Resource, Integer> getPrice() {
-        if(this.cards.isEmpty()){
+        if(this.cards.isEmpty()||this.size==-1){
             return new HashMap<>();
         }
         return cards.get(size).getPrice();
     }
 
     public HashMap<Resource, Integer> getInput() {
-        if(this.cards.isEmpty()){
+        if(this.cards.isEmpty()||this.size==-1){
             return new HashMap<>();
         }
         return cards.get(size).getInput();
     }
 
     public HashMap<Resource, Integer> getOutput() {
-        if(this.cards.isEmpty()){
+        if(this.cards.isEmpty()||this.size==-1){
             return new HashMap<>();
         }
         return cards.get(size).getOutput();
