@@ -605,6 +605,7 @@ public class CliView extends ClientView {
     public void showProductionCard(HashMap<Integer, Integer> productionCard) {
         if(productionCard!=null) {
             this.productionLine = new HashMap<>(productionCard);
+            System.out.println("Production line: ");
             showCardInProductionLine(productionCard);
 
             System.out.println("Enter the Card codes you want use to produce. If you want to stop write -1");

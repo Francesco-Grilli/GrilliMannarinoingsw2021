@@ -162,7 +162,7 @@ public class Board {
   }
 
   public boolean canAddCard(int pos, CreationCard card){
-    return productionLine.canAddCArd(pos, card);
+    return productionLine.canAddCard(pos, card);
   }
 
   public boolean addCard(int pos, CreationCard card){

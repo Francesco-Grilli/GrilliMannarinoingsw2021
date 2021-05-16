@@ -74,5 +74,5 @@ public abstract class ClientView {
 
     public abstract void printInformation(String message);
 
-    public abstract void finishedLeaderAction(String s);
+    abstract void finishedLeaderAction(String s);
 }

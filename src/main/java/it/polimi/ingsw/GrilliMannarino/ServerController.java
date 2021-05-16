@@ -50,12 +50,40 @@ public class ServerController implements VisitorInterface {
             ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
             player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, true)));
             Integer startingPlayer = games.get(gameId).startGame();
+            //set resource at start game
+            setResourceAtStart(startingPlayer, g);
             TurnMessage message = new TurnMessage(gameId, startingPlayer);
             message.setMyTurn(true);
             server.sendMessageTo(startingPlayer, message);
         }
         else{
             server.sendMessageTo(playerId, new StartGameMessage(gameId, playerId, false));
+        }
+    }
+
+    private void setResourceAtStart(Integer startingPlayer, Game game) {
+        ArrayList<Integer> playerInGame = game.getPlayerID();
+        int startingPos = playerInGame.indexOf(startingPlayer);
+        if (playerInGame.size() == 1) {
+        } else if (playerInGame.size() == 2) {
+            Integer p = playerInGame.get((startingPos + 1) % playerInGame.size());
+            ArrayList<ArrayList<Marble>> marbleToReturn = new ArrayList<>();
+            ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+            marbleToReturn.add(m);
+            MarbleMarketMessage message = new MarbleMarketMessage(game.getGameId(), p);
+            message.setDisplayMarblesReturned(true);
+            message.setReturnedMarble(marbleToReturn);
+            server.sendMessageTo(p, message);
+        } else if (playerInGame.size() == 3) {
+            Integer p = playerInGame.get((startingPos + 1) % playerInGame.size());
+            ArrayList<ArrayList<Marble>> marbleToReturn = new ArrayList<>();
+            ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+            marbleToReturn.add(m);
+            MarbleMarketMessage message = new MarbleMarketMessage(game.getGameId(), p);
+            message.setDisplayMarblesReturned(true);
+            message.setReturnedMarble(marbleToReturn);
+            server.sendMessageTo(p, message);
+            game
         }
     }
 

@@ -295,6 +295,10 @@ public class Game {
         return check;
     }
 
+    public boolean addFaithTo(Integer playerId){
+        if()
+    }
+
     //METHOD TO WORK WITH RESOURCEMANAGER
     public HashMap<Resource, Integer> getResourcesFromChest(){
         return activeBoard.getResourcesFromChest();
