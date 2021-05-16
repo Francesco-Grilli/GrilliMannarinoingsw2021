@@ -29,7 +29,7 @@ public class ProductionLine implements ProductionLineBoardInterface{
 
     public boolean addCard(int pos, CreationCard card){
         int position = ((pos % this.maxProductionSlots)+1);
-        if(canAddCard(position,card)){
+        if(canAddCard(pos,card)){
             productionCards.put(card.getCardCode(), card);
             return activeCards.get(position).addCard(card);
         }else{
