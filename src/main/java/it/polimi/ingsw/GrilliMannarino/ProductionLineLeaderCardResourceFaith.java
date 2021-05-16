@@ -19,8 +19,8 @@ public class ProductionLineLeaderCardResourceFaith extends ProductionLineLeaderC
   }
 
   @Override
-  public boolean canAddCArd(int pos, CreationCard card) {
-    return getProductionLine().canAddCArd(pos, card);
+  public boolean canAddCard(int pos, CreationCard card) {
+    return getProductionLine().canAddCard(pos, card);
   }
 
   @Override
