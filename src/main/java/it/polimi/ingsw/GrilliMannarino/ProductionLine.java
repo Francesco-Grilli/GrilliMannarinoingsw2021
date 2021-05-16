@@ -29,7 +29,7 @@ public class ProductionLine implements ProductionLineBoardInterface{
 
     public boolean addCard(int pos, CreationCard card){
         int position = ((pos % this.maxProductionSlots)+1);
-        if(canAddCArd(position,card)){
+        if(canAddCard(position,card)){
             productionCards.put(card.getCardCode(), card);
             return activeCards.get(position).addCard(card);
         }else{
@@ -38,7 +38,7 @@ public class ProductionLine implements ProductionLineBoardInterface{
     }
 
     @Override
-    public boolean canAddCArd(int pos, CreationCard card) {
+    public boolean canAddCard(int pos, CreationCard card) {
         int position = ((pos % this.maxProductionSlots)+1);
         return activeCards.get(position).canAdd(card);
     }
