@@ -88,12 +88,15 @@ public class Game {
         leaderCardAction = true;
     }
 
-    public void startGame(){
+    public Integer startGame(){
         start = true;
-        int p = playerID.get(countPlayer % playerID.size());
-        activePlayer  = player.getOrDefault(p, null);
+        int p = (int) (Math.random()*playerID.size());
+        countPlayer = p;
+        int playerId = playerID.get(p);
+        activePlayer  = player.getOrDefault(playerId, null);
         setActiveBoard();
         //method to set leadercard
+        return playerId;
     }
 
     //METHOD TO BUY CREATION CARD

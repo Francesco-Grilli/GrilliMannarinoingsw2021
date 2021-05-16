@@ -277,7 +277,6 @@ public class CliView extends ClientView {
                     cardCode = 0;
                 }
             }
-
             if(cardCode!=-1) {
                 BuyProductionCardMessage message = new BuyProductionCardMessage(this.gameId, this.playerId);
                 message.setSelectedCard(cardCode);
@@ -732,6 +731,10 @@ public class CliView extends ClientView {
     }
 
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){
+        if(cards.isEmpty()){
+            System.out.println("Empty");
+            return;
+        }
         for(Integer code : cards.keySet()){
             if(code.equals(0)){
                 System.out.println("This is the base production card");
