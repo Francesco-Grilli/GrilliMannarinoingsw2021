@@ -4,10 +4,16 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
@@ -18,6 +24,8 @@ public class Game {
     protected final Map<Integer, Player> player;
     protected  ArrayList<Integer> playerID;
     protected final Map<Integer, Board> board;
+    protected HashMap<Integer, LeaderCard> leaderCards;
+    protected HashMap<Integer, LeaderCard> leaderToSet;
 
     protected Player activePlayer;
     protected Board activeBoard;
@@ -41,9 +49,113 @@ public class Game {
         board = new ConcurrentHashMap<>();
         cardMarket = new CardMarket();
         marbleMarket = new MarbleMarket();
+        leaderCards = new HashMap<>();
+        leaderToSet = new HashMap<>();
+        loadLeaderCards();
+    }
+
+    private void loadLeaderCards() {
+        JSONArray array;
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader file = new FileReader("leader_cards.json");
+            array = (JSONArray) parser.parse(file);
+            for(Object o : array){
+                JSONObject jsonObject = (JSONObject) ((JSONObject) o).get("leader_card");
+                String cardType = (String) jsonObject.get("card_type");
+                LeaderCard card = loadSingleLeaderCard(cardType, jsonObject);
+                leaderCards.put(card.getCardCode(), card);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private LeaderCard loadSingleLeaderCard(String type, JSONObject card) {
+        HashMap<Resource, Integer> priceResources = parseHashMapResources((JSONObject) card.get("price_resources"));
+        HashMap<Faction, HashMap<Integer, Integer>> cardPrice = parseHashMapFaction((JSONObject) card.get("price_cards"));
+        Resource definedResource = Resource.valueOf(((String) card.get("specified_resource")).toUpperCase());
+        Integer points = Integer.parseInt((String) card.get("card_value"));
+        Integer cardCode = Integer.parseInt((String) card.get("card_code"));
+        LeaderCard toReturn = null;
+        if(type.equals("discount")){
+            toReturn = new CardMarketLeaderCardDiscount(priceResources, cardPrice, definedResource, points, cardCode);
+        }
+        else if(type.equals("warehouse")){
+            toReturn = new ResourceManagerLeaderCardTwoSpace(priceResources, cardPrice, definedResource, points, cardCode);
+        }
+        else if(type.equals("marble")){
+            toReturn = new MarbleMarketLeaderCardWhiteResource(priceResources, cardPrice, definedResource, points, cardCode);
+        }
+        else if(type.equals("production")){
+            toReturn = new ProductionLineLeaderCardResourceFaith(priceResources, cardPrice, definedResource, points, cardCode);
+        }
+        return toReturn;
+    }
+
+    private HashMap<Resource, Integer> parseHashMapResources(JSONObject resources){
+        Resource[] keys = Resource.values();
+        HashMap<Resource, Integer> temp = new HashMap<>();
+        for(Resource key : keys){
+            String resource = key.toString().toLowerCase();
+            if(( resources.get(resource)) != null){
+                temp.put(key, Integer.parseInt((String) resources.get(resource)));
+            }
+        }
+        return temp;
+    }
+
+    private HashMap<Faction, HashMap<Integer, Integer>> parseHashMapFaction(JSONObject faction){
+        Faction[] keys = Faction.values();
+        HashMap<Faction, HashMap<Integer, Integer>> temp = new HashMap<>();
+        Integer[] cardValue = {0, 1, 2, 3};
+        for(Faction key : keys){
+            String fac = key.toString().toLowerCase();
+            if(faction.get(fac)!=null){
+                JSONObject t = (JSONObject) faction.get(fac);
+                for(Integer i : cardValue){
+                    String value = i.toString();
+                    if(t.get(value)!=null){
+                        HashMap<Integer, Integer> map = new HashMap<>();
+                        map.put(i, Integer.parseInt((String) t.get(value)));
+                        temp.put(key, map);
+                    }
+                }
+            }
+        }
+        return temp;
     }
 
 
+    public ArrayList<Integer> selectLeaderCard(){
+        ArrayList<Integer> cardCodes = new ArrayList<>();
+        ArrayList<Integer> keySet = new ArrayList<>(leaderCards.keySet());
+        leaderToSet.clear();
+        int i = 0;
+        for(Integer code : keySet){
+            if(i==4)
+                break;
+            else{
+                cardCodes.add(code);
+                i++;
+                leaderToSet.put(code, leaderCards.get(code));
+                leaderCards.remove(code);
+            }
+        }
+        return cardCodes;
+    }
+
+    public void setLeaderCards(ArrayList<Integer> leaderCards){
+        ArrayList<LeaderCard> cardToAdd = new ArrayList<>();
+        for(Integer code : leaderCards){
+            cardToAdd.add(leaderToSet.get(code));
+        }
+        activeBoard.setLeaderCards(cardToAdd);
+    }
 
     public synchronized boolean setPlayer(Integer playerId, String nickName) {
         if(player.size()<numberOfPlayer && !player.containsKey(playerId) && !board.containsKey(playerId)){
@@ -88,12 +200,15 @@ public class Game {
         leaderCardAction = true;
     }
 
-    public void startGame(){
+    public Integer startGame(){
         start = true;
-        int p = playerID.get(countPlayer % playerID.size());
-        activePlayer  = player.getOrDefault(p, null);
+        Collections.shuffle(playerID);
+        int playerId = playerID.get(0);
+        activePlayer  = player.getOrDefault(playerId, null);
         setActiveBoard();
-        //method to set leadercard
+        normalAction = true;
+        leaderCardAction = true;
+        return playerId;
     }
 
     //METHOD TO BUY CREATION CARD
@@ -128,12 +243,29 @@ public class Game {
     }
 
     public ArrayList<MarbleOption> selectMarbleColumn(int column){
-        return activeBoard.getColumn(column);
+        return removeWhiteMarble(activeBoard.getMarbleColumn(column));
         //add faith remove and remove white marble
     }
 
+    private ArrayList<MarbleOption> removeWhiteMarble(ArrayList<MarbleOption> marbleOptions){
+        ArrayList<MarbleOption> marbles = new ArrayList<>(marbleOptions);
+        ArrayList<MarbleOption> toReturn = new ArrayList<>();
+        for(MarbleOption mo : marbles){
+            if(mo.hasWhite() && mo.getMarbles().size()!=1){
+                mo.getMarbles().remove(Marble.WHITE);
+                toReturn.add(mo);
+            }
+            else if(mo.hasWhite() && mo.getMarbles().size()==1){
+
+            }
+            else
+                toReturn.add(mo);
+        }
+        return toReturn;
+    }
+
     public ArrayList<MarbleOption> selectMarbleRow(int row){
-        return activeBoard.getRow(row);
+        return removeWhiteMarble(activeBoard.getMarbleRow(row));
     }
 
     public boolean placeResource(Row row, Resource resource){
@@ -142,6 +274,14 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    public boolean isStartingResource(){
+        return activeBoard.isStartingResource();
+    }
+
+    public void setStartingResource(){
+        activeBoard.setStartingResource(true);
     }
 
 
@@ -290,6 +430,13 @@ public class Game {
         }
 
         return check;
+    }
+
+    public boolean addFaithTo(Integer playerId){
+        if(board.containsKey(playerId)){
+            return board.get(playerId).addPopeFaith();
+        }
+        return false;
     }
 
     //METHOD TO WORK WITH RESOURCEMANAGER

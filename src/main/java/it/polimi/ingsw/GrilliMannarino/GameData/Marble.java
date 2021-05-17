@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.GameData;
 
+import java.util.ArrayList;
+
 public enum Marble {
   YELLOW(Resource.COIN), RED(Resource.FAITH), PURPLE(Resource.SERVANT), BLUE(Resource.SHIELD), WHITE(Resource.NONE), GREY(Resource.STONE), BLACK(Resource.UNKNOWN);
 
@@ -24,6 +26,15 @@ public enum Marble {
       default:
         return Resource.NONE;
     }
+  }
+
+  public static ArrayList<Marble> getOrderedMarble(){
+    ArrayList<Marble> m = new ArrayList<>();
+    m.add(Marble.YELLOW);
+    m.add(Marble.PURPLE);
+    m.add(Marble.BLUE);
+    m.add(Marble.GREY);
+    return m;
   }
 
 }

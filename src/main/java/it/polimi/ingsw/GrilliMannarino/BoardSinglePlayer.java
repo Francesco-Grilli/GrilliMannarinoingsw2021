@@ -38,4 +38,8 @@ public class BoardSinglePlayer extends Board{
         return -1;
     }
 
+    public boolean checkLorenzoPopeFaith(){
+        return popelineLorenzo.checkPopeFaith();
+    }
+
 }

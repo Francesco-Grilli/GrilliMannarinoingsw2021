@@ -139,8 +139,10 @@ public class CliView extends ClientView {
         ArrayList<Resource> resources = new ArrayList<>();
         toReturn.forEach((m) -> resources.add(Marble.getResource(m)));
 
-        printWareHouse();
-        getResourceToPlace(resources);
+        MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
+        message.setCheckReturnedResource(true);
+        message.setReturnedResource(resources);
+        controller.sendMessageToServer(message);
     }
 
     private void getResourceToPlace(ArrayList<Resource> resources) {
@@ -277,7 +279,6 @@ public class CliView extends ClientView {
                     cardCode = 0;
                 }
             }
-
             if(cardCode!=-1) {
                 BuyProductionCardMessage message = new BuyProductionCardMessage(this.gameId, this.playerId);
                 message.setSelectedCard(cardCode);
@@ -438,7 +439,6 @@ public class CliView extends ClientView {
     public void updateFaith(Integer faithPosition) {
         this.faith = faithPosition;
         printPopeLine();
-        controller.receiveMessageFromServer();
     }
 
     private void printPopeLine() {
@@ -583,7 +583,7 @@ public class CliView extends ClientView {
             } catch (Exception e) {
                 action = "Z";
             }
-            while (!action.equals("A") && !action.equals("S")) {
+            do {
                 if (action.equals("A"))
                     message.setActivateCard(true);
                 else if (action.equals("S"))
@@ -595,7 +595,7 @@ public class CliView extends ClientView {
                         action = "Z";
                     }
                 }
-            }
+            }while (!action.equals("A") && !action.equals("S"));
             controller.sendMessageToServer(message);
         }
         else
@@ -606,6 +606,7 @@ public class CliView extends ClientView {
     public void showProductionCard(HashMap<Integer, Integer> productionCard) {
         if(productionCard!=null) {
             this.productionLine = new HashMap<>(productionCard);
+            System.out.println("Production line: ");
             showCardInProductionLine(productionCard);
 
             System.out.println("Enter the Card codes you want use to produce. If you want to stop write -1");
@@ -731,7 +732,143 @@ public class CliView extends ClientView {
         selectAction();
     }
 
+    @Override
+    public void selectMarbleStarting(ArrayList<ArrayList<Marble>> marblesToSelect) {
+        System.out.println("For each Row you have to select the Marble you prefer");
+        ArrayList<Marble> toReturn = new ArrayList<>();
+        for(ArrayList<Marble> arr : marblesToSelect){
+            if(arr.size()==1){
+                toReturn.add(arr.get(0));
+            }
+            else {
+                ArrayList<Marble> marble = new ArrayList<>();
+                for (int x = 0; x < arr.size(); x++) {
+                    System.out.format("%15s", arr.get(x).toString());
+                    marble.add(arr.get(x));
+                }
+                System.out.println();
+                Marble m = null;
+                try {
+                    m = Marble.valueOf(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                }
+                while (!marble.contains(m)) {
+                    System.out.println("Invalid Input");
+                    try {
+                        m = Marble.valueOf(scanner.nextLine());
+                    } catch (IllegalArgumentException e) {
+                    }
+                }
+                toReturn.add(m);
+            }
+        }
+
+        ArrayList<Resource> resources = new ArrayList<>();
+        toReturn.forEach((m) -> resources.add(Marble.getResource(m)));
+
+        printWareHouse();
+        placeResourceStarting(resources);
+    }
+
+    @Override
+    public void placeResourceStarting(ArrayList<Resource> resourcesLeft) {
+        if(!resourcesLeft.isEmpty()){
+            System.out.println("Resources needed to be placed: ");
+            resourcesLeft.forEach(res -> System.out.format("%15s", res.toString()));
+            System.out.println();
+            System.out.println("Select the Resource to place into warehouse");
+            Resource resource = null;
+            Row row = null;
+            try {
+                resource = Resource.valueOf(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+            }
+            while (!resourcesLeft.contains(resource)) {
+                System.out.println("Invalid Input");
+                try {
+                    resource = Resource.valueOf(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                }
+            }
+            System.out.println("Now select the row you want to put in");
+            try {
+                row = Row.valueOf(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+            }
+            while (!this.warehouse.containsKey(row)) {
+                System.out.println("Invalid Input");
+                try {
+                    row = Row.valueOf(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                }
+            }
+
+            System.out.println("You selected " + resource.toString() + " resource to put into " + row.toString() + " row");
+            StartingResourceMessage message = new StartingResourceMessage(this.gameId, this.playerId);
+            message.setPlaceResource(true);
+            message.setRowToPlace(row);
+            message.setResourceToPlace(resource);
+            message.setResourcesLeft(resourcesLeft);
+            controller.sendMessageToServer(message);
+        }
+        else{
+            System.out.print("You have placed all resources!");
+            StartingResourceMessage message = new StartingResourceMessage(this.gameId, this.playerId);
+            controller.sendMessageToServer(message);
+        }
+    }
+
+    @Override
+    public void checkReturnedResource(ArrayList<Resource> returnedResource) {
+        printWareHouse();
+        getResourceToPlace(returnedResource);
+    }
+
+    @Override
+    public void selectLeaderCard(ArrayList<Integer> cards) {
+        showCardInLeaderCard(cards);
+        ArrayList<Integer> toReturn = new ArrayList<>();
+        System.out.println("You have to select two cards using the card code");
+        int i=0;
+        Integer cardCode;
+        while(i<2){
+            System.out.println("Select " + (i+1) + "° card");
+            try{
+                cardCode = Integer.parseInt(scanner.nextLine());
+            }catch (NumberFormatException e){
+                cardCode =0;
+            }
+            if(cards.contains(cardCode)){
+                toReturn.add(cardCode);
+                System.out.println("Selection was correct");
+                i++;
+            }
+            else{
+                System.out.println("Invalid Input");
+            }
+        }
+
+        LeaderCardMessage message = new LeaderCardMessage(this.gameId, this.playerId);
+        message.setSelectLeaderCard(true);
+        message.setCards(toReturn);
+        controller.sendMessageToServer(message);
+    }
+
+    @Override
+    public void updateFaithSingle(Integer faithPosition, Integer lorenzoFaith) {
+
+    }
+
+    @Override
+    public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition) {
+
+    }
+
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){
+        if(cards.isEmpty()){
+            System.out.println("Empty");
+            return;
+        }
         for(Integer code : cards.keySet()){
             if(code.equals(0)){
                 System.out.println("This is the base production card");

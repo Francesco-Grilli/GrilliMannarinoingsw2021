@@ -22,57 +22,49 @@ public class ServerController implements VisitorInterface {
     private Server server;
     private HashMap<Integer, Game> games;
     private HashMap<String, Integer> nicknamesList;
+    private ArrayList<String> playerLogged;
     private Integer nextPlayerId = 1;
     private Integer nextGameId = 1;
     JSONObject nicknameListObj = new JSONObject();
     Scanner scan;
+    Thread end = new Thread(() -> writeNickname());
 
     public ServerController(){
         server = new Server(this);
         nicknamesList = new HashMap<>();
+        playerLogged = new ArrayList<>();
         games = new HashMap<>();
         scan = new Scanner(System.in);
         server.startConnection();
         loadNickname();
-        stopServer();
+        Runtime.getRuntime().addShutdownHook(end);
     }
 
-    private void stopServer(){
-        System.out.println("If you want to stop the server properly please enter CLOSE");
-        String s = scan.nextLine();
-        while(!s.equals("CLOSE")){
-            System.out.println("Invalid Input");
-            s = scan.nextLine();
-        }
-        writeNickname();
-        System.exit(0);
-
-    }
-
-    public void receiveMessage(MessageInterface message){
+    public synchronized void receiveMessage(MessageInterface message){
         message.execute(this);
     }
 
-    private void startGamePlayer(Integer gameId, Integer playerId){
+    private synchronized void startGamePlayer(Integer gameId, Integer playerId){
         Game g = games.get(gameId);
         if(g.getPlayerID().size()==g.getNumberOfPlayer()) {
-            ArrayList<Integer> player = new ArrayList<>(games.get(gameId).getPlayerID());
+            Integer startingPlayer = g.startGame();
+            ArrayList<Integer> player = g.getPlayerID();
             player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, true)));
-            TurnMessage message = new TurnMessage(gameId, playerId);
-            message.setMyTurn(true);
-            games.get(gameId).startGame();
-            server.sendMessageTo(playerId, message);
+            LeaderCardMessage leaderMessage = new LeaderCardMessage(g.getGameId(), startingPlayer);
+            leaderMessage.setSelectLeaderCard(true);
+            leaderMessage.setCards(g.selectLeaderCard());
+            server.sendMessageTo(leaderMessage.getPlayerId(), leaderMessage);
         }
         else{
             server.sendMessageTo(playerId, new StartGameMessage(gameId, playerId, false));
         }
     }
 
-    public boolean nicknameAlreadyPresent(String nickname) {
+    public synchronized boolean nicknameAlreadyPresent(String nickname) {
         return nicknamesList.containsKey(nickname);
     }
 
-    public Integer addPlayer(String nickname){
+    public synchronized Integer addPlayer(String nickname){
         if(!nicknamesList.containsKey(nickname)){
             nicknamesList.put(nickname, nextPlayerId);
             JSONObject player = new JSONObject();
@@ -87,14 +79,17 @@ public class ServerController implements VisitorInterface {
         }
     }
 
-    public Integer logInPlayer(String nickname){
-        if(nicknamesList.containsKey(nickname))
+    public synchronized Integer logInPlayer(String nickname){
+        if(nicknamesList.containsKey(nickname) && !playerLogged.contains(nickname)) {
+            playerLogged.add(nickname);
             return nicknamesList.get(nickname);
+        }
         else
             return null;
     }
 
-    public void writeNickname(){
+    public synchronized void writeNickname(){
+        System.out.println("Exiting...");
         nicknameListObj.put("nextPlayerId", String.valueOf(nextPlayerId));
         try{
             FileWriter file = new FileWriter("player.json");
@@ -105,7 +100,7 @@ public class ServerController implements VisitorInterface {
         }
     }
 
-    public void loadNickname(){
+    public synchronized void loadNickname(){
         try {
             FileReader file = new FileReader("player.json");
             JSONParser parser = new JSONParser();
@@ -129,20 +124,67 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeTurnPlayer(TurnMessage turn) {
+    public synchronized void executeTurnPlayer(TurnMessage turn) {
         Game game = games.get(turn.getGameId());
         game.turnExecution();
         if(game.isEndGame()){
             endGame(game);
             games.remove(game.getGameId());
         }
-
-        TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
-        message.setMyTurn(true);
-        server.sendMessageTo(message.getPlayerId(), message);
+        if (!game.isStartingResource()) {
+            game.setStartingResource();
+            ArrayList<Integer> player = new ArrayList<>(game.getPlayerID());
+            int index = player.indexOf(game.getActivePlayer().getID());
+            if(index == 1){
+                ArrayList<ArrayList<Marble>> marbles = new ArrayList<>();
+                ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+                marbles.add(m);
+                StartingResourceMessage message = new StartingResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+                message.setResource(true);
+                message.setMarblesToSelect(marbles);
+                message.setMessageToShow("You are entitled to one resource");
+                server.sendMessageTo(message.getPlayerId(), message);
+            }
+            else if (index == 2){
+                ArrayList<ArrayList<Marble>> marbles = new ArrayList<>();
+                ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+                marbles.add(m);
+                game.addFaithTo(game.getActivePlayer().getID());
+                StartingResourceMessage message = new StartingResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+                message.setResource(true);
+                message.setMarblesToSelect(marbles);
+                message.setMessageToShow("You are entitled to one resource and one point of faith");
+                message.setFaith(true);
+                message.setFaithToAdd(game.getPlayersFaith().get(message.getPlayerId()));
+                server.sendMessageTo(message.getPlayerId(), message);
+            }
+            else if (index == 3){
+                ArrayList<ArrayList<Marble>> marbles = new ArrayList<>();
+                ArrayList<Marble> m = new ArrayList<>(Marble.getOrderedMarble());
+                marbles.add(m);
+                marbles.add(m);
+                game.addFaithTo(game.getActivePlayer().getID());
+                StartingResourceMessage message = new StartingResourceMessage(game.getGameId(), game.getActivePlayer().getID());
+                message.setResource(true);
+                message.setMarblesToSelect(marbles);
+                message.setMessageToShow("You are entitled to two resources and one point of faith");
+                message.setFaith(true);
+                message.setFaithToAdd(game.getPlayersFaith().get(message.getPlayerId()));
+                server.sendMessageTo(message.getPlayerId(), message);
+            }
+            LeaderCardMessage leaderMessage = new LeaderCardMessage(game.getGameId(), game.getActivePlayer().getID());
+            leaderMessage.setSelectLeaderCard(true);
+            leaderMessage.setCards(game.selectLeaderCard());
+            server.sendMessageTo(leaderMessage.getPlayerId(), leaderMessage);
+        }
+        else{
+            TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
+            message.setMyTurn(true);
+            server.sendMessageTo(message.getPlayerId(), message);
+        }
     }
 
-    private void endGame(Game game){
+    private synchronized void endGame(Game game){
         HashMap<String, Integer> ranking = new HashMap<>(game.getAllPoints());
         for(Integer player : game.getPlayerID()){
             EndGameMessage message = new EndGameMessage(game.getGameId(), player);
@@ -152,36 +194,45 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeLeaderCard(LeaderCardMessage leaderCard) {
+    public synchronized void executeLeaderCard(LeaderCardMessage leaderCard) {
         Game game = games.get(leaderCard.getGameId());
         if ((game.getActivePlayer().getID() != leaderCard.getPlayerId())) {
             sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on playerId");
             return;
             //should run exception??
         }
-        if(!game.isLeaderCardAction() || !game.hasActiveLeaderCard()){
+        if(!game.isLeaderCardAction() && !game.hasActiveLeaderCard()){
             sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "No active Leader Card or No action left!");
             return;
         }
         if(!leaderCard.isShowLeaderCard()) {
             if (!leaderCard.isSellingCard()) {
-                if (!leaderCard.isActivateCard()) {
-                    sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on Leader Card action");
+                if(!leaderCard.isSelectLeaderCard()){
+                    if (!leaderCard.isActivateCard()) {
+                        sendErrorMessage(leaderCard.getGameId(), leaderCard.getPlayerId(), "Error on Leader Card action");
+                        return;
+                    }
+                    //code to activate leaderCard
+
+                    LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
+                    message.setActivateCard(true);
+                    message.setCardCode(leaderCard.getCardCode());
+                    if (game.activateLeaderCard(leaderCard.getCardCode())) {
+                        message.setActivationSellingCorrect(true);
+                        game.setLeaderCardAction(false);
+                    }
+                    server.sendMessageTo(leaderCard.getPlayerId(), message);
+                    if (game.isActivatedEnd()) {
+                        broadcastMessage(game, "The End is near");
+                    }
                     return;
                 }
-                //code to activate leaderCard
+                //code to let player select leadercard
+                game.setLeaderCards(leaderCard.getCards());
 
-                LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
-                message.setActivateCard(true);
-                message.setCardCode(leaderCard.getCardCode());
-                if (game.activateLeaderCard(leaderCard.getCardCode())) {
-                    message.setActivationSellingCorrect(true);
-                    game.setLeaderCardAction(false);
-                }
-                server.sendMessageTo(leaderCard.getPlayerId(), message);
-                if (game.isActivatedEnd()) {
-                    broadcastMessage(game, "The End is near");
-                }
+                TurnMessage message = new TurnMessage(game.getGameId(), game.getActivePlayer().getID());
+                message.setMyTurn(true);
+                server.sendMessageTo(message.getPlayerId(), message);
                 return;
             }
             //code for selling the leaderCard
@@ -193,8 +244,23 @@ public class ServerController implements VisitorInterface {
                 message.setActivationSellingCorrect(true);
                 game.setLeaderCardAction(false);
                 if (game.sellLeaderCard(leaderCard.getCardCode())) {
-                    updatePopeLine(game);
+                    updateFaith(game);
                 }
+                else{
+                    PopeLineMessage popeMessage;
+                    if(game.numberOfPlayer==1){
+                        popeMessage = new PopeLineSingleMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
+                        ((PopeLineSingleMessage)popeMessage).setLorenzoFaith(game.getLorenzoFaith());
+                    }
+                    else{
+                        popeMessage = new PopeLineMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
+                    }
+
+                    popeMessage.setUpdatedPosition(true);
+                    popeMessage.setFaithPosition(game.getPlayersFaith().get(leaderCard.getPlayerId()));
+                    server.sendMessageTo(leaderCard.getPlayerId(), popeMessage);
+                }
+
             }
             server.sendMessageTo(leaderCard.getPlayerId(), message);
             return;
@@ -202,7 +268,7 @@ public class ServerController implements VisitorInterface {
         //code to show leadercard
 
         ArrayList<Integer> cards = new ArrayList<>(game.getLeaderCard());
-        LeaderCardMessage message = new LeaderCardMessage(leaderCard.getPlayerId(), leaderCard.getGameId());
+        LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
         message.setShowLeaderCard(true);
         message.setCards(cards);
         server.sendMessageTo(leaderCard.getPlayerId(), message);
@@ -210,32 +276,56 @@ public class ServerController implements VisitorInterface {
     }
 
     //updatePopeLine if someone has activated a new favor
-    private void updatePopeLine(Game game){
+    private synchronized void updatePopeLine(Game game){
         HashMap<Integer, Map.Entry<Integer, Boolean>> check = game.checkPopeLine();
         Integer popePosition = game.getPopeLinePosition();
-        for(Integer playerId : check.keySet()){
-            PopeLineMessage message = new PopeLineMessage(game.getGameId(), playerId);
+        if(game.getNumberOfPlayer()==1){
+            Integer playerId = game.getActivePlayer().getID();
+            PopeLineSingleMessage message = new PopeLineSingleMessage(game.getGameId(), playerId);
             message.setCheckPopeLine(true);
             message.setFavorActive(check.get(playerId).getValue());
             message.setFaithPosition(check.get(playerId).getKey());
             message.setCheckPosition(popePosition);
+            message.setLorenzoFavorActive(check.get(0).getValue());
+            message.setLorenzoCheckPosition(popePosition);
+            message.setLorenzoFaith(check.get(0).getKey());
             server.sendMessageTo(playerId, message);
+        }
+        else {
+            for (Integer playerId : check.keySet()) {
+                PopeLineMessage message = new PopeLineMessage(game.getGameId(), playerId);
+                message.setCheckPopeLine(true);
+                message.setFavorActive(check.get(playerId).getValue());
+                message.setFaithPosition(check.get(playerId).getKey());
+                message.setCheckPosition(popePosition);
+                server.sendMessageTo(playerId, message);
+            }
         }
     }
 
     //updateFaith if someone added some faith without trigger new favor
-    private void updateFaith(Game game){
+    private synchronized void updateFaith(Game game){
         HashMap<Integer, Integer> playersFaith = game.getPlayersFaith();
-        for(Integer playerId : playersFaith.keySet()){
-            PopeLineMessage message = new PopeLineMessage(game.getGameId(), playerId);
+        if(game.getNumberOfPlayer()==1){
+            Integer playerId = game.getActivePlayer().getID();
+            PopeLineSingleMessage message = new PopeLineSingleMessage(game.getGameId(), playerId);
             message.setUpdatedPosition(true);
             message.setFaithPosition(playersFaith.get(playerId));
+            message.setLorenzoFaith(playersFaith.get(0));
             server.sendMessageTo(playerId, message);
+        }
+        else {
+            for (Integer playerId : playersFaith.keySet()) {
+                PopeLineMessage message = new PopeLineMessage(game.getGameId(), playerId);
+                message.setUpdatedPosition(true);
+                message.setFaithPosition(playersFaith.get(playerId));
+                server.sendMessageTo(playerId, message);
+            }
         }
     }
 
     @Override
-    public void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage) {
+    public synchronized void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage) {
         Game game = games.get(marbleMarketMessage.getGameId());
         if ((game.getActivePlayer().getID() != marbleMarketMessage.getPlayerId())) {
             sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on playerId");
@@ -250,32 +340,62 @@ public class ServerController implements VisitorInterface {
         if(!marbleMarketMessage.isDisplayMarbleMarket()){
             if (!marbleMarketMessage.isSelectColumnRow()){
                 if(!marbleMarketMessage.isAddedResource()){
-                    if(!marbleMarketMessage.isDestroyRemaining()){
-                        //should not enter here
+                    if(!marbleMarketMessage.isCheckReturnedResource()) {
+                        if (!marbleMarketMessage.isDestroyRemaining()) {
+                            //should not enter here
 
-                        sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on Buying marble at the market");
+                            sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on Buying marble at the market");
+                            return;
+                        }
+                        //code to destroy remaining resources and add pope faith
+
+                        MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                        message.setDestroyRemaining(true);
+                        game.setNormalAction(false);
+                        if (!marbleMarketMessage.getReturnedResource().isEmpty()) {
+                            int numberOfResource = marbleMarketMessage.getReturnedResource().size();
+                            if (game.addFaithExceptThis(marbleMarketMessage.getPlayerId(), numberOfResource)) {
+                                updatePopeLine(game);
+                            } else {
+                                updateFaith(game);
+                            }
+                        }
+                        if (game.isActivatedEnd()) {
+                            broadcastMessage(game, "The End is near");
+                        }
+                        server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
                         return;
                     }
-                    //code to destroy remaining resources and add pope faith
-
-                    MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                    message.setDestroyRemaining(true);
-                    game.setNormalAction(false);
-                    if(!marbleMarketMessage.getReturnedResource().isEmpty()){
-                        int numberOfResource = marbleMarketMessage.getReturnedResource().size();
-                        if(game.addFaithExceptThis(marbleMarketMessage.getPlayerId(), numberOfResource)){
-                            updatePopeLine(game);
+                    //code to check the returned resources
+                    ArrayList<Resource> resources = new ArrayList<>();
+                    for(Resource res : marbleMarketMessage.getReturnedResource()){
+                        if(res.equals(Resource.FAITH)){
+                            if(game.addFaithTo(marbleMarketMessage.getPlayerId()))
+                                updatePopeLine(game);
+                            else{
+                                PopeLineMessage popeMessage;
+                                if(game.getNumberOfPlayer()==1){
+                                    popeMessage = new PopeLineSingleMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                                    ((PopeLineSingleMessage)popeMessage).setLorenzoFaith(game.getLorenzoFaith());
+                                }
+                                else {
+                                    popeMessage = new PopeLineMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                                }
+                                popeMessage.setUpdatedPosition(true);
+                                popeMessage.setFaithPosition(game.getPlayersFaith().get(marbleMarketMessage.getPlayerId()));
+                                server.sendMessageTo(marbleMarketMessage.getPlayerId(), popeMessage);
+                            }
                         }
                         else{
-                            updateFaith(game);
+                            resources.add(res);
                         }
                     }
-                    if(game.isActivatedEnd()){
-                        broadcastMessage(game, "The End is near");
-                    }
-                    server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
-                    return;
 
+                    MarbleMarketMessage marketMessage = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                    marketMessage.setCheckReturnedResource(true);
+                    marketMessage.setReturnedResource(resources);
+                    server.sendMessageTo(marketMessage.getPlayerId(), marketMessage);
+                    return;
                 }
                 //code to add one resource at a time
                 Resource res = marbleMarketMessage.getResourceType();
@@ -306,9 +426,7 @@ public class ServerController implements VisitorInterface {
             ArrayList<ArrayList<Marble>> marbleList = new ArrayList<>();
             for (MarbleOption marble : marbles) {
                 ArrayList<Marble> tempArray = new ArrayList<>(marble.getMarbles());
-                if (tempArray.size() != 1 || !tempArray.get(0).equals(Marble.WHITE)) {
-                    marbleList.add(tempArray);
-                }
+                marbleList.add(tempArray);
             }
             MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
             message.setDisplayMarblesReturned(true);
@@ -336,7 +454,7 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeBuyProduction(BuyProductionCardMessage buyProductionCardMessage){
+    public synchronized void executeBuyProduction(BuyProductionCardMessage buyProductionCardMessage){
         Game game = games.get(buyProductionCardMessage.getGameId());
         if(game.getActivePlayer().getID()!= buyProductionCardMessage.getPlayerId()) {
             sendErrorMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId(), "Error on playerId");
@@ -401,7 +519,7 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeProduction(ProductionMessage productionMessage) {
+    public synchronized void executeProduction(ProductionMessage productionMessage) {
         Game game = games.get(productionMessage.getGameId());
         if(game.getActivePlayer().getID()!=productionMessage.getPlayerId()) {
             sendErrorMessage(productionMessage.getGameId(), productionMessage.getPlayerId(), "Error on playerId");
@@ -454,21 +572,21 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeErrorMessage(ErrorMessage error) {
+    public synchronized void executeErrorMessage(ErrorMessage error) {
     }
 
     @Override
-    public void executePopeLine(PopeLineMessage popeLineMessage) {
-
-    }
-
-    @Override
-    public void executeResource(ResourceMessage resourceMessage) {
+    public synchronized void executePopeLine(PopeLineMessage popeLineMessage) {
 
     }
 
     @Override
-    public void executeMoveResource(MoveResourceMessage moveResourceMessage) {
+    public synchronized void executeResource(ResourceMessage resourceMessage) {
+
+    }
+
+    @Override
+    public synchronized void executeMoveResource(MoveResourceMessage moveResourceMessage) {
         Game game = games.get(moveResourceMessage.getGameId());
         if ((game.getActivePlayer().getID() != moveResourceMessage.getPlayerId())) {
             sendErrorMessage(moveResourceMessage.getGameId(), moveResourceMessage.getPlayerId(), "Error on playerId");
@@ -512,7 +630,12 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public synchronized void executeNewGame(NewGameMessage newGameMessage) {
-        Game game = new Game(nextGameId, newGameMessage.getNumberOfPlayer());
+        Game game;
+        if(newGameMessage.getNumberOfPlayer()==1){
+            game = new GameSinglePlayer(nextGameId);
+        }
+        else
+            game = new Game(nextGameId, newGameMessage.getNumberOfPlayer());
         games.put(nextGameId, game);
         nextGameId++;
         game.setPlayer(newGameMessage.getPlayerId(), newGameMessage.getNickname());
@@ -523,7 +646,7 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeEnterGame(EnterGameMessage enterGameMessage) {
+    public synchronized void executeEnterGame(EnterGameMessage enterGameMessage) {
         boolean find = false;
         int skip =0;
 
@@ -551,11 +674,36 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
+    public synchronized void executeSaveStatus(SaveStatusMessage saveStatusMessage) {
 
     }
 
-    private Game firstGameFree(int skip){
+    @Override
+    public void executeStartingResource(StartingResourceMessage startingResource) {
+        Game game = games.get(startingResource.getGameId());
+        if(startingResource.isPlaceResource()){
+            Row row = startingResource.getRowToPlace();
+            Resource res = startingResource.getResourceToPlace();
+            StartingResourceMessage message = new StartingResourceMessage(startingResource.getGameId(), startingResource.getPlayerId());
+            message.setPlaceResource(true);
+            message.setRowToPlace(row);
+            message.setResourceToPlace(res);
+            message.setResourcesLeft(startingResource.getResourcesLeft());
+            if(game.placeResource(row, res) && startingResource.getResourcesLeft().contains(res)){
+                message.setAddResourceCorrect(true);
+                message.getResourcesLeft().remove(res);
+                updateResources(game, startingResource.getPlayerId());
+            }
+            server.sendMessageTo(startingResource.getPlayerId(), message);
+        }
+    }
+
+    @Override
+    public void executePopeLineSingle(PopeLineSingleMessage popeLineSingleMessage) {
+
+    }
+
+    private synchronized Game firstGameFree(int skip){
         int got = 0;
         for(Integer i : games.keySet()){
             if(games.get(i).hasSpace()){
@@ -568,7 +716,7 @@ public class ServerController implements VisitorInterface {
         return null;
     }
 
-    private void updateResources(Game game, Integer playerId){
+    private synchronized void updateResources(Game game, Integer playerId){
         ResourceMessage message = new ResourceMessage(game.getGameId(), playerId);
 
         HashMap<Resource, Integer> chestResource = new HashMap<>(game.getResourcesFromChest());
@@ -579,13 +727,13 @@ public class ServerController implements VisitorInterface {
 
     }
 
-    private void sendErrorMessage(Integer gameId, Integer playerId, String error){
+    private synchronized void sendErrorMessage(Integer gameId, Integer playerId, String error){
         ErrorMessage message = new ErrorMessage(gameId, playerId);
         message.setError(error);
         server.sendMessageTo(message.getPlayerId(), message);
     }
 
-    private void broadcastMessage(Game game, String error){
+    private synchronized void broadcastMessage(Game game, String error){
         for(Integer player : game.getPlayerID()){
             ErrorMessage message = new ErrorMessage(game.getGameId(), player);
             message.setError(error);
@@ -594,12 +742,12 @@ public class ServerController implements VisitorInterface {
     }
 
     @Override
-    public void executeStartGame(StartGameMessage startGame) {
+    public synchronized void executeStartGame(StartGameMessage startGame) {
         startGamePlayer(startGame.getGameId(), startGame.getPlayerId());
     }
 
     @Override
-    public void executeEndGame(EndGameMessage endGame) {
+    public synchronized void executeEndGame(EndGameMessage endGame) {
 
     }
 

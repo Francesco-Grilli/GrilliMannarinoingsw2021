@@ -18,4 +18,6 @@ public interface VisitorInterface {
     void executeNewGame(NewGameMessage newGameMessage);
     void executeEnterGame(EnterGameMessage enterGameMessage);
     void executeSaveStatus(SaveStatusMessage saveStatusMessage);
+    void executeStartingResource(StartingResourceMessage startingResourceMessage);
+    void executePopeLineSingle(PopeLineSingleMessage popeLineSingleMessage);
 }

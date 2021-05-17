@@ -7,6 +7,7 @@ public class LeaderCardMessage extends Message implements MessageInterface, Seri
 
     private boolean showLeaderCard = false;
     private ArrayList<Integer> cards;
+    private boolean selectLeaderCard = false;
 
     /**
      * activateCard and sellingCard is used by the client and the server to activate that action
@@ -19,7 +20,7 @@ public class LeaderCardMessage extends Message implements MessageInterface, Seri
     private boolean activationSellingCorrect = false;
     private Integer cardCode;
 
-    public LeaderCardMessage(Integer playerId, Integer gameId) {
+    public LeaderCardMessage(Integer gameId, Integer playerId) {
         super(gameId, playerId);
     }
 
@@ -74,5 +75,13 @@ public class LeaderCardMessage extends Message implements MessageInterface, Seri
 
     public void setCards(ArrayList<Integer> cards) {
         this.cards = cards;
+    }
+
+    public boolean isSelectLeaderCard() {
+        return selectLeaderCard;
+    }
+
+    public void setSelectLeaderCard(boolean selectLeaderCard) {
+        this.selectLeaderCard = selectLeaderCard;
     }
 }

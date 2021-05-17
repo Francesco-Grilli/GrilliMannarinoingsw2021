@@ -39,6 +39,7 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
     private Row insertRow;
     private boolean addResourceCorrect = false;
     private ArrayList<Resource> returnedResource;
+    private boolean checkReturnedResource = false;
 
     /**
      * destroyRemaining is set to true by the client if want to destroy the marble remained
@@ -166,5 +167,13 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
 
     public void setDestroyRemaining(boolean destroyRemaining) {
         this.destroyRemaining = destroyRemaining;
+    }
+
+    public boolean isCheckReturnedResource() {
+        return checkReturnedResource;
+    }
+
+    public void setCheckReturnedResource(boolean checkReturnedResource) {
+        this.checkReturnedResource = checkReturnedResource;
     }
 }
