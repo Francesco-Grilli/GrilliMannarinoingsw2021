@@ -12,6 +12,7 @@ public class LoginMessage implements Serializable {
      */
     private String nickname;
     private Integer playerId;
+    private String password;
     private Boolean newAccount = false;
     private Boolean correctLogin = false;
     private String message;
@@ -54,5 +55,13 @@ public class LoginMessage implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

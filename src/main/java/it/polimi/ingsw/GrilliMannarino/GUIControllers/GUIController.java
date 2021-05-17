@@ -14,6 +14,6 @@ public class GUIController extends Application implements GUIControllerInterface
 
   @Override
   public void start(Stage primaryStage) {
-
+    
   }
 }

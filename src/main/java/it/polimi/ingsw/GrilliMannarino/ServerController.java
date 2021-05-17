@@ -22,6 +22,7 @@ public class ServerController implements VisitorInterface {
     private Server server;
     private HashMap<Integer, Game> games;
     private HashMap<String, Integer> nicknamesList;
+    private HashMap<String, String> passwordList;
     private ArrayList<String> playerLogged;
     private Integer nextPlayerId = 1;
     private Integer nextGameId = 1;
@@ -32,6 +33,7 @@ public class ServerController implements VisitorInterface {
     public ServerController(){
         server = new Server(this);
         nicknamesList = new HashMap<>();
+        passwordList = new HashMap<>();
         playerLogged = new ArrayList<>();
         games = new HashMap<>();
         scan = new Scanner(System.in);
@@ -65,12 +67,14 @@ public class ServerController implements VisitorInterface {
         return nicknamesList.containsKey(nickname);
     }
 
-    public synchronized Integer addPlayer(String nickname){
+    public synchronized Integer addPlayer(String nickname, String password){
         if(!nicknamesList.containsKey(nickname)){
             nicknamesList.put(nickname, nextPlayerId);
+            passwordList.put(nickname, password);
             JSONObject player = new JSONObject();
             player.put("nickname", nickname);
             player.put("playerId", String.valueOf(nextPlayerId));
+            player.put("password", password);
             nicknameListObj.put(String.valueOf(nextPlayerId), player);
             nextPlayerId++;
             return nextPlayerId-1;
@@ -80,8 +84,8 @@ public class ServerController implements VisitorInterface {
         }
     }
 
-    public synchronized Integer logInPlayer(String nickname){
-        if(nicknamesList.containsKey(nickname) && !playerLogged.contains(nickname)) {
+    public synchronized Integer logInPlayer(String nickname, String password){
+        if(nicknamesList.containsKey(nickname) && !playerLogged.contains(nickname) && passwordList.get(nickname).equals(password)) {
             playerLogged.add(nickname);
             return nicknamesList.get(nickname);
         }
@@ -110,6 +114,7 @@ public class ServerController implements VisitorInterface {
             for(int i=1; i<nextPlayerId; i++){
                 JSONObject player = (JSONObject) nicknameListObj.get(String.valueOf(i));
                 nicknamesList.put((String) player.get("nickname"), Integer.parseInt((String) player.get("playerId")));
+                passwordList.put((String) player.get("nickname"), (String) player.get("password"));
             }
 
             file.close();

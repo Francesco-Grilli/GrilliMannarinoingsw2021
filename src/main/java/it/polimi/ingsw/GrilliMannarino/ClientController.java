@@ -25,11 +25,17 @@ public class ClientController implements VisitorInterface {
     private void information(){
         LoginMessage message = null;
         do{
-            client.setUpInformation(view.setUpInformation());
+            view.setUpInformation();
             message = client.getUpInformation();
             view.getUpInformation(message);
         }while(!message.isCorrectLogin());
+    }
 
+    public void sendInformationToServer(String nickname, String password, boolean newAccount){
+        LoginMessage message = new LoginMessage(nickname);
+        message.setPassword(password);
+        message.setNewAccount(newAccount);
+        client.setUpInformation(message);
     }
 
     public void sendMessageToServer(MessageInterface message){

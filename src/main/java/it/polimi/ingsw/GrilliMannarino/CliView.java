@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -207,25 +208,27 @@ public class CliView extends ClientView {
 
     private void printWareHouse(){
         System.out.println("Warehouse: ");
-        for(Row r : this.warehouse.keySet()){
-            System.out.format("%15s", r.toString());
-            if(this.warehouse.get(r).isEmpty()){
-                for(int x=0; x<r.getMaxValue(); x++)
-                    System.out.format("%15s", "Empty");
-            }
-            else{
-                for(Resource res : this.warehouse.get(r).keySet()){
-                    for(int x=0; x<this.warehouse.get(r).get(res); x++){
-                        System.out.format("%15s", res.toString());
-                    }
-                    if(r.getMaxValue()>this.warehouse.get(r).get(res)){
-                        for(int x=0; x<(r.getMaxValue() - this.warehouse.get(r).get(res)); x++){
-                            System.out.format("%15s", "Empty");
+        ArrayList<Row> iterate = new ArrayList<>(Row.orderedRow());
+        for(Row r : iterate) {
+            if (this.warehouse.containsKey(r)) {
+                System.out.format("%15s", r.toString());
+                if (this.warehouse.get(r).isEmpty()) {
+                    for (int x = 0; x < r.getMaxValue(); x++)
+                        System.out.format("%15s", "Empty");
+                } else {
+                    for (Resource res : this.warehouse.get(r).keySet()) {
+                        for (int x = 0; x < this.warehouse.get(r).get(res); x++) {
+                            System.out.format("%15s", res.toString());
+                        }
+                        if (r.getMaxValue() > this.warehouse.get(r).get(res)) {
+                            for (int x = 0; x < (r.getMaxValue() - this.warehouse.get(r).get(res)); x++) {
+                                System.out.format("%15s", "Empty");
+                            }
                         }
                     }
                 }
+                System.out.println();
             }
-            System.out.println();
         }
     }
 
@@ -640,7 +643,7 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public LoginMessage setUpInformation() {
+    public void setUpInformation() {
         System.out.println("Do you want to create a new account or log in to an existing one?");
         System.out.println("N for new account or L for log in");
         String action = null;
@@ -659,11 +662,19 @@ public class CliView extends ClientView {
         }
         System.out.println("Please insert your nickname");
         String nickname = scanner.nextLine();
-        LoginMessage message = new LoginMessage(nickname);
-        if(action.equals("N"))
-            message.setNewAccount(true);
+        System.out.println("Please insert your password");
+        Console console = System.console();
+        String password;
+        if(console == null)
+            password = scanner.nextLine();
+        else
+            password = new String(console.readPassword());
 
-        return message;
+
+        if(action.equals("N"))
+            controller.sendInformationToServer(nickname, password, true);
+        else
+            controller.sendInformationToServer(nickname, password, false);
     }
 
     @Override

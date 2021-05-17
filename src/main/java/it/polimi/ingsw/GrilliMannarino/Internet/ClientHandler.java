@@ -53,7 +53,7 @@ public class ClientHandler implements  Runnable{
                 LoginMessage message = (LoginMessage) in.readUnshared();
 
                 if(message.isNewAccount()){
-                    Integer playerId = server.createNewAccount(message.getNickname());
+                    Integer playerId = server.createNewAccount(message.getNickname(), message.getPassword());
                     if(playerId!=null){
                         login = true;
                         server.setHandlerList(playerId, this);
@@ -72,7 +72,7 @@ public class ClientHandler implements  Runnable{
                     }
                 }
                 else{
-                    Integer playerId = server.logIn(message.getNickname());
+                    Integer playerId = server.logIn(message.getNickname(), message.getPassword());
                     if(playerId!=null){
                         login = true;
                         server.setHandlerList(playerId, this);

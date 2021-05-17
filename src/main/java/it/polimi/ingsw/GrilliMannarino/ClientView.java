@@ -64,7 +64,7 @@ public abstract class ClientView {
 
     public abstract void showProductionCard(HashMap<Integer, Integer> productionCard);
 
-    public abstract LoginMessage setUpInformation();
+    public abstract void setUpInformation();
 
     public abstract void getUpInformation(LoginMessage message);
 

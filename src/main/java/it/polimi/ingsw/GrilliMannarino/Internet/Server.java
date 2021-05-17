@@ -56,8 +56,8 @@ public class Server {
         handlerList.put(playerId, handler);
     }
 
-    public Integer createNewAccount(String nickname){
-        return controller.addPlayer(nickname);
+    public Integer createNewAccount(String nickname, String password){
+        return controller.addPlayer(nickname, password);
     }
 
     public void createNewClient(Socket socket) {
@@ -65,7 +65,7 @@ public class Server {
         thread.start();
     }
 
-    public Integer logIn(String nickname) {
-        return controller.logInPlayer(nickname);
+    public Integer logIn(String nickname, String password) {
+        return controller.logInPlayer(nickname, password);
     }
 }

@@ -104,8 +104,12 @@ public class GUIView extends ClientView{
   }
 
   @Override
-  public LoginMessage setUpInformation() {
-    return null;
+  public void setUpInformation() {
+
+  }
+
+  public void sendInformationToServer(String nickname, String password, boolean newAccount){
+    controller.sendInformationToServer(nickname, password, newAccount);
   }
 
   @Override
@@ -154,7 +158,8 @@ public class GUIView extends ClientView{
   }
 
   @Override
-  public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition) {
+  public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition, Integer lorenzoFaith, boolean lorenzoFavorActive) {
 
   }
+
 }
