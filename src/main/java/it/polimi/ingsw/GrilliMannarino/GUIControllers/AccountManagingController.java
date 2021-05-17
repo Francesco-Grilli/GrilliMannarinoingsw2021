@@ -13,6 +13,8 @@ public class AccountManagingController {
   public Button accountButton;
 
   public void newAccountConfig(){
+    confirmPasswordField.setDisable(false);
+    confirmPasswordField.setOpacity(1);
     accountLabel.setText("Create a New Account");
     accountButton.setText("Conferma");
     accountButton.setOnAction(t->newAccountCreation());
