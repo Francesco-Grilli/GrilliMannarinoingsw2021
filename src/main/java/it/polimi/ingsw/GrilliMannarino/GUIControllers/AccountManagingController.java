@@ -1,10 +1,13 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
+import it.polimi.ingsw.GrilliMannarino.GUIView;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class AccountManagingController {
+
+  GUIView controller;
   
   public TextField usernameField;
   public Label accountLabel;
@@ -13,6 +16,8 @@ public class AccountManagingController {
   public Button accountButton;
 
   public void newAccountConfig(){
+    confirmPasswordField.setDisable(false);
+    confirmPasswordField.setOpacity(1);
     accountLabel.setText("Create a New Account");
     accountButton.setText("Conferma");
     accountButton.setOnAction(t->newAccountCreation());
