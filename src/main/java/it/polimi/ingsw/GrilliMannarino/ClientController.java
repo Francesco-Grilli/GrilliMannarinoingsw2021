@@ -53,16 +53,21 @@ public class ClientController implements VisitorInterface {
     public void executeLeaderCard(LeaderCardMessage leaderCard) {
         if(!leaderCard.isShowLeaderCard()) {
             if (!leaderCard.isActivateCard()) {
-                if (!leaderCard.isSellingCard()) {
-                    view.viewError("Error on LeaderCard action");
+                if(!leaderCard.isSelectLeaderCard()){
+                    if (!leaderCard.isSellingCard()) {
+                        view.viewError("Error on LeaderCard action");
+                        return;
+                    }
+                    //code to selling card
+                    if (leaderCard.isActivationSellingCorrect())
+                        view.finishedLeaderAction("Leader Card has been correctly sold");
+                    else
+                        view.viewError("Leader Card has not been sold");
                     return;
                 }
-                //code to selling card
-                if (leaderCard.isActivationSellingCorrect())
-                    view.finishedLeaderAction("Leader Card has been correctly sold");
-                else
-                    view.viewError("Leader Card has not been sold");
-                return;
+                //code to selectLeadercard
+                view.selectLeaderCard(leaderCard.getCards());
+
             }
             //code to activate card
             if (leaderCard.isActivationSellingCorrect())
@@ -78,18 +83,23 @@ public class ClientController implements VisitorInterface {
     @Override
     public void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage) {
         if(!marbleMarketMessage.isDisplayMarbleMarket()){
-            if(!marbleMarketMessage.isDisplayMarblesReturned()){
-                if(!marbleMarketMessage.isAddedResource()){
-                    if(!marbleMarketMessage.isDestroyRemaining()) {
-                        view.viewError("Error in MarbleMarket action");
-                        return;
+            if(!marbleMarketMessage.isDisplayMarblesReturned()) {
+                if (!marbleMarketMessage.isCheckReturnedResource()) {
+                    if (!marbleMarketMessage.isAddedResource()) {
+                        if (!marbleMarketMessage.isDestroyRemaining()) {
+                            view.viewError("Error in MarbleMarket action");
+                            return;
+                        }
+                        //code to check added resource
+                        view.finishedNormalAction("You have finished Marble action");
                     }
                     //code to check added resource
-                    view.finishedNormalAction("You have finished Marble action");
-                }
-                //code to check added resource
 
-                view.addedResource(marbleMarketMessage.getResourceType(), marbleMarketMessage.getInsertRow(), marbleMarketMessage.getReturnedResource(), marbleMarketMessage.isAddResourceCorrect());
+                    view.addedResource(marbleMarketMessage.getResourceType(), marbleMarketMessage.getInsertRow(), marbleMarketMessage.getReturnedResource(), marbleMarketMessage.isAddResourceCorrect());
+                    return;
+                }
+                //code to check the returned resources
+                view.checkReturnedResource(marbleMarketMessage.getReturnedResource());
                 return;
             }
             //code to select the marbles
@@ -232,5 +242,20 @@ public class ClientController implements VisitorInterface {
                 view.printInformation("Resource has NOT been placed!");
             view.placeResourceStarting(startingResource.getResourcesLeft());
         }
+    }
+
+    @Override
+    public void executePopeLineSingle(PopeLineSingleMessage popeLineSingleMessage) {
+        if(!popeLineSingleMessage.isCheckPopeLine()){
+            if(!popeLineSingleMessage.isUpdatedPosition()){
+                view.viewError("Error on PopeLine action");
+                return;
+            }
+            //code to update faith
+            view.updateFaithSingle(popeLineSingleMessage.getFaithPosition(), popeLineSingleMessage.getLorenzoFaith());
+            receiveMessageFromServer();
+        }
+        //code to check the popeline
+        view.checkPopeLineSingle(popeLineSingleMessage.isFavorActive(), popeLineSingleMessage.getCheckPosition(), popeLineSingleMessage.getFaithPosition());
     }
 }

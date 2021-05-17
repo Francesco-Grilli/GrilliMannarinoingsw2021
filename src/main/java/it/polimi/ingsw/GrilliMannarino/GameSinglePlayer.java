@@ -1,25 +1,34 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameSinglePlayer extends Game{
 
     private CardMarketBoardInterfaceSingle cardMarketSingle;
     private BoardSinglePlayer boardSingle;
-    private Player playersingle;
+    private Integer playerId;
 
     public GameSinglePlayer(Integer gameId) {
         super(gameId, 1);
         this.cardMarketSingle = new CardMarket();
         this.cardMarket = this.cardMarketSingle;
-        setActivePlayer();
-        setActiveBoard();
+    }
+
+    @Override
+    public Integer startGame() {
+        return super.startGame();
     }
 
     @Override
     public synchronized boolean setPlayer(Integer playerId, String nickName) {
         if(player.size()<numberOfPlayer && !player.containsKey(playerId) && !board.containsKey(playerId)){
+            this.playerId = playerId;
             player.put(playerId, new Player(nickName, playerId));
             playerID.add(playerId);
-            board.put(playerId, new BoardSinglePlayer(player.get(playerId), cardMarketSingle, marbleMarket));
+            boardSingle = new BoardSinglePlayer(player.get(playerId), cardMarketSingle, marbleMarket);
+            board.put(playerId, boardSingle);
             return true;
         }
         return false;
@@ -41,6 +50,30 @@ public class GameSinglePlayer extends Game{
     }
 
     private void lorenzoAction() {
+        System.out.println("Lorenzo is executing an action");
+    }
+
+    @Override
+    public HashMap<Integer, Map.Entry<Integer, Boolean>> checkPopeLine() {
+        HashMap<Integer, Map.Entry<Integer, Boolean>> checkPope = new HashMap<>();
+
+        Map.Entry<Integer, Boolean> playerCouple = new AbstractMap.SimpleEntry<>(activeBoard.getFaith(), activeBoard.checkPopeFaith());
+        checkPope.put(playerId, playerCouple);
+        Map.Entry<Integer, Boolean> lorenzoCouple = new AbstractMap.SimpleEntry<>(boardSingle.getLorenzoFaith(), boardSingle.checkLorenzoPopeFaith());
+        checkPope.put(0, playerCouple);
+        PopeLine.updateChecks();
+
+        return checkPope;
+    }
+
+    @Override
+    public HashMap<Integer, Integer> getPlayersFaith() {
+        HashMap<Integer, Integer> playersFaith = new HashMap<>();
+
+        playersFaith.put(playerId, boardSingle.getFaith());
+        playersFaith.put(0, boardSingle.getLorenzoFaith());
+
+        return playersFaith;
     }
 
     @Override

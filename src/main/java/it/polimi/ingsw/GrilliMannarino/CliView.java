@@ -139,8 +139,10 @@ public class CliView extends ClientView {
         ArrayList<Resource> resources = new ArrayList<>();
         toReturn.forEach((m) -> resources.add(Marble.getResource(m)));
 
-        printWareHouse();
-        getResourceToPlace(resources);
+        MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
+        message.setCheckReturnedResource(true);
+        message.setReturnedResource(resources);
+        controller.sendMessageToServer(message);
     }
 
     private void getResourceToPlace(ArrayList<Resource> resources) {
@@ -581,7 +583,7 @@ public class CliView extends ClientView {
             } catch (Exception e) {
                 action = "Z";
             }
-            while (!action.equals("A") && !action.equals("S")) {
+            do {
                 if (action.equals("A"))
                     message.setActivateCard(true);
                 else if (action.equals("S"))
@@ -593,7 +595,7 @@ public class CliView extends ClientView {
                         action = "Z";
                     }
                 }
-            }
+            }while (!action.equals("A") && !action.equals("S"));
             controller.sendMessageToServer(message);
         }
         else
@@ -814,6 +816,52 @@ public class CliView extends ClientView {
             StartingResourceMessage message = new StartingResourceMessage(this.gameId, this.playerId);
             controller.sendMessageToServer(message);
         }
+    }
+
+    @Override
+    public void checkReturnedResource(ArrayList<Resource> returnedResource) {
+        printWareHouse();
+        getResourceToPlace(returnedResource);
+    }
+
+    @Override
+    public void selectLeaderCard(ArrayList<Integer> cards) {
+        showCardInLeaderCard(cards);
+        ArrayList<Integer> toReturn = new ArrayList<>();
+        System.out.println("You have to select two cards using the card code");
+        int i=0;
+        Integer cardCode;
+        while(i<2){
+            System.out.println("Select " + (i+1) + "° card");
+            try{
+                cardCode = Integer.parseInt(scanner.nextLine());
+            }catch (NumberFormatException e){
+                cardCode =0;
+            }
+            if(cards.contains(cardCode)){
+                toReturn.add(cardCode);
+                System.out.println("Selection was correct");
+                i++;
+            }
+            else{
+                System.out.println("Invalid Input");
+            }
+        }
+
+        LeaderCardMessage message = new LeaderCardMessage(this.gameId, this.playerId);
+        message.setSelectLeaderCard(true);
+        message.setCards(toReturn);
+        controller.sendMessageToServer(message);
+    }
+
+    @Override
+    public void updateFaithSingle(Integer faithPosition, Integer lorenzoFaith) {
+
+    }
+
+    @Override
+    public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition) {
+
     }
 
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){

@@ -17,6 +17,8 @@ public abstract class ClientView {
     protected HashMap<Resource, Integer> chest;
     protected Integer faith;
     protected boolean[] faithMark = new boolean[3];
+    protected Integer lorenzoFaith;
+    protected boolean[] lorenzoFaithMark = new boolean[3];
     protected final int[] faithValue = {2, 3, 4};
     protected HashMap<Integer, Integer> productionLine = new HashMap<>();
     protected boolean normalAction = false;
@@ -79,4 +81,12 @@ public abstract class ClientView {
     public abstract void selectMarbleStarting(ArrayList<ArrayList<Marble>> marblesToSelect);
 
     public abstract void placeResourceStarting(ArrayList<Resource> resourcesLeft);
+
+    public abstract void checkReturnedResource(ArrayList<Resource> returnedResource);
+
+    public abstract void selectLeaderCard(ArrayList<Integer> cards);
+
+    public abstract void updateFaithSingle(Integer faithPosition, Integer lorenzoFaith);
+
+    public abstract void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition);
 }
