@@ -432,7 +432,6 @@ public class CliView extends ClientView {
             this.faith = faithPosition;
             printPopeLine();
         }
-        controller.receiveMessageFromServer();
     }
 
     @Override
@@ -856,12 +855,25 @@ public class CliView extends ClientView {
 
     @Override
     public void updateFaithSingle(Integer faithPosition, Integer lorenzoFaith) {
-
+        updateFaith(faithPosition);
+        this.lorenzoFaith = lorenzoFaith;
+        System.out.println("Lorenzo's Faith is: " + this.lorenzoFaith);
     }
 
     @Override
-    public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition) {
-
+    public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition, Integer lorenzoFaith, boolean lorenzoFavorActive) {
+        checkPopeLine(favorActive, checkPosition, faithPosition);
+        if(lorenzoFavorActive){
+            System.out.format("Lorenzo has activated the pope favor number: %d\n", (checkPosition+1));
+            this.lorenzoFaith=lorenzoFaith;
+            this.lorenzoFaithMark[checkPosition] = true;
+            System.out.println("Lorenzo's Faith is: " + this.lorenzoFaith);
+        }
+        else{
+            System.out.format("Lorenzo has discharged the pope favor number: %d\n", (checkPosition+1));
+            System.out.println("Lorenzo's Faith is: " + this.lorenzoFaith);
+            this.lorenzoFaith=lorenzoFaith;
+        }
     }
 
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){

@@ -47,6 +47,8 @@ public class GameSinglePlayer extends Game{
     @Override
     public void turnExecution() {
         lorenzoAction();
+        this.normalAction = true;
+        this.leaderCardAction = true;
     }
 
     private void lorenzoAction() {

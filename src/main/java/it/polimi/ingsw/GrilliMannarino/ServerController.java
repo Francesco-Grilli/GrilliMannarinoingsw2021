@@ -53,6 +53,7 @@ public class ServerController implements VisitorInterface {
             LeaderCardMessage leaderMessage = new LeaderCardMessage(g.getGameId(), startingPlayer);
             leaderMessage.setSelectLeaderCard(true);
             leaderMessage.setCards(g.selectLeaderCard());
+            g.setStartingResource();
             server.sendMessageTo(leaderMessage.getPlayerId(), leaderMessage);
         }
         else{

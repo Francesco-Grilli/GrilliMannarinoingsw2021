@@ -173,9 +173,11 @@ public class ClientController implements VisitorInterface {
             //code to update faith
             view.updateFaith(popeLineMessage.getFaithPosition());
             receiveMessageFromServer();
+            return;
         }
         //code to check the popeline
         view.checkPopeLine(popeLineMessage.isFavorActive(), popeLineMessage.getCheckPosition(), popeLineMessage.getFaithPosition());
+        receiveMessageFromServer();
     }
 
     @Override
@@ -245,17 +247,19 @@ public class ClientController implements VisitorInterface {
     }
 
     @Override
-    public void executePopeLineSingle(PopeLineSingleMessage popeLineSingleMessage) {
-        if(!popeLineSingleMessage.isCheckPopeLine()){
-            if(!popeLineSingleMessage.isUpdatedPosition()){
+    public void executePopeLineSingle(PopeLineSingleMessage singleMessage) {
+        if(!singleMessage.isCheckPopeLine()){
+            if(!singleMessage.isUpdatedPosition()){
                 view.viewError("Error on PopeLine action");
                 return;
             }
             //code to update faith
-            view.updateFaithSingle(popeLineSingleMessage.getFaithPosition(), popeLineSingleMessage.getLorenzoFaith());
+            view.updateFaithSingle(singleMessage.getFaithPosition(), singleMessage.getLorenzoFaith());
             receiveMessageFromServer();
+            return;
         }
         //code to check the popeline
-        view.checkPopeLineSingle(popeLineSingleMessage.isFavorActive(), popeLineSingleMessage.getCheckPosition(), popeLineSingleMessage.getFaithPosition());
+        view.checkPopeLineSingle(singleMessage.isFavorActive(), singleMessage.getCheckPosition(), singleMessage.getFaithPosition(), singleMessage.getLorenzoFaith(), singleMessage.isLorenzoFavorActive());
+        receiveMessageFromServer();
     }
 }

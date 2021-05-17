@@ -88,5 +88,5 @@ public abstract class ClientView {
 
     public abstract void updateFaithSingle(Integer faithPosition, Integer lorenzoFaith);
 
-    public abstract void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition);
+    public abstract void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition, Integer lorenzoFaith, boolean lorenzoFavorActive);
 }

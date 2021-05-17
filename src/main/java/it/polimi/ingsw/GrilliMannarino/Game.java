@@ -134,6 +134,7 @@ public class Game {
     public ArrayList<Integer> selectLeaderCard(){
         ArrayList<Integer> cardCodes = new ArrayList<>();
         ArrayList<Integer> keySet = new ArrayList<>(leaderCards.keySet());
+        Collections.shuffle(keySet);
         leaderToSet.clear();
         int i = 0;
         for(Integer code : keySet){
