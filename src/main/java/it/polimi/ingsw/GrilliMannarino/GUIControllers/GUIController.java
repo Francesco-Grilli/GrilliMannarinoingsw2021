@@ -17,7 +17,7 @@ public class GUIController extends Application implements GUIControllerInterface
 
   @Override
   public void start(Stage primaryStage) throws Exception{
-    Parent root = FXMLLoader.load(getClass().getResource("GUI/Welcome.fxml"));
+    Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Welcome.fxml"));
     primaryStage.setTitle("prova");
     primaryStage.setScene(new Scene(root));
     primaryStage.show();

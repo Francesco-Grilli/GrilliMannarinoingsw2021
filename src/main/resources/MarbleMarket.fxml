@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="600.0" fitWidth="462.0">
          <image>
-            <Image url="@../../../../../../../../image/MM1.png" />
+            <Image url="@../../../image/MM1.png" />
          </image>
       </ImageView>
      <GridPane fx:id="marbles" layoutX="134.0" layoutY="134.0" prefHeight="163.0" prefWidth="211.0">

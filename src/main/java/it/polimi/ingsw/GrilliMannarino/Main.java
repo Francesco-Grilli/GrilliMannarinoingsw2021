@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.GUIControllers.GUIController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -58,11 +60,11 @@ public class Main {
         cards.put(7, false);
         cards.put(4, true);*/
         /*cli.startGame();
-        cli.showLeaderCard(cards);*/
+        cli.showLeaderCard(cards);
         for(int i=0; i<100; i++){
             System.out.println((int) (Math.random()*4));
-        }
-
+        }*/
+        GUIController.main(new String[1]);
 
     }
 }
