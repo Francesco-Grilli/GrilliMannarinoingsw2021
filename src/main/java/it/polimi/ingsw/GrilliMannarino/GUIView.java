@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class GUIView extends ClientView{
 
   private GUIControllerInterface screenHandler;
+
   @Override
   void viewError(String errorMessage) {
 
@@ -124,6 +125,36 @@ public class GUIView extends ClientView{
 
   @Override
   public void finishedLeaderAction(String s) {
+
+  }
+
+  @Override
+  public void selectMarbleStarting(ArrayList<ArrayList<Marble>> marblesToSelect) {
+
+  }
+
+  @Override
+  public void placeResourceStarting(ArrayList<Resource> resourcesLeft) {
+
+  }
+
+  @Override
+  public void checkReturnedResource(ArrayList<Resource> returnedResource) {
+
+  }
+
+  @Override
+  public void selectLeaderCard(ArrayList<Integer> cards) {
+
+  }
+
+  @Override
+  public void updateFaithSingle(Integer faithPosition, Integer lorenzoFaith) {
+
+  }
+
+  @Override
+  public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition) {
 
   }
 }
