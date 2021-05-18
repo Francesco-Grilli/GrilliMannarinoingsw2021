@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
+import javafx.fxml.FXMLLoader;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,14 +27,10 @@ public class GUIController extends Application implements GUIControllerInterface
   }
 
   @Override
-  public void start(Stage primaryStage) {
-
-
-
-  }
-
-  @Override
-  public void setScene(String scene, AccountManagingController c) {
-
+  public void start(Stage primaryStage) throws Exception{
+    Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Welcome.fxml"));
+    primaryStage.setTitle("prova");
+    primaryStage.setScene(new Scene(root));
+    primaryStage.show();
   }
 }
