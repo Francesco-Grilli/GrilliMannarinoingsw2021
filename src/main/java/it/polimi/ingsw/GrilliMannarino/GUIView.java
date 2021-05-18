@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino;
 
+import it.polimi.ingsw.GrilliMannarino.GUIControllers.AccountManagingController;
 import it.polimi.ingsw.GrilliMannarino.GUIControllers.GUIControllerInterface;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
@@ -105,7 +106,7 @@ public class GUIView extends ClientView{
 
   @Override
   public void setUpInformation() {
-
+    screenHandler.setScene("account", new AccountManagingController());
   }
 
   public void sendInformationToServer(String nickname, String password, boolean newAccount){
