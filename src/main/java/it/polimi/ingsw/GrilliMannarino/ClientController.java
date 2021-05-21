@@ -35,6 +35,7 @@ public class ClientController implements VisitorInterface {
         LoginMessage message = new LoginMessage(nickname);
         message.setPassword(password);
         message.setNewAccount(newAccount);
+        System.out.println("Sto inviando informazioni al client");
         client.setUpInformation(message);
     }
 
@@ -156,7 +157,7 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeEndGame(EndGameMessage endGame) {
-
+        view.endGame(endGame.getPlayerRanking());
     }
 
     @Override
@@ -166,7 +167,10 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeErrorMessage(ErrorMessage error) {
-        view.viewError(error.getError());
+        if(error.isYourTurn())
+            view.viewError(error.getError());
+        else
+            view.printInformation(error.getError());
     }
 
     @Override

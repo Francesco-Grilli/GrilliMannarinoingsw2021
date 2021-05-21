@@ -1,36 +1,95 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
+import it.polimi.ingsw.GrilliMannarino.ClientController;
 import it.polimi.ingsw.GrilliMannarino.GUIView;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUIController extends Application implements GUIControllerInterface {
 
   private GUIView requestHandler;
-  HashMap<String, Scene> sceneMap;
+  HashMap<String, String> sceneMap;
+  SmallController activeController;
 
   public GUIController(){
     sceneMap = new HashMap<>();
   }
 
   private void setUpScene(){
-    Parent accountRoot = FXMLLoader.load(getClass().getClassLoader().getResource("Login.fxml"));
+      sceneMap.put("account", "AccountManaging.fxml");
+      sceneMap.put("welcome", "Welcome.fxml");
+      sceneMap.put("board", "Board.fxml");
   }
 
   public static void main(String[] args) {
     launch(args);
   }
 
+  Stage stage;
+
   @Override
   public void start(Stage primaryStage) throws Exception{
-    Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Welcome.fxml"));
-    primaryStage.setTitle("prova");
-    primaryStage.setScene(new Scene(root));
-    primaryStage.show();
+
+    this.stage = primaryStage;
+    GUIView view = new GUIView();
+    view.setScreenHandler(this);
+    this.requestHandler = view;
+    setUpScene();
+
+    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Welcome.fxml"));
+    Parent root = null;
+    try {
+      root = loader.load();
+      SmallController wc = loader.getController();
+      this.activeController = wc;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    stage.setTitle("prova");
+    stage.setScene(new Scene(root));
+    stage.show();
+
+
+    Thread task = new Thread(new Runnable() {
+      @Override
+      public void run() {
+        ClientController cc = new ClientController(view);
+      }
+    });
+    task.setDaemon(true);
+    task.start();
+
+  }
+
+  @Override
+  public void setScene(String scene, GUIView cont) {
+
+    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(sceneMap.get(scene)));
+    Parent root = null;
+    try {
+      root = loader.load();
+      SmallController asd = loader.getController();
+      asd.setController(cont);
+      activeController = asd;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    stage.setTitle("prova");
+    stage.setScene(new Scene(root));
+    stage.show();
+
+  }
+
+  @Override
+  public void errorMessage(String header, String context) {
+    activeController.errorMessage(header, context);
   }
 }

@@ -887,6 +887,15 @@ public class CliView extends ClientView {
         }
     }
 
+    @Override
+    public void endGame(HashMap<String, Integer> playerRanking) {
+        System.out.println("Game has ended");
+        for(String s : playerRanking.keySet()){
+            System.out.println("Player: " + s + " has number of point: " + playerRanking.get(s));
+        }
+
+    }
+
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){
         if(cards.isEmpty()){
             System.out.println("Empty");

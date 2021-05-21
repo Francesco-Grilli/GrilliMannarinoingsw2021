@@ -15,4 +15,12 @@ public class EndGameMessage extends Message implements MessageInterface{
     public void execute(VisitorInterface visitor) {
         visitor.executeEndGame(this);
     }
+
+    public HashMap<String, Integer> getPlayerRanking() {
+        return playerRanking;
+    }
+
+    public void setPlayerRanking(HashMap<String, Integer> playerRanking) {
+        this.playerRanking = playerRanking;
+    }
 }

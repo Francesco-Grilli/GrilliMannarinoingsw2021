@@ -1,4 +1,15 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
-public class BoardController {
+import it.polimi.ingsw.GrilliMannarino.GUIView;
+
+public class BoardController implements SmallController{
+    @Override
+    public void setController(GUIView controller) {
+
+    }
+
+    @Override
+    public void errorMessage(String header, String context) {
+
+    }
 }

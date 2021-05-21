@@ -35,7 +35,7 @@ public class ClientHandler implements  Runnable{
         boolean goOn = true;
         while(goOn){
             try{
-                MessageInterface message = (MessageInterface) in.readUnshared();
+                MessageInterface message = (MessageInterface) in.readObject();
                 server.messageToController(message);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -93,8 +93,12 @@ public class ClientHandler implements  Runnable{
 
             } catch (IOException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
+                return;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
+                return;
             }
         }
     }

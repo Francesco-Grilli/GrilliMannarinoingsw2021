@@ -1,4 +1,15 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
-public class ResourcesController {
+import it.polimi.ingsw.GrilliMannarino.GUIView;
+
+public class ResourcesController implements SmallController{
+    @Override
+    public void setController(GUIView controller) {
+
+    }
+
+    @Override
+    public void errorMessage(String header, String context) {
+
+    }
 }

@@ -16,5 +16,5 @@
    <TextField fx:id="usernameField" layoutX="231.0" layoutY="161.0" promptText="Username" />
    <PasswordField fx:id="passwordField" layoutX="231.0" layoutY="211.0" promptText="Password" />
    <PasswordField fx:id="confirmPasswordField" layoutX="231.0" layoutY="245.0" promptText="Confirm Password" />
-   <Button fx:id="accountButton" layoutX="275.0" layoutY="298.0" mnemonicParsing="false" text="Confirm" />
+   <Button fx:id="accountButton" layoutX="275.0" layoutY="298.0" mnemonicParsing="false" text="Confirm" onAction="#loginAccount"/>
 </AnchorPane>

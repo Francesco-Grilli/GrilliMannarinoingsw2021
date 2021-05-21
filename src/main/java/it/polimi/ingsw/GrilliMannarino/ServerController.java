@@ -194,6 +194,7 @@ public class ServerController implements VisitorInterface {
         HashMap<String, Integer> ranking = new HashMap<>(game.getAllPoints());
         for(Integer player : game.getPlayerID()){
             EndGameMessage message = new EndGameMessage(game.getGameId(), player);
+            message.setPlayerRanking(ranking);
             server.sendMessageTo(player, message);
         }
 
@@ -736,6 +737,7 @@ public class ServerController implements VisitorInterface {
     private synchronized void sendErrorMessage(Integer gameId, Integer playerId, String error){
         ErrorMessage message = new ErrorMessage(gameId, playerId);
         message.setError(error);
+        message.setYourTurn(true);
         server.sendMessageTo(message.getPlayerId(), message);
     }
 

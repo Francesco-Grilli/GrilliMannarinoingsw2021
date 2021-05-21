@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class AccountManagingController {
+public class AccountManagingController implements SmallController{
 
   GUIView controller;
   
@@ -16,6 +16,19 @@ public class AccountManagingController {
   public TextField passwordField;
   public TextField confirmPasswordField;
   public Button accountButton;
+
+  @Override
+  public void setController(GUIView controller){
+    this.controller = controller;
+  }
+
+  @Override
+  public void errorMessage(String header, String context) {
+    Alert error = new Alert(Alert.AlertType.INFORMATION);
+    error.setHeaderText(header);
+    error.setContentText(context);
+    error.show();
+  }
 
   public void newAccountConfig(){
     confirmPasswordField.setDisable(false);
@@ -39,27 +52,24 @@ public class AccountManagingController {
         controller.sendInformationToServer(usernameField.getText(), passwordField.getText(), true);
       }
       else{
-        Alert error = new Alert(Alert.AlertType.ERROR);
-        error.setHeaderText("Error with Username");
-        error.setContentText("Username is empty");
-        error.show();
+        errorMessage("Error with Username", "Username is empty");
       }
     }
     else {
-      Alert error = new Alert(Alert.AlertType.ERROR);
-      error.setHeaderText("Error with Password");
-      error.setContentText("The passwords do not match");
-      error.show();
+      errorMessage("Error with Password", "The passwords do not match");
     }
   }
 
-  public void errorDisplay(String message){
-    Alert error = new Alert(Alert.AlertType.ERROR);
-    error.setHeaderText(message);
-    error.show();
-  }
 
   public void loginAccount(){
-
+    if(passwordField.getText().equals(confirmPasswordField.getText())){
+      if(!usernameField.getText().equals(""))
+        controller.sendInformationToServer(usernameField.getText(), passwordField.getText(), false);
+      else
+        errorMessage("Error with username", "Username is empty");
+    }
+    else
+      errorMessage("Error with Password", "The passwords do not match");
   }
+
 }
