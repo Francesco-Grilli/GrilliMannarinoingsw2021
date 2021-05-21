@@ -6,11 +6,11 @@
 
 <AnchorPane fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.ActionsController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="206.0" layoutY="76.0" mnemonicParsing="false" text="GET RESOURCES FROM MARKET" />
-      <Button layoutX="222.0" layoutY="101.0" mnemonicParsing="false" text="BUY CARD FROM MARKET" />
-      <Button layoutX="218.0" layoutY="126.0" mnemonicParsing="false" text="PRODUCE NEW RESOURCES" />
-      <Button layoutX="215.0" layoutY="151.0" mnemonicParsing="false" text="PERFORM A LEADER ACTION" />
-      <Button layoutX="198.0" layoutY="188.0" mnemonicParsing="false" text="SWAP RESOURCES IN WAREHOUSE" />
-      <Button layoutX="263.0" layoutY="229.0" mnemonicParsing="false" text="SKIP TURN" />
+      <Button fx:id="getResourcesAction" layoutX="206.0" layoutY="76.0" mnemonicParsing="false" text="GET RESOURCES FROM MARKET" onAction="#getResourcesAction" />
+      <Button fx:id="buyCardMarket" layoutX="222.0" layoutY="101.0" mnemonicParsing="false" text="BUY CARD FROM MARKET" onAction="#buyCardAction"/>
+      <Button fx:id="produceNewResources" layoutX="218.0" layoutY="126.0" mnemonicParsing="false" text="PRODUCE NEW RESOURCES" onAction="#produceResourcesAction"/>
+      <Button fx:id="performLeaderAction" layoutX="215.0" layoutY="151.0" mnemonicParsing="false" text="PERFORM A LEADER ACTION" onAction="#leaderAction"/>
+      <Button fx:id="swapResources" layoutX="198.0" layoutY="188.0" mnemonicParsing="false" text="SWAP RESOURCES IN WAREHOUSE" onAction="#swapResourcesAction"/>
+      <Button fx:id="skipTurn" layoutX="263.0" layoutY="229.0" mnemonicParsing="false" text="SKIP TURN" onAction="#skipTurnAction"/>
    </children>
 </AnchorPane>
