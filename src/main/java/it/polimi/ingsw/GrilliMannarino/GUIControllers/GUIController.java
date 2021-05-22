@@ -81,7 +81,7 @@ public class GUIController extends Application implements GUIControllerInterface
     try {
       root = loader.load();
       SmallController asd = loader.getController();
-      asd.setController(cont);
+      asd.setView(cont);
       activeController = asd;
     } catch (IOException e) {
       e.printStackTrace();
@@ -89,6 +89,11 @@ public class GUIController extends Application implements GUIControllerInterface
     stage.setTitle("prova");
     stage.setScene(new Scene(root));
     stage.show();
+
+  }
+
+  @Override
+  public void setView(GUIView view) {
 
   }
 
