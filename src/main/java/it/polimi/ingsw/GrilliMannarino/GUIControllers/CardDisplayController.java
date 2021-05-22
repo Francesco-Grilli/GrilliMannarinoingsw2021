@@ -4,7 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GUIView;
 
 public class CardDisplayController implements SmallController{
     @Override
-    public void setController(GUIView controller) {
+    public void setView(GUIView view) {
 
     }
 

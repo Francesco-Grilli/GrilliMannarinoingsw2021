@@ -91,4 +91,24 @@ public abstract class ClientView {
     public abstract void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition, Integer lorenzoFaith, boolean lorenzoFavorActive);
 
     public abstract void endGame(HashMap<String, Integer> playerRanking);
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public Integer getPlayerId() {
+        return playerId;
+    }
+
+    public Integer getGameId() {
+        return gameId;
+    }
+
+    public boolean isNormalAction() {
+        return normalAction;
+    }
+
+    public boolean isLeaderAction() {
+        return leaderAction;
+    }
 }

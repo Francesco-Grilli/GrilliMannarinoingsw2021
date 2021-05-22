@@ -2,7 +2,6 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.ClientController;
 import it.polimi.ingsw.GrilliMannarino.GUIView;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -10,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUIController extends Application implements GUIControllerInterface {
@@ -27,6 +25,7 @@ public class GUIController extends Application implements GUIControllerInterface
       sceneMap.put("account", "AccountManaging.fxml");
       sceneMap.put("welcome", "Welcome.fxml");
       sceneMap.put("board", "Board.fxml");
+      sceneMap.put("action", "Actions.fxml");
   }
 
   public static void main(String[] args) {
@@ -66,7 +65,6 @@ public class GUIController extends Application implements GUIControllerInterface
     });
     task.setDaemon(true);
     task.start();
-
   }
 
   @Override
@@ -77,7 +75,7 @@ public class GUIController extends Application implements GUIControllerInterface
     try {
       root = loader.load();
       SmallController asd = loader.getController();
-      asd.setController(cont);
+      asd.setView(cont);
       activeController = asd;
     } catch (IOException e) {
       e.printStackTrace();

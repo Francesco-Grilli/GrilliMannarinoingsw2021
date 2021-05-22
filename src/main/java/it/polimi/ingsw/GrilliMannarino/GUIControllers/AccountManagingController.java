@@ -1,7 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
-import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,8 +17,8 @@ public class AccountManagingController implements SmallController{
   public Button accountButton;
 
   @Override
-  public void setController(GUIView controller){
-    this.controller = controller;
+  public void setView(GUIView view){
+    this.controller = view;
   }
 
   @Override

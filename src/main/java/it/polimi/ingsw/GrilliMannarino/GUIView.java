@@ -7,6 +7,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
+import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
@@ -50,7 +51,13 @@ public class GUIView extends ClientView{
 
   @Override
   void isYourTurn() {
-
+    GUIView gv = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("action", gv);
+      }
+    });
   }
 
   @Override
@@ -201,4 +208,8 @@ public class GUIView extends ClientView{
     this.screenHandler = controller;
   }
 
+
+  public void sendMessageToServer(MessageInterface message){
+    controller.sendMessageToServer(message);
+  }
 }

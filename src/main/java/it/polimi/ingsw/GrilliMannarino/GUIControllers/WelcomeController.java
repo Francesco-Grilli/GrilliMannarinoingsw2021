@@ -18,7 +18,7 @@ public class WelcomeController implements SmallController{
   }
 
   @Override
-  public void setController(GUIView controller) {
+  public void setView(GUIView view) {
 
   }
 
