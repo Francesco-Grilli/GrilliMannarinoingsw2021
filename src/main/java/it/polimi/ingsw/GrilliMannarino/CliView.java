@@ -911,7 +911,72 @@ public class CliView extends ClientView {
 
     @Override
     public void resolveUnknown(HashMap<Integer, HashMap<Resource, Integer>> inputCard, HashMap<Integer, HashMap<Resource, Integer>> outputCard, ArrayList<Integer> selectedCard) {
+        System.out.println("There are some unknown resources to resolve");
+        HashMap<Integer, HashMap<Resource, Integer>> inputCardCopy = new HashMap<>(inputCard);
+        HashMap<Integer, HashMap<Resource, Integer>> outputCardCopy = new HashMap<>(outputCard);
+        for(Integer code : inputCard.keySet()){
+            System.out.println("Card code: " + code);
+            System.out.println("Input: ");
+            for(Resource r : inputCard.get(code).keySet()){
+                if(r.equals(Resource.UNKNOWN)){
+                    ArrayList<Resource> toAdd = getUnknownResource(inputCard.get(code).get(r));
+                    inputCardCopy.get(code).remove(Resource.UNKNOWN);
+                    toAdd.forEach(resource -> {
+                        if (inputCardCopy.get(code).containsKey(resource)) {
+                            inputCardCopy.get(code).put(resource, (inputCardCopy.get(code).get(resource) +1));
+                        }
+                        else
+                            inputCardCopy.get(code).put(resource, 1);
+                    });
+                }
+            }
+            System.out.println("Output: ");
+            for(Resource r : outputCard.get(code).keySet()){
+                if(r.equals(Resource.UNKNOWN)){
+                    ArrayList<Resource> toAdd = getUnknownResource(outputCard.get(code).get(r));
+                    outputCardCopy.get(code).remove(Resource.UNKNOWN);
+                    toAdd.forEach(resource -> {
+                        if (outputCardCopy.get(code).containsKey(resource)) {
+                            outputCardCopy.get(code).put(resource, (outputCardCopy.get(code).get(resource) +1));
+                        }
+                        else
+                            outputCardCopy.get(code).put(resource, 1);
+                    });
+                }
+            }
+        }
 
+        ProductionMessage message = new ProductionMessage(this.gameId, this.playerId);
+        message.setSelectedCard(selectedCard);
+        message.setSelectCard(true);
+        message.setResolveUnknown(true);
+        message.setInputCard(inputCardCopy);
+        message.setOutputCard(outputCardCopy);
+        controller.sendMessageToServer(message);
+    }
+
+    private ArrayList<Resource> getUnknownResource(int numberOfUnknown) {
+        System.out.println("You have to resolve " + numberOfUnknown + " unknown resource");
+        ArrayList<Resource> toReturn = new ArrayList<>();
+        for(int i=0; i<numberOfUnknown; i++){
+            System.out.println("Select one resource: SHIELD, STONE, COIN, SERVANT");
+            Resource res = null;
+            try{
+                res = Resource.valueOf(scanner.nextLine());
+            }catch (IllegalArgumentException e){
+                res = Resource.UNKNOWN;
+            }
+            while(res.equals(Resource.UNKNOWN)){
+                System.out.println("Invalid input");
+                try{
+                    res = Resource.valueOf(scanner.nextLine());
+                }catch (IllegalArgumentException e){
+                    res = Resource.UNKNOWN;
+                }
+            }
+            toReturn.add(res);
+        }
+        return toReturn;
     }
 
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){

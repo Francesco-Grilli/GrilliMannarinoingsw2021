@@ -561,18 +561,44 @@ public class ServerController implements VisitorInterface {
             ProductionMessage message = new ProductionMessage(productionMessage.getGameId(), productionMessage.getPlayerId());
             message.setSelectCard(true);
             ArrayList<CreationCard> cardList = new ArrayList<>();
-            ArrayList<Integer> cardStringList = new ArrayList<>(productionMessage.getSelectedCard());
-            for(Integer i : cardStringList){
+            ArrayList<Integer> cardSelected = new ArrayList<>(productionMessage.getSelectedCard());
+            for(Integer i : cardSelected){
                 cardList.add(game.getCardFromCode(i));
             }
 
             boolean unknownPresent = false;
             for(CreationCard c : cardList){
-                if(c.getInput().containsKey(Resource.UNKNOWN) || c.getOutput().containsKey(Resource.UNKNOWN))
+                if(c.getInput().containsKey(Resource.UNKNOWN) || c.getOutput().containsKey(Resource.UNKNOWN)) {
                     unknownPresent = true;
+                }
             }
             if(unknownPresent){
-                //TODO code to resolve unknown
+                HashMap<Integer, HashMap<Resource, Integer>> input = new HashMap<>();
+                HashMap<Integer, HashMap<Resource, Integer>> output = new HashMap<>();
+                for(CreationCard c : cardList){
+                    if(c.getInput().containsKey(Resource.UNKNOWN) || c.getOutput().containsKey(Resource.UNKNOWN)) {
+                        input.put(c.getCardCode(), new HashMap<>(c.getInput()));
+                        output.put(c.getCardCode(), new HashMap<>(c.getOutput()));
+                        cardSelected.remove(Integer.valueOf(c.getCardCode()));
+                    }
+                }
+
+                ProductionMessage unknownMessage = new ProductionMessage(game.getGameId(), productionMessage.getPlayerId());
+                unknownMessage.setResolveUnknown(true);
+                unknownMessage.setInputCard(input);
+                unknownMessage.setOutputCard(output);
+                unknownMessage.setSelectedCard(cardSelected);
+                server.sendMessageTo(unknownMessage.getPlayerId(), unknownMessage);
+                return;
+            }
+
+            if(productionMessage.isResolveUnknown()){
+                HashMap<Integer, HashMap<Resource, Integer>> input = new HashMap<>(productionMessage.getInputCard());
+                HashMap<Integer, HashMap<Resource, Integer>> output = new HashMap<>(productionMessage.getOutputCard());
+                for(Integer code : input.keySet()){
+                    CreationCard card = new CreationCard(code, 0, 0, null, null, input.get(code), output.get(code));
+                    cardList.add(card);
+                }
             }
 
             if(game.canProduce(cardList)){

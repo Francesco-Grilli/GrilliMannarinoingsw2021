@@ -144,14 +144,15 @@ public class ClientController implements VisitorInterface {
                     view.viewError("Error on Production action");
                     return;
                 }
-                //code to resolve unknown
-                view.resolveUnknown(productionMessage.getInputCard(), productionMessage.getOutputCard(), productionMessage.getSelectedCard());
+                //code to check if the production was successful
+                if (!productionMessage.isProductionCorrect())
+                    view.viewError("Production configuration wasn't correct");
+                else
+                    view.finishedNormalAction("Production configuration was correct, you have produced");
+                return;
             }
-            //code to check if the production was successful
-            if (!productionMessage.isProductionCorrect())
-                view.viewError("Production configuration wasn't correct");
-            else
-                view.finishedNormalAction("Production configuration was correct, you have produced");
+            //code to resolve unknown
+            view.resolveUnknown(productionMessage.getInputCard(), productionMessage.getOutputCard(), productionMessage.getSelectedCard());
             return;
         }
         //code to show card into production
