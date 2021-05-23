@@ -77,7 +77,7 @@ public class GameSinglePlayer extends Game{
         }
         else{
             removeCard(activeToken.getFaction());
-            // TODO check number of cards and set endgame true if necessary
+            // TODO check if finished card
             return new AbstractMap.SimpleEntry<>(activeToken, false);
         }
     }
