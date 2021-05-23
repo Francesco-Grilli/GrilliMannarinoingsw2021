@@ -204,6 +204,11 @@ public class GUIView extends ClientView{
 
   }
 
+  @Override
+  public void resolveUnknown(HashMap<Integer, HashMap<Resource, Integer>> inputCard, HashMap<Integer, HashMap<Resource, Integer>> outputCard, ArrayList<Integer> selectedCard) {
+
+  }
+
   public void setScreenHandler(GUIControllerInterface controller){
     this.screenHandler = controller;
   }

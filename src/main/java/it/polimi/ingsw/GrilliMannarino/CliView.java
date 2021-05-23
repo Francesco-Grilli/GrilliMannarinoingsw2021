@@ -325,6 +325,7 @@ public class CliView extends ClientView {
         if(this.normalAction) {
             System.out.println("B for buying a card to the market");
             System.out.println("M for going to the Marble market");
+            System.out.println("P for producing with your card");
         }
         if(this.leaderAction)
             System.out.println("L for Leader card action");
@@ -355,7 +356,14 @@ public class CliView extends ClientView {
                 TurnMessage turnMessage = new TurnMessage(this.gameId, this.playerId);
                 check = false;
                 controller.sendMessageToServer(turnMessage);
-            }else {
+            }else if("P".equals(s)) {
+                ProductionMessage productionMessage = new ProductionMessage(this.gameId, this.playerId);
+                productionMessage.setDisplayCard(true);
+                check = false;
+                controller.sendMessageToServer(productionMessage);
+            }
+            else
+            {
                 System.out.println("Invalid Input");
                 s = scanner.nextLine();
             }
@@ -633,6 +641,11 @@ public class CliView extends ClientView {
                 }
             }
 
+            if(producingCard.isEmpty()){
+                selectAction();
+                return;
+            }
+
             ProductionMessage message = new ProductionMessage(this.gameId, this.playerId);
             message.setSelectCard(true);
             message.setSelectedCard(producingCard);
@@ -896,6 +909,11 @@ public class CliView extends ClientView {
 
     }
 
+    @Override
+    public void resolveUnknown(HashMap<Integer, HashMap<Resource, Integer>> inputCard, HashMap<Integer, HashMap<Resource, Integer>> outputCard, ArrayList<Integer> selectedCard) {
+
+    }
+
     private void showCardInProductionLine(HashMap<Integer, Integer> cards){
         if(cards.isEmpty()){
             System.out.println("Empty");
@@ -904,6 +922,20 @@ public class CliView extends ClientView {
         for(Integer code : cards.keySet()){
             if(code.equals(0)){
                 System.out.println("This is the base production card");
+                JSONObject card = jsonCardsProduction.get(code);
+                System.out.format("CARD CODE: %s %5s", ((String) card.get("card_code")), "");
+                HashMap<Resource, Integer> input = parseHashMapResources((JSONObject) card.get("card_input"));
+                System.out.print("Card input: ");
+                for (Resource res : input.keySet()) {
+                    System.out.print(res.toString() + " " + input.get(res) + " ");
+                }
+                System.out.format("%7s", "");
+                HashMap<Resource, Integer> output = parseHashMapResources((JSONObject) card.get("card_output"));
+                System.out.print("Card output: ");
+                for (Resource res : output.keySet()) {
+                    System.out.print(res.toString() + " " + output.get(res) + " ");
+                }
+                System.out.print("\n\n");
             }
             else {
                 JSONObject card = jsonCardsProduction.get(code);

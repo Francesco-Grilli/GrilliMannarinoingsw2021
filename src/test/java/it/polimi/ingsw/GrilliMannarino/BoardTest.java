@@ -19,12 +19,6 @@ import java.util.Map;
 
 public class BoardTest {
 
-  @BeforeEach
-  void resetStaticVariables(){
-    PopeLine.reset();
-    assertTrue(true);
-  }
-
   @Test
   public void getBuyableCardTest() {
     Board test = new Board(null,new CardMarket(),null);
@@ -360,7 +354,7 @@ public class BoardTest {
   @Test
   public void getFaithChecksTest(){
     Board test = new Board(null,null,null);
-    System.out.println("Popeline static: " + PopeLine.getFaithChecks()[0]);
+    System.out.println("Popeline static: " + test.getFaithChecks()[0]);
     for(int i=0; i<7; i++){
       assertFalse(test.addPopeFaith());
       assertEquals(i+1, test.getFaith());
@@ -368,9 +362,9 @@ public class BoardTest {
     assertTrue(test.addPopeFaith());
     assertEquals(8, test.getFaith());
     assertTrue(test.checkPopeFaith());
-    PopeLine.updateChecks();
+    test.updateChecks();
     assertTrue(test.getFaithSteps()[0]);
-    assertTrue(PopeLine.getFaithChecks()[0]);
+    assertTrue(test.getFaithChecks()[0]);
   }
 
   @Test

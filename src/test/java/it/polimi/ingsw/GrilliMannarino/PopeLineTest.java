@@ -10,12 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PopeLineTest {
 
-    @BeforeEach
-    void resetStaticVariables(){
-        PopeLine.reset();
-        assertTrue(true);
-    }
-
     @Test
     void constructorCheck() {
         PopeLine pope = new PopeLine();
@@ -37,7 +31,7 @@ class PopeLineTest {
     @Test
     void activationFavor1(){
         PopeLine pope = new PopeLine();
-        System.out.println("Popeline static: " + PopeLine.getFaithChecks()[0]);
+        System.out.println("Popeline static: " + pope.getFaithChecks()[0]);
         for(int i=0; i<7; i++){
             assertFalse(pope.addFaith());
             assertEquals(i+1, pope.getFaith());
@@ -45,9 +39,9 @@ class PopeLineTest {
         assertTrue(pope.addFaith());
         assertEquals(8, pope.getFaith());
         assertTrue(pope.checkPopeFaith());
-        PopeLine.updateChecks();
+        pope.updateChecks();
         assertTrue(pope.getFaithSteps()[0]);
-        assertTrue(PopeLine.getFaithChecks()[0]);
+        assertTrue(pope.getFaithChecks()[0]);
     }
 
     @Test
@@ -63,7 +57,8 @@ class PopeLineTest {
         assertTrue(pope1.addFaith());
         assertTrue(pope1.checkPopeFaith());
         assertFalse(pope2.checkPopeFaith());
-        PopeLine.updateChecks();
+        pope1.updateChecks();
+        pope2.updateChecks();
         assertFalse(pope2.getFaithSteps()[0]);
         assertTrue(pope1.getFaithSteps()[0]);
         for(int i=0; i<3; i++)
@@ -84,7 +79,8 @@ class PopeLineTest {
         assertTrue(pope1.addFaith());
         assertTrue(pope1.checkPopeFaith());
         assertTrue(pope2.checkPopeFaith());
-        PopeLine.updateChecks();
+        pope1.updateChecks();
+        pope2.updateChecks();
         assertFalse(pope2.addFaith());
         assertEquals(8, pope1.getFaith());
         assertEquals(8, pope2.getFaith());
@@ -97,7 +93,8 @@ class PopeLineTest {
         assertTrue(pope2.addFaith());
         assertTrue(pope2.checkPopeFaith());
         assertFalse(pope1.checkPopeFaith());
-        PopeLine.updateChecks();
+        pope1.updateChecks();
+        pope2.updateChecks();
         // pope1 = 5;   favor= true, false, false
         // pope2 = 12;  favor= true, true, false
         for(int i=0; i<3; i++)
@@ -110,7 +107,8 @@ class PopeLineTest {
         assertTrue(pope1.addFaith());
         assertTrue(pope1.checkPopeFaith());
         assertTrue(pope2.checkPopeFaith());
-        PopeLine.updateChecks();
+        pope1.updateChecks();
+        pope2.updateChecks();
         assertEquals(26, pope1.getPoints());
         assertEquals(21, pope2.getPoints());
     }
@@ -121,7 +119,7 @@ class PopeLineTest {
         for(int i=0; i<30; i++){
             if(pope.addFaith()){
                 pope.checkPopeFaith();
-                PopeLine.updateChecks();
+                pope.updateChecks();
             }
         }
 

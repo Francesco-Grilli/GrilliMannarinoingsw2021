@@ -43,8 +43,8 @@ public class PopeLine {
     /**
      * faithChecks keep trace of the Pope's favor that has been activated
      */
-    protected static final boolean[] faithChecks = new boolean[3];
-    protected static int maxFaith;
+    protected final boolean[] faithChecks = new boolean[3];
+    protected int maxFaith;
 
 
     public PopeLine(){
@@ -107,7 +107,7 @@ public class PopeLine {
     /**
      * updateChecks is called when at least one addFaith return true. It update the faithChecks
      */
-    public static void updateChecks(){
+    public void updateChecks(){
         int index=0;
         for(boolean f : faithChecks){
             if(f)
@@ -158,14 +158,10 @@ public class PopeLine {
     /**
      * @return the faithChecks, static array global to all object of PopeLine
      */
-    public static boolean[] getFaithChecks() {
+    public  boolean[] getFaithChecks() {
         return faithChecks;
     }
 
-    public static void reset(){
-        for(int i=0; i<3; i++)
-            faithChecks[i]=false;
-    }
 
     public JSONObject getStatus(){
         JSONObject status = new JSONObject();

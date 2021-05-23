@@ -1,19 +1,24 @@
 package it.polimi.ingsw.GrilliMannarino;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
+import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
+import it.polimi.ingsw.GrilliMannarino.GameData.LorenzoToken;
+
+import java.util.*;
 
 public class GameSinglePlayer extends Game{
 
     private CardMarketBoardInterfaceSingle cardMarketSingle;
     private BoardSinglePlayer boardSingle;
     private Integer playerId;
+    private ArrayList<LorenzoToken> tokens;
+    private int tokenNumber = 0;
 
     public GameSinglePlayer(Integer gameId) {
         super(gameId, 1);
         this.cardMarketSingle = new CardMarket();
         this.cardMarket = this.cardMarketSingle;
+        tokens = LorenzoToken.getLorenzoTokens();
+        Collections.shuffle(tokens);
     }
 
     @Override
@@ -46,13 +51,45 @@ public class GameSinglePlayer extends Game{
 
     @Override
     public void turnExecution() {
-        lorenzoAction();
+        if(activatedEnd)
+            endGame = true;
         this.normalAction = true;
         this.leaderCardAction = true;
     }
 
-    private void lorenzoAction() {
+    @Override
+    public Map.Entry<LorenzoToken, Boolean> lorenzoAction() {
         System.out.println("Lorenzo is executing an action");
+
+        LorenzoToken activeToken = popLorenzoToken();
+        if(activeToken.getNumber().equals(0)){
+            Map.Entry<LorenzoToken, Boolean> map = new AbstractMap.SimpleEntry<>(activeToken, boardSingle.doubleAddLorenzoFaith());
+            if(boardSingle.getLorenzoFaith()>=24)
+                endGame=true;
+            return map;
+        }
+        else if(activeToken.getNumber().equals(1)){
+            Collections.shuffle(tokens);
+            Map.Entry<LorenzoToken, Boolean> map = new AbstractMap.SimpleEntry<>(activeToken, boardSingle.addLorenzoFaith());
+            if(boardSingle.getLorenzoFaith()>=24)
+                endGame = true;
+            return map;
+        }
+        else{
+            removeCard(activeToken.getFaction());
+            // TODO check number of cards and set endgame true if necessary
+            return new AbstractMap.SimpleEntry<>(activeToken, false);
+        }
+    }
+
+    private void removeCard(Faction faction) {
+        cardMarketSingle.deleteTwoCards(faction);
+    }
+
+
+    private LorenzoToken popLorenzoToken() {
+        tokenNumber++;
+        return tokens.get(tokenNumber%(tokens.size()));
     }
 
     @Override
@@ -62,9 +99,8 @@ public class GameSinglePlayer extends Game{
         Map.Entry<Integer, Boolean> playerCouple = new AbstractMap.SimpleEntry<>(activeBoard.getFaith(), activeBoard.checkPopeFaith());
         checkPope.put(playerId, playerCouple);
         Map.Entry<Integer, Boolean> lorenzoCouple = new AbstractMap.SimpleEntry<>(boardSingle.getLorenzoFaith(), boardSingle.checkLorenzoPopeFaith());
-        checkPope.put(0, playerCouple);
-        PopeLine.updateChecks();
-
+        checkPope.put(0, lorenzoCouple);
+        this.updateAllPopelineCheck();
         return checkPope;
     }
 
@@ -78,14 +114,6 @@ public class GameSinglePlayer extends Game{
         return playersFaith;
     }
 
-    @Override
-    public boolean sellLeaderCard(Integer cardCode) {
-        boolean sell = boardSingle.sellLeaderCard(cardCode);
-        if(boardSingle.getFaith()>=24){
-            endGame = true;
-        }
-        return sell;
-    }
 
     @Override
     public Integer getLorenzoFaith() {
@@ -99,6 +127,8 @@ public class GameSinglePlayer extends Game{
             if(boardSingle.addLorenzoFaith())
                 check=true;
         }
+        if(boardSingle.getLorenzoFaith()>=24)
+            endGame = true;
         return check;
     }
 }

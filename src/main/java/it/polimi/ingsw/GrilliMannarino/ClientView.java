@@ -111,4 +111,6 @@ public abstract class ClientView {
     public boolean isLeaderAction() {
         return leaderAction;
     }
+
+    public abstract void resolveUnknown(HashMap<Integer, HashMap<Resource, Integer>> inputCard, HashMap<Integer, HashMap<Resource, Integer>> outputCard, ArrayList<Integer> selectedCard);
 }

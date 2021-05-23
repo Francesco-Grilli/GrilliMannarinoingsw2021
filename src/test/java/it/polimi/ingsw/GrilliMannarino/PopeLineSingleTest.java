@@ -7,12 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PopeLineSingleTest {
 
-    @BeforeEach
-    void resetStaticVariables(){
-        PopeLine.reset();
-        assertTrue(true);
-    }
-
     @Test
     void popeWin(){
         PopeLineSingle pope = new PopeLineSingle();
@@ -24,22 +18,23 @@ class PopeLineSingleTest {
         assertFalse(pope.doubleAddLorenzoFaith());
         assertTrue(pope.doubleAddLorenzoFaith());
         assertEquals(8, pope.getLorenzoFaith());
+        assertTrue(pope.checkLorenzoPopeFaith());
         assertFalse(pope.checkPopeFaith());
-        PopeLineSingle.updateChecks();
+        pope.updateChecks();
         assertFalse(pope.getFaithSteps()[0]);
         for(int i =0; i<14; i++)
             assertFalse(pope.addFaith());
         assertTrue(pope.addFaith());
         assertEquals(16, pope.getFaith());
         assertTrue(pope.checkPopeFaith());
-        PopeLineSingle.updateChecks();
+        pope.updateChecks();
         for(int i=0; i<7; i++)
             assertFalse(pope.addFaith());
         for(int i=0; i<8; i++)
             assertTrue(pope.addFaith());
         assertEquals(24, pope.getFaith());
         assertTrue(pope.checkPopeFaith());
-        PopeLineSingle.updateChecks();
+        pope.updateChecks();
         assertEquals(27, pope.getPoints());
     }
 
@@ -55,15 +50,17 @@ class PopeLineSingleTest {
         assertTrue(pope.addLorenzoFaith());
         assertEquals(8, pope.getLorenzoFaith());
         assertFalse(pope.checkPopeFaith());
+        assertTrue(pope.checkLorenzoPopeFaith());
         assertFalse(pope.getFaithSteps()[0]);
-        PopeLineSingle.updateChecks();
-        assertTrue(PopeLineSingle.getFaithChecks()[0]);
+        pope.updateChecks();
+        assertTrue(pope.getFaithChecks()[0]);
         for(int i=0; i<3; i++)
             assertFalse(pope.doubleAddLorenzoFaith());
         assertTrue(pope.doubleAddLorenzoFaith());
         assertEquals(16, pope.getLorenzoFaith());
         assertFalse(pope.checkPopeFaith());
-        PopeLineSingle.updateChecks();
+        assertTrue(pope.checkLorenzoPopeFaith());
+        pope.updateChecks();
         for (int i = 0; i < 3; i++)
             assertFalse(pope.doubleAddLorenzoFaith());
         assertFalse(pope.addLorenzoFaith());
@@ -72,7 +69,8 @@ class PopeLineSingleTest {
             assertTrue(pope.doubleAddLorenzoFaith());
         assertEquals(24, pope.getLorenzoFaith());
         assertFalse(pope.checkPopeFaith());
-        PopeLineSingle.updateChecks();
+        assertTrue(pope.checkLorenzoPopeFaith());
+        pope.updateChecks();
         boolean[] prep = pope.getFaithSteps();
         for(boolean p: prep)
             assertFalse(p);

@@ -35,7 +35,6 @@ public class ClientController implements VisitorInterface {
         LoginMessage message = new LoginMessage(nickname);
         message.setPassword(password);
         message.setNewAccount(newAccount);
-        System.out.println("Sto inviando informazioni al client");
         client.setUpInformation(message);
     }
 
@@ -139,10 +138,14 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeProduction(ProductionMessage productionMessage) {
-        if(!productionMessage.isSelectCard()) {
-            if (!productionMessage.isSelectCard()) {
-                view.viewError("Error on Production action");
-                return;
+        if(!productionMessage.isDisplayCard()) {
+            if(!productionMessage.isResolveUnknown()){
+                if (!productionMessage.isSelectCard()) {
+                    view.viewError("Error on Production action");
+                    return;
+                }
+                //code to resolve unknown
+                view.resolveUnknown(productionMessage.getInputCard(), productionMessage.getOutputCard(), productionMessage.getSelectedCard());
             }
             //code to check if the production was successful
             if (!productionMessage.isProductionCorrect())
@@ -270,6 +273,20 @@ public class ClientController implements VisitorInterface {
         }
         //code to check the popeline
         view.checkPopeLineSingle(singleMessage.isFavorActive(), singleMessage.getCheckPosition(), singleMessage.getFaithPosition(), singleMessage.getLorenzoFaith(), singleMessage.isLorenzoFavorActive());
+        receiveMessageFromServer();
+    }
+
+    @Override
+    public void executeLorenzoAction(LorenzoTokenMessage lorenzoTokenMessage) {
+        if(lorenzoTokenMessage.getToken().getNumber()==0){
+            view.printInformation("Lorenzo have added two point of faith");
+        }
+        else if(lorenzoTokenMessage.getToken().getNumber()==1){
+            view.printInformation("Lorenzo have added one point of faith and re-rolled the action");
+        }
+        else{
+            view.printInformation("Lorenzo have discharged 2 card from the card market of faction " + lorenzoTokenMessage.getToken().getFaction().toString());
+        }
         receiveMessageFromServer();
     }
 }

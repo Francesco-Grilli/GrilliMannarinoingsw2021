@@ -1,9 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino;
 
-import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
-import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
-import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
-import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import it.polimi.ingsw.GrilliMannarino.GameData.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -359,9 +356,15 @@ public class Game {
             Map.Entry<Integer, Boolean> couple = new AbstractMap.SimpleEntry<>(board.get(i).getFaith(), board.get(i).checkPopeFaith());
             checkPope.put(i, couple);
         }
-        PopeLine.updateChecks();
+        updateAllPopelineCheck();
 
         return checkPope;
+    }
+
+    protected void updateAllPopelineCheck(){
+        for(Integer i : board.keySet()){
+            board.get(i).updateChecks();
+        }
     }
 
     public HashMap<Integer, Integer> getPlayersFaith(){
@@ -377,8 +380,10 @@ public class Game {
         return null;
     }
 
+    public Map.Entry<LorenzoToken, Boolean> lorenzoAction(){return null;}
+
     public Integer getPopeLinePosition(){
-        boolean[] arr = PopeLine.getFaithChecks();
+        boolean[] arr = activeBoard.getFaithChecks();
         int checkPosition=-1;
         for(int i=0; i<arr.length; i++){
             if(arr[i])
@@ -435,7 +440,12 @@ public class Game {
 
     public boolean addFaithTo(Integer playerId){
         if(board.containsKey(playerId)){
-            return board.get(playerId).addPopeFaith();
+            boolean check = board.get(playerId).addPopeFaith();
+            if(board.get(playerId).getFaith()>=24){
+                activatedEnd = true;
+                playerWasPlaying = countPlayer;
+            }
+            return check;
         }
         return false;
     }

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino;
 
-import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
-import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
-import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
-import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+import it.polimi.ingsw.GrilliMannarino.GameData.*;
 import it.polimi.ingsw.GrilliMannarino.Internet.Server;
 import it.polimi.ingsw.GrilliMannarino.Message.*;
 import org.json.simple.JSONObject;
@@ -132,7 +129,22 @@ public class ServerController implements VisitorInterface {
     @Override
     public synchronized void executeTurnPlayer(TurnMessage turn) {
         Game game = games.get(turn.getGameId());
-        game.turnExecution();
+        if(game.getNumberOfPlayer()==1){
+            game.turnExecution();
+            if(!game.isEndGame()) {
+                Map.Entry<LorenzoToken, Boolean> lorenzoTokenMap = game.lorenzoAction();
+                if (lorenzoTokenMap.getValue())
+                    updatePopeLine(game);
+                else
+                    updateFaith(game);
+                LorenzoTokenMessage lorenzoMessage = new LorenzoTokenMessage(turn.getGameId(), turn.getPlayerId());
+                lorenzoMessage.setToken(lorenzoTokenMap.getKey());
+                server.sendMessageTo(turn.getPlayerId(), lorenzoMessage);
+            }
+        }
+        else {
+            game.turnExecution();
+        }
         if(game.isEndGame()){
             endGame(game);
             games.remove(game.getGameId());
@@ -519,6 +531,7 @@ public class ServerController implements VisitorInterface {
                 returnedCards.put(cards.get(fac).get(value).getKey().getCardCode(), cards.get(fac).get(value).getValue());
             }
         }
+        returnedCards.remove(0);
         BuyProductionCardMessage message = new BuyProductionCardMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId());
         message.setDisplayCard(true);
         message.setBuyableCard(returnedCards);
@@ -544,6 +557,7 @@ public class ServerController implements VisitorInterface {
                 return;
             }
             //code to produce with selected card
+
             ProductionMessage message = new ProductionMessage(productionMessage.getGameId(), productionMessage.getPlayerId());
             message.setSelectCard(true);
             ArrayList<CreationCard> cardList = new ArrayList<>();
@@ -551,6 +565,16 @@ public class ServerController implements VisitorInterface {
             for(Integer i : cardStringList){
                 cardList.add(game.getCardFromCode(i));
             }
+
+            boolean unknownPresent = false;
+            for(CreationCard c : cardList){
+                if(c.getInput().containsKey(Resource.UNKNOWN) || c.getOutput().containsKey(Resource.UNKNOWN))
+                    unknownPresent = true;
+            }
+            if(unknownPresent){
+                //TODO code to resolve unknown
+            }
+
             if(game.canProduce(cardList)){
                 if(game.startProduction(cardList)){
                     updatePopeLine(game);
@@ -570,7 +594,10 @@ public class ServerController implements VisitorInterface {
         //code to display card into production to the client
         HashMap<Integer, CreationCard> cards = game.displayCardInProductionLine();
         HashMap<Integer, Integer> cardToReturn = new HashMap<>();
-        cards.forEach((pos, card) -> cardToReturn.put(card.getCardCode(), pos));
+        for(Integer pos : cards.keySet()){
+            if(cards.get(pos)!=null)
+                cardToReturn.put(cards.get(pos).getCardCode(), pos);
+        }
         ProductionMessage message = new ProductionMessage(productionMessage.getGameId(), productionMessage.getPlayerId());
         message.setDisplayCard(true);
         message.setProductionCard(cardToReturn);
@@ -707,6 +734,11 @@ public class ServerController implements VisitorInterface {
 
     @Override
     public void executePopeLineSingle(PopeLineSingleMessage popeLineSingleMessage) {
+
+    }
+
+    @Override
+    public void executeLorenzoAction(LorenzoTokenMessage lorenzoTokenMessage) {
 
     }
 

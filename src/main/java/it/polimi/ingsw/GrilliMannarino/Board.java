@@ -246,10 +246,6 @@ public class Board {
     return popeLine.checkPopeFaith();
   }
 
-  public void updateChecks(){
-    PopeLine.updateChecks();
-  }
-
   private int getFaithTrackPoints(){
     return popeLine.getPoints();
   }
@@ -264,7 +260,7 @@ public class Board {
 
 
   public boolean[] getFaithChecks(){
-    return PopeLine.getFaithChecks();
+    return popeLine.getFaithChecks();
   }
 
   public boolean addLorenzoFaith(){
@@ -406,5 +402,9 @@ public class Board {
 
   public void setStartingResource(boolean startingResource) {
     this.startingResource = startingResource;
+  }
+
+  public void updateChecks() {
+    popeLine.updateChecks();
   }
 }

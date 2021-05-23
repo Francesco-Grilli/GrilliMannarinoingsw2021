@@ -20,4 +20,5 @@ public interface VisitorInterface {
     void executeSaveStatus(SaveStatusMessage saveStatusMessage);
     void executeStartingResource(StartingResourceMessage startingResourceMessage);
     void executePopeLineSingle(PopeLineSingleMessage popeLineSingleMessage);
+    void executeLorenzoAction(LorenzoTokenMessage lorenzoTokenMessage);
 }

@@ -38,8 +38,11 @@ public class PopeLineSingle extends PopeLine{
         return lorenzo.getFaith();
     }
 
+    public boolean checkLorenzoPopeFaith(){return lorenzo.checkPopeFaith();}
+
     @Override
-    public boolean checkPopeFaith() {
-        return lorenzo.checkPopeFaith();
+    public void updateChecks() {
+        super.updateChecks();
+        lorenzo.updateChecks();
     }
 }

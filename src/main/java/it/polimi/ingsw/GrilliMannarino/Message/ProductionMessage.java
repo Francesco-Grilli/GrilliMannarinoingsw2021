@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,10 @@ public class ProductionMessage extends Message implements MessageInterface, Seri
      */
     private HashMap<Integer, Integer> productionCard;
     private boolean displayCard = false;
+
+    private boolean resolveUnknown = false;
+    private HashMap<Integer, HashMap<Resource, Integer>> inputCard;
+    private HashMap<Integer, HashMap<Resource, Integer>> outputCard;
 
     /**
      * selectCard is set true by the client to let the server understand that the field selectedCard contains the
@@ -72,5 +78,29 @@ public class ProductionMessage extends Message implements MessageInterface, Seri
 
     public void setProductionCorrect(boolean productionCorrect) {
         this.productionCorrect = productionCorrect;
+    }
+
+    public boolean isResolveUnknown() {
+        return resolveUnknown;
+    }
+
+    public void setResolveUnknown(boolean resolveUnknown) {
+        this.resolveUnknown = resolveUnknown;
+    }
+
+    public HashMap<Integer, HashMap<Resource, Integer>> getInputCard() {
+        return inputCard;
+    }
+
+    public void setInputCard(HashMap<Integer, HashMap<Resource, Integer>> inputCard) {
+        this.inputCard = inputCard;
+    }
+
+    public HashMap<Integer, HashMap<Resource, Integer>> getOutputCard() {
+        return outputCard;
+    }
+
+    public void setOutputCard(HashMap<Integer, HashMap<Resource, Integer>> outputCard) {
+        this.outputCard = outputCard;
     }
 }
