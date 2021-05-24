@@ -137,20 +137,39 @@
      <Image url="@image/Cross.png"/>
    </ImageView>
  </Pane>
+  <ImageView fx:id="productionCard1"  layoutX="234.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  </ImageView>
+  <ImageView  fx:id="productionCard2" layoutX="349.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  </ImageView>
+  <ImageView fx:id="productionCard3" layoutX="467.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  </ImageView>
    <Pane fx:id="faithCheck1" layoutX="153.0" layoutY="61.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
    <Pane fx:id="faithCheck2" layoutX="300.0" layoutY="34.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
    <Pane fx:id="faithCheck3" layoutX="477.0" layoutY="62.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="productionCard1" layoutX="234.0" layoutY="165.0" prefHeight="200.0" prefWidth="100.0" />
-   <Pane fx:id="productionCard2" layoutX="349.0" layoutY="165.0" prefHeight="200.0" prefWidth="100.0" />
-   <Pane fx:id="productionCard3" layoutX="467.0" layoutY="165.0" prefHeight="200.0" prefWidth="100.0" />
    <Pane fx:id="row1_1" layoutX="59.0" layoutY="162.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
    <Pane fx:id="row2_1" layoutX="43.0" layoutY="198.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
    <Pane fx:id="row2_2" layoutX="80.0" layoutY="198.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
    <Pane fx:id="row3_1" layoutX="29.0" layoutY="235.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
    <Pane fx:id="row3_2" layoutX="61.0" layoutY="235.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
    <Pane fx:id="row3_3" layoutX="93.0" layoutY="235.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="shield" layoutX="27.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="servant" layoutX="80.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="stone" layoutX="80.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="coin" layoutX="27.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
+   <Pane fx:id="shield" layoutX="27.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
+     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+     <Image url="@image/SHIELD.png"/>
+   </ImageView>
+   </Pane>
+  <Pane fx:id="servant" layoutX="80.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/SERVANT.png"/>
+    </ImageView>
+  </Pane>
+   <Pane fx:id="stone" layoutX="80.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
+     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+       <Image url="@image/STONE.png"/>
+     </ImageView>
+   </Pane>
+   <Pane fx:id="coin" layoutX="27.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
+     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+       <Image url="@image/COIN.png"/>
+     </ImageView>
+   </Pane>
 </AnchorPane>
