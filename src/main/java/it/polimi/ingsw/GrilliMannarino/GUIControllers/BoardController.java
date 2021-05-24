@@ -87,7 +87,7 @@ public class BoardController implements SmallController{
     }
 
     public void setProductionCards(HashMap<Integer,Integer> cardCodes){
-        cardCodes.forEach(this::setProductionCard);
+        cardCodes.forEach((k,v)->{setProductionCard(v,k);});
     }
 
     private void setProductionCard(int i, int cc){

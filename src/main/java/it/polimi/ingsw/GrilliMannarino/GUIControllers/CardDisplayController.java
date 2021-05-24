@@ -4,6 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GUIView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CardDisplayController implements SmallController{
@@ -26,9 +27,15 @@ public class CardDisplayController implements SmallController{
 
     }
 
-    public void setCards(HashMap<Integer,Integer> cardCodes){
-        momentaryCardCodes = cardCodes;
-        cardCodes.forEach(this::setCard);
+    public void setCards(ArrayList<Integer> cardCodes){
+        HashMap<Integer,Integer> posCard = new HashMap<>();
+        int k=1;
+        for(Integer cardCode : cardCodes) {
+            posCard.put(k, cardCode);
+            k++;
+        }
+        momentaryCardCodes = posCard;
+        posCard.forEach(this::setCard);
     }
 
     private void setCard(int i, int cc){
