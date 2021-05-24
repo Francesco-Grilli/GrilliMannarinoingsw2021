@@ -14,7 +14,7 @@ public class CardDisplayController implements SmallController{
     public ImageView card4;
     public ImageView card5;
     public ImageView card6;
-    private HashMap<Integer,Integer> momentaryCardCodes;
+    private HashMap<Integer,Integer> momentaryCardCodes = new HashMap<>();
 
     @Override
     public void setView(GUIView view) {
