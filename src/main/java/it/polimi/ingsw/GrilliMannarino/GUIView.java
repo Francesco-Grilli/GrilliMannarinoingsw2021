@@ -52,11 +52,11 @@ public class GUIView extends ClientView{
 
   @Override
   void isYourTurn() {
-    GUIView gv = this;
+    GUIView that = this;
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        screenHandler.setScene("action", gv);
+        screenHandler.setScene("action", that);
       }
     });
   }
