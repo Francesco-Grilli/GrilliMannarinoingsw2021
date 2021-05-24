@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GUIControllers.AccountManagingController;
 import it.polimi.ingsw.GrilliMannarino.GUIControllers.BoardController;
+import it.polimi.ingsw.GrilliMannarino.GUIControllers.CreateGameController;
 import it.polimi.ingsw.GrilliMannarino.GUIControllers.GUIControllerInterface;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
@@ -92,12 +93,32 @@ public class GUIView extends ClientView{
 
   @Override
   void createdNewGame(String messageString, Integer gameId) {
-
+    this.gameId = gameId;
+    GUIView gv = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("createGame", gv);
+        CreateGameController gameController = (CreateGameController) screenHandler.getActiveController();
+        gameController.showStartButton();
+        screenHandler.errorMessage("GamdeID: " + gameId.toString(), messageString);
+      }
+    });
   }
 
   @Override
   void enteredNewGame(String messageString, Integer gameId) {
-
+    this.gameId = gameId;
+    GUIView gv = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("createGame", gv);
+        CreateGameController gameController = (CreateGameController) screenHandler.getActiveController();
+        gameController.disableAllButton();
+        screenHandler.errorMessage("GamdID: " + gameId.toString(), messageString + " Wait for the game to start");
+      }
+    });
   }
 
   @Override
@@ -154,14 +175,19 @@ public class GUIView extends ClientView{
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        screenHandler.setScene("board", gv);
+        screenHandler.setScene("createGame", gv);
       }
     });
   }
 
   @Override
   public void printInformation(String message) {
-
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.errorMessage("Info", message);
+      }
+    });
   }
 
   @Override

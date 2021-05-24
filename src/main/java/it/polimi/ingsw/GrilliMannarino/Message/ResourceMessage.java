@@ -3,9 +3,10 @@ package it.polimi.ingsw.GrilliMannarino.Message;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class ResourceMessage extends Message implements MessageInterface{
+public class ResourceMessage extends Message implements MessageInterface, Serializable {
 
     private HashMap<Row, HashMap<Resource, Integer>> wareHouseResources;
     private HashMap<Resource, Integer> chestResources;

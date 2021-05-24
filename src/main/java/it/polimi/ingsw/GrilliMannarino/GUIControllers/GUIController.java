@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GUIController extends Application implements GUIControllerInterface, SmallController {
+public class GUIController extends Application implements GUIControllerInterface {
 
   private GUIView requestHandler;
   HashMap<String, String> sceneMap;
@@ -31,6 +31,7 @@ public class GUIController extends Application implements GUIControllerInterface
       sceneMap.put("account", "AccountManaging.fxml");
       sceneMap.put("welcome", "Welcome.fxml");
       sceneMap.put("board", "Board.fxml");
+      sceneMap.put("createGame", "CreateGame.fxml");
   }
 
   public static void main(String[] args) {
@@ -93,12 +94,13 @@ public class GUIController extends Application implements GUIControllerInterface
   }
 
   @Override
-  public void setView(GUIView view) {
-
-  }
-
-  @Override
   public void errorMessage(String header, String context) {
     activeController.errorMessage(header, context);
   }
+
+  @Override
+  public SmallController getActiveController() {
+    return activeController;
+  }
+
 }

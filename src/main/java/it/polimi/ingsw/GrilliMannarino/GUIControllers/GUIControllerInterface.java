@@ -7,4 +7,6 @@ public interface GUIControllerInterface {
     void setScene(String scene, GUIView cont);
 
     void errorMessage(String header, String context);
+
+    SmallController getActiveController();
 }

@@ -2,7 +2,9 @@ package it.polimi.ingsw.GrilliMannarino.Message;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 
-public class MoveResourceMessage extends Message implements MessageInterface{
+import java.io.Serializable;
+
+public class MoveResourceMessage extends Message implements MessageInterface, Serializable {
 
     /**
      * canMove is used by the server to let client know if while moving lines some resources will be lost

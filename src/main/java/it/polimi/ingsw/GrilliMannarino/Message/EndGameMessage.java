@@ -1,9 +1,10 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EndGameMessage extends Message implements MessageInterface{
+public class EndGameMessage extends Message implements MessageInterface, Serializable {
 
     private HashMap<String, Integer> playerRanking;
 

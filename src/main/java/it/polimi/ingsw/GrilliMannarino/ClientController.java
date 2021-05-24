@@ -19,7 +19,8 @@ public class ClientController implements VisitorInterface {
     }
 
     public void receiveMessageFromServer(){
-        client.receiveMessageFromServer().execute(this);
+        MessageInterface message = client.receiveMessageFromServer();
+        message.execute(this);
     }
 
     private void information(){
