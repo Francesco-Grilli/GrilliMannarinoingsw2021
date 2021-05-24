@@ -10,7 +10,9 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMarketBoardInterfaceSingle {
   HashMap<Integer, CreationCard> cardsInGame;
@@ -170,7 +172,57 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
   public void setStatus(JSONObject status){}
 
   @Override
-  public void deleteTwoCards(Faction faction) {
+  public boolean deleteTwoCards(Faction faction) {
+    if(factionEmpty(faction)){
+      return true;
+    }
+    if(cardStacks.get(faction) != null){
+      HashMap<Integer, CardStack> temp = cardStacks.get(faction);
+      List<Integer> keys = temp.keySet().stream().sorted().collect(Collectors.toList());
+      int deleted = 0;
+      for(Integer i:keys){
+        CardStack toDelete = temp.get(i);
+        if(toDelete.emptyStack()){
+          break;
+        }else{
+          toDelete.popCard();
+          deleted++;
+          if(factionEmpty(faction)){
+            return true;
+          }else{
+            if(deleted >= 2){
+              return false;
+            }else{
+              if(toDelete.emptyStack()){
+                break;
+              }else{
+                toDelete.popCard();
+                deleted++;
+                if(factionEmpty(faction)){
+                  return true;
+                }else{
+                  return false;
+                }
+              }
+            }
+          }
+        }
+      }
+      return true;
+    }
+    return true;
+  }
 
+  private boolean factionEmpty(Faction faction){
+    if(cardStacks.get(faction) != null){
+      HashMap<Integer, CardStack> temp = cardStacks.get(faction);
+      boolean toRet = true;
+      for(Integer key:temp.keySet()){
+        CardStack moment = temp.get(key);
+        toRet = toRet && moment.emptyStack();
+      }
+      return toRet;
+    }
+    return true;
   }
 }
