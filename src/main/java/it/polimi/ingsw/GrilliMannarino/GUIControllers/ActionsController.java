@@ -35,6 +35,9 @@ public class ActionsController implements SmallController {
             produceNewResources.setDisable(true);
             produceNewResources.setOpacity(0);
         }
+        if(!view.isLeaderAction()){
+
+        }
     }
 
     @Override
@@ -48,13 +51,23 @@ public class ActionsController implements SmallController {
     public void getResourcesAction() {
         MarbleMarketMessage marbleMessage = new MarbleMarketMessage(view.getGameId(), view.getPlayerId());
         marbleMessage.setDisplayMarbleMarket(true);
-        view.sendMessageToServer(marbleMessage);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.sendMessageToServer(marbleMessage);
+            }
+        }).start();
     }
 
     public void buyCardAction() {
         BuyProductionCardMessage buyProductionMessage = new BuyProductionCardMessage(view.getGameId(), view.getPlayerId());
         buyProductionMessage.setDisplayCard(true);
-        view.sendMessageToServer(buyProductionMessage);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.sendMessageToServer(buyProductionMessage);
+            }
+        }).start();
     }
 
     public void leaderAction() {
@@ -63,7 +76,12 @@ public class ActionsController implements SmallController {
 
     public void skipTurnAction() {
         TurnMessage turnMessage = new TurnMessage(view.getGameId(), view.getPlayerId());
-        view.sendMessageToServer(turnMessage);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.sendMessageToServer(turnMessage);
+            }
+        }).start();
     }
 
     public void swapResourcesAction() {
@@ -73,6 +91,11 @@ public class ActionsController implements SmallController {
     public void produceResourcesAction() {
         ProductionMessage productionMessage = new ProductionMessage(view.getGameId(), view.getPlayerId());
         productionMessage.setDisplayCard(true);
-        view.sendMessageToServer(productionMessage);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.sendMessageToServer(productionMessage);
+            }
+        }).start();
     }
 }

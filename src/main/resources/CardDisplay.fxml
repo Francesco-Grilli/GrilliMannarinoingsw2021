@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.CardDisplayController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.CardDisplayController">
    <children>
       <ImageView fitHeight="400.0" fitWidth="700.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@image/Wood.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="card1" fitHeight="152.0" fitWidth="100.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="card2" fitHeight="152.0" fitWidth="100.0" layoutX="134.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="card3" fitHeight="152.0" fitWidth="100.0" layoutX="248.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="card4" fitHeight="152.0" fitWidth="100.0" layoutX="362.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="card5" fitHeight="152.0" fitWidth="100.0" layoutX="476.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="card6" fitHeight="152.0" fitWidth="100.0" layoutX="590.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card1" fitHeight="152.0" fitWidth="100.0" layoutX="14.0" layoutY="41.0" onMouseClicked="#card1Action" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card2" fitHeight="152.0" fitWidth="100.0" layoutX="134.0" layoutY="41.0" onMouseClicked="#card2Action" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card3" fitHeight="152.0" fitWidth="100.0" layoutX="248.0" layoutY="41.0" onMouseClicked="#card3Action" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card4" fitHeight="152.0" fitWidth="100.0" layoutX="362.0" layoutY="41.0" onMouseClicked="#card4Action" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card5" fitHeight="152.0" fitWidth="100.0" layoutX="476.0" layoutY="41.0" onMouseClicked="#card5Action" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card6" fitHeight="152.0" fitWidth="100.0" layoutX="590.0" layoutY="41.0" onMouseClicked="#card6Action" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="produceButton" layoutX="320.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#produce" text="Produce" />
    </children>
 </AnchorPane>

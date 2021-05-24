@@ -33,13 +33,21 @@ public class CreateGameController implements SmallController {
             }
         });
         thread.start();
+        disableAllButton();
     }
 
     public void newGame(){
         int nop = (int) numberPlayer.getValue();
         NewGameMessage message = new NewGameMessage(null, view.getPlayerId(), view.getNickname());
         message.setNumberOfPlayer(nop);
-        view.sendMessageToServer(message);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.sendMessageToServer(message);
+            }
+        });
+        thread.start();
+        disableAllButton();
     }
 
     @Override
@@ -68,7 +76,14 @@ public class CreateGameController implements SmallController {
     public void startGame() {
         System.out.println("Starting game");
         StartGameMessage message = new StartGameMessage(view.getGameId(), view.getPlayerId(), true);
-        view.sendMessageToServer(message);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.sendMessageToServer(message);
+            }
+        });
+        thread.start();
+
     }
 
     public void setNumberOfPlayer() {

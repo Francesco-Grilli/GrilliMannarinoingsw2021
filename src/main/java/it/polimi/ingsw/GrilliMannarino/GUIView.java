@@ -1,9 +1,6 @@
 package it.polimi.ingsw.GrilliMannarino;
 
-import it.polimi.ingsw.GrilliMannarino.GUIControllers.AccountManagingController;
-import it.polimi.ingsw.GrilliMannarino.GUIControllers.BoardController;
-import it.polimi.ingsw.GrilliMannarino.GUIControllers.CreateGameController;
-import it.polimi.ingsw.GrilliMannarino.GUIControllers.GUIControllerInterface;
+import it.polimi.ingsw.GrilliMannarino.GUIControllers.*;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
@@ -11,6 +8,7 @@ import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import org.codehaus.plexus.PlexusTestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +71,14 @@ public class GUIView extends ClientView{
 
   @Override
   void startGame() {
-
+    System.out.println("game has started");
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("board", that);
+      }
+    });
   }
 
   @Override
@@ -133,16 +138,25 @@ public class GUIView extends ClientView{
 
   @Override
   public void showProductionCard(HashMap<Integer, Integer> productionCard) {
-
+    GUIView that = this;
+    this.productionLine = new HashMap<>(productionCard);
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("cardDisplay", that);
+        CardDisplayController cdc = (CardDisplayController) screenHandler.getActiveController();
+        cdc.setCards(productionCard);
+      }
+    });
   }
 
   @Override
   public void setUpInformation() {
-    GUIView con = this;
+    GUIView that = this;
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        screenHandler.setScene("account", con);
+        screenHandler.setScene("account", that);
       }
     });
   }
