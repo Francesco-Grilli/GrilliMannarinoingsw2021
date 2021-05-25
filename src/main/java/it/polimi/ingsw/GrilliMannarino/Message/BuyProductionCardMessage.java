@@ -1,8 +1,10 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class BuyProductionCardMessage extends Message implements MessageInterface, Serializable {
 
@@ -11,7 +13,7 @@ public class BuyProductionCardMessage extends Message implements MessageInterfac
      * the server set it to true to let the client know that the field buyableCard there are the creationCard
      */
     private boolean displayCard = false;
-    private HashMap<Integer, Boolean> buyableCard;
+    private HashMap<Faction, HashMap<Integer, Map.Entry<Integer, Boolean>>> buyableCard;
 
     /**
      * selectCard is set to true by the client if want to buy a creationCard. In selectedCard there is the code of a
@@ -44,11 +46,11 @@ public class BuyProductionCardMessage extends Message implements MessageInterfac
         this.displayCard = displayCard;
     }
 
-    public HashMap<Integer, Boolean> getBuyableCard() {
+    public HashMap<Faction, HashMap<Integer, Map.Entry<Integer, Boolean>>> getBuyableCard() {
         return buyableCard;
     }
 
-    public void setBuyableCard(HashMap<Integer, Boolean> buyableCard) {
+    public void setBuyableCard(HashMap<Faction, HashMap<Integer, Map.Entry<Integer, Boolean>>> buyableCard) {
         this.buyableCard = buyableCard;
     }
 

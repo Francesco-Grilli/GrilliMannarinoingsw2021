@@ -525,13 +525,16 @@ public class ServerController implements VisitorInterface {
         }
         //code to display cards to the client
         HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard, Boolean>>> cards = game.displayCreationCard();
-        HashMap<Integer, Boolean> returnedCards = new HashMap<>();
+        HashMap<Faction, HashMap<Integer, Map.Entry<Integer, Boolean>>> returnedCards = new HashMap<>();
+
         for(Faction fac : cards.keySet()){
+            HashMap<Integer, Map.Entry<Integer, Boolean>> facMap = new HashMap<>();
             for(Integer value : cards.get(fac).keySet()){
-                returnedCards.put(cards.get(fac).get(value).getKey().getCardCode(), cards.get(fac).get(value).getValue());
+                facMap.put(value, new AbstractMap.SimpleEntry<>(cards.get(fac).get(value).getKey().getCardCode(), cards.get(fac).get(value).getValue()));
             }
+            returnedCards.put(fac, facMap);
         }
-        returnedCards.remove(0);
+        returnedCards.remove(Faction.NONE);
         BuyProductionCardMessage message = new BuyProductionCardMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId());
         message.setDisplayCard(true);
         message.setBuyableCard(returnedCards);

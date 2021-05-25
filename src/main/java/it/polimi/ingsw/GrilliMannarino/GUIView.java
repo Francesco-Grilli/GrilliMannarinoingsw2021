@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GUIControllers.*;
+import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
@@ -10,7 +11,7 @@ import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.Map;
 
 public class GUIView extends ClientView{
 
@@ -37,7 +38,7 @@ public class GUIView extends ClientView{
   }
 
   @Override
-  void showCardMarket(HashMap<Integer, Boolean> buyableCard) {
+  void showCardMarket(HashMap<Faction, HashMap<Integer, Map.Entry<Integer, Boolean>>> buyableCard) {
 
   }
 
@@ -49,6 +50,8 @@ public class GUIView extends ClientView{
   @Override
   void isYourTurn() {
     GUIView that = this;
+    this.normalAction = true;
+    this.leaderAction = true;
     Platform.runLater(new Runnable() {
       @Override
       public void run() {

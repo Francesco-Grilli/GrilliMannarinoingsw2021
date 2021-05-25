@@ -259,9 +259,15 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public void showCardMarket(HashMap<Integer, Boolean> buyableCard) {
+    public void showCardMarket(HashMap<Faction, HashMap<Integer, Map.Entry<Integer, Boolean>>> buyableCard) {
         if(buyableCard!=null) {
-            showBuyableCard(buyableCard);
+            HashMap<Integer, Boolean> bc = new HashMap<>();
+            for(Faction fac : buyableCard.keySet()){
+                for(Integer value : buyableCard.get(fac).keySet()){
+                    bc.put(buyableCard.get(fac).get(value).getKey(), buyableCard.get(fac).get(value).getValue());
+                }
+            }
+            showBuyableCard(bc);
 
             System.out.println("Enter the card code of the production card you want to buy");
             System.out.println("Enter -1 to exit");
@@ -271,8 +277,8 @@ public class CliView extends ClientView {
             } catch (IllegalArgumentException e) {
                 cardCode = 0;
             }
-            while ((!buyableCard.containsKey(cardCode) || !buyableCard.get(cardCode)) && cardCode!=-1) {
-                if(!buyableCard.containsKey(cardCode))
+            while ((!bc.containsKey(cardCode) || !bc.get(cardCode)) && cardCode!=-1) {
+                if(!bc.containsKey(cardCode))
                     System.out.println("Invalid Input");
                 else
                     System.out.println("You can't buy that card");
