@@ -7,8 +7,6 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import org.codehaus.plexus.PlexusTestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,7 +131,16 @@ public class GUIView extends ClientView{
 
   @Override
   public void showLeaderCard(ArrayList<Integer> cards) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("cardDisplay", that);
+        CardDisplayController cdc = (CardDisplayController) screenHandler.getActiveController();
+        cdc.setLeaderCard(true);
+        //TODO must set Sell/Activate Leadercard for controller
+      }
+    });
   }
 
   @Override
@@ -226,7 +233,17 @@ public class GUIView extends ClientView{
 
   @Override
   public void selectLeaderCard(ArrayList<Integer> cards) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("cardDisplay", that);
+        CardDisplayController cdc = (CardDisplayController) screenHandler.getActiveController();
+        cdc.setLeaderCard(true);
+        cdc.setSelectStartingLeaderCard(true);
+        cdc.setCards(cards);
+      }
+    });
   }
 
   @Override
