@@ -1,10 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
-import it.polimi.ingsw.GrilliMannarino.Message.BuyProductionCardMessage;
-import it.polimi.ingsw.GrilliMannarino.Message.MarbleMarketMessage;
-import it.polimi.ingsw.GrilliMannarino.Message.ProductionMessage;
-import it.polimi.ingsw.GrilliMannarino.Message.TurnMessage;
+import it.polimi.ingsw.GrilliMannarino.Message.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -14,9 +12,9 @@ public class ActionsController implements SmallController {
     public Button getResourcesAction;
     public Button buyCardMarket;
     public Button produceNewResources;
-    public Button performLeaderAction;
     public Button swapResources;
     public Button skipTurn;
+    public Button performLeaderAction;
 
     private GUIView view;
 
@@ -36,7 +34,7 @@ public class ActionsController implements SmallController {
             produceNewResources.setOpacity(0);
         }
         if(!view.isLeaderAction()){
-
+            performLeaderAction.setDisable(true);
         }
     }
 
@@ -70,10 +68,6 @@ public class ActionsController implements SmallController {
         }).start();
     }
 
-    public void leaderAction() {
-
-    }
-
     public void skipTurnAction() {
         TurnMessage turnMessage = new TurnMessage(view.getGameId(), view.getPlayerId());
         new Thread(new Runnable() {
@@ -85,7 +79,7 @@ public class ActionsController implements SmallController {
     }
 
     public void swapResourcesAction() {
-
+        //TODO need to set scene from this controller??
     }
 
     public void produceResourcesAction() {
@@ -95,6 +89,17 @@ public class ActionsController implements SmallController {
             @Override
             public void run() {
                 view.sendMessageToServer(productionMessage);
+            }
+        }).start();
+    }
+
+    public void leaderAction(ActionEvent actionEvent) {
+        LeaderCardMessage message = new LeaderCardMessage(view.getGameId(), view.getPlayerId());
+        message.setShowLeaderCard(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.sendMessageToServer(message);
             }
         }).start();
     }

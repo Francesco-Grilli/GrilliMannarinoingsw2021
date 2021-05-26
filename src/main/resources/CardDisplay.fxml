@@ -19,5 +19,7 @@
       <ImageView fx:id="card5" fitHeight="152.0" fitWidth="100.0" layoutX="476.0" layoutY="41.0" onMouseClicked="#card5Action" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="card6" fitHeight="152.0" fitWidth="100.0" layoutX="590.0" layoutY="41.0" onMouseClicked="#card6Action" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="produceButton" layoutX="320.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#produce" text="Produce" />
+      <Button fx:id="activateButton" layoutX="261.0" layoutY="193.0" mnemonicParsing="false" onAction="#activateLeaderCard" text="Activate" />
+      <Button fx:id="sellButton" layoutX="380.0" layoutY="193.0" mnemonicParsing="false" onAction="#sellLeaderCard" text="Sell" />
    </children>
 </AnchorPane>

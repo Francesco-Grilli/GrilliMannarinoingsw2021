@@ -3,6 +3,7 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.Message.LeaderCardMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.ProductionMessage;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,9 +22,10 @@ public class CardDisplayController implements SmallController{
     public ImageView card6;
 
     public Button produceButton;
+    public Button activateButton;
+    public Button sellButton;
     private GUIView view;
     private boolean leaderCard = false;
-    private boolean sellActive = false; // sell = true, active = false
     private boolean selectStartingLeaderCard = false;
     private int numberCardSelected = 0;
 
@@ -44,12 +46,21 @@ public class CardDisplayController implements SmallController{
 
     public void setCards(ArrayList<Integer> cardCodes){
         if(leaderCard){
-            if(selectStartingLeaderCard)
+            if(selectStartingLeaderCard){
                 produceButton.setText("Select");
-            else if (sellActive)
-                produceButton.setText("Sell");
-            else
-                produceButton.setText("Acive");
+                sellButton.setVisible(false);
+                activateButton.setVisible(false);
+                sellButton.setDisable(true);
+                activateButton.setDisable(true);
+            }
+            else{
+                produceButton.setDisable(true);
+                produceButton.setVisible(false);
+                sellButton.setVisible(true);
+                activateButton.setVisible(true);
+                sellButton.setDisable(false);
+                activateButton.setDisable(false);
+            }
         }
 
         HashMap<Integer, Integer> posCard = new HashMap<>();
@@ -65,12 +76,21 @@ public class CardDisplayController implements SmallController{
 
     public void setCards(HashMap<Integer, Integer> cardCodes){
         if(leaderCard){
-            if(selectStartingLeaderCard)
+            if(selectStartingLeaderCard){
                 produceButton.setText("Select");
-            else if (sellActive)
-                produceButton.setText("Sell");
-            else
-                produceButton.setText("Acive");
+                sellButton.setVisible(false);
+                activateButton.setVisible(false);
+                sellButton.setDisable(true);
+                activateButton.setDisable(true);
+            }
+            else {
+                produceButton.setDisable(true);
+                produceButton.setVisible(false);
+                sellButton.setVisible(true);
+                activateButton.setVisible(true);
+                sellButton.setDisable(false);
+                activateButton.setDisable(false);
+            }
         }
 
         HashMap<Integer, Integer> cardFrom = new HashMap<>(cardCodes); //code, pos
@@ -117,7 +137,7 @@ public class CardDisplayController implements SmallController{
                     numberCardSelected++;
                     producingCard.add(momentaryCardCodes.get(1));
                     card1.setDisable(true);
-                    card1.setVisible(false);
+                    card1.setOpacity(0.5);
                     if(numberCardSelected>=2)
                         disableAllButton();
                 }
@@ -131,6 +151,7 @@ public class CardDisplayController implements SmallController{
         else {
             producingCard.add(momentaryCardCodes.get(1));
             card1.setDisable(true);
+            card1.setOpacity(0.5);
         }
     }
 
@@ -141,7 +162,7 @@ public class CardDisplayController implements SmallController{
                     numberCardSelected++;
                     producingCard.add(momentaryCardCodes.get(2));
                     card2.setDisable(true);
-                    card2.setVisible(false);
+                    card2.setOpacity(0.5);
                     if(numberCardSelected>=2)
                         disableAllButton();
                 }
@@ -155,6 +176,7 @@ public class CardDisplayController implements SmallController{
         else {
             producingCard.add(momentaryCardCodes.get(2));
             card2.setDisable(true);
+            card2.setOpacity(0.5);
         }
     }
 
@@ -165,7 +187,7 @@ public class CardDisplayController implements SmallController{
                     numberCardSelected++;
                     producingCard.add(momentaryCardCodes.get(3));
                     card3.setDisable(true);
-                    card3.setVisible(false);
+                    card3.setOpacity(0.5);
                     if(numberCardSelected>=2)
                         disableAllButton();
                 }
@@ -179,6 +201,7 @@ public class CardDisplayController implements SmallController{
         else {
             producingCard.add(momentaryCardCodes.get(3));
             card3.setDisable(true);
+            card3.setOpacity(0.5);
         }
     }
 
@@ -189,6 +212,7 @@ public class CardDisplayController implements SmallController{
                     numberCardSelected++;
                     producingCard.add(momentaryCardCodes.get(4));
                     card4.setDisable(true);
+                    card4.setOpacity(0.5);
                     if(numberCardSelected>=2)
                         disableAllButton();
                 }
@@ -202,6 +226,7 @@ public class CardDisplayController implements SmallController{
         else {
             producingCard.add(momentaryCardCodes.get(4));
             card4.setDisable(true);
+            card4.setOpacity(0.5);
         }
     }
 
@@ -212,6 +237,7 @@ public class CardDisplayController implements SmallController{
                     numberCardSelected++;
                     producingCard.add(momentaryCardCodes.get(5));
                     card5.setDisable(true);
+                    card5.setOpacity(0.5);
                     if(numberCardSelected>=2)
                         disableAllButton();
                 }
@@ -225,6 +251,7 @@ public class CardDisplayController implements SmallController{
         else {
             producingCard.add(momentaryCardCodes.get(5));
             card5.setDisable(true);
+            card5.setOpacity(0.5);
         }
     }
 
@@ -235,6 +262,7 @@ public class CardDisplayController implements SmallController{
                     numberCardSelected++;
                     producingCard.add(momentaryCardCodes.get(6));
                     card6.setDisable(true);
+                    card6.setOpacity(0.5);
                     if(numberCardSelected>=2)
                         disableAllButton();
                 }
@@ -248,6 +276,7 @@ public class CardDisplayController implements SmallController{
         else {
             producingCard.add(momentaryCardCodes.get(6));
             card6.setDisable(true);
+            card6.setOpacity(0.5);
         }
     }
 
@@ -265,25 +294,16 @@ public class CardDisplayController implements SmallController{
         }
         else {
             LeaderCardMessage message = new LeaderCardMessage(view.getGameId(), view.getPlayerId());
-            if (selectStartingLeaderCard) {
-                if(numberCardSelected==2) {
-                    message.setSelectLeaderCard(true);
-                    message.setCards(producingCard);
-                }
-            } else {
-                message.setCardCode(producingCard.get(0));
-                if (sellActive) {
-                    message.setSellingCard(true);
-                } else
-                    message.setActivateCard(true);
+            if (selectStartingLeaderCard && numberCardSelected==2) {
+                message.setSelectLeaderCard(true);
+                message.setCards(producingCard);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.sendMessageToServer(message);
+                    }
+                }).start();
             }
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    view.sendMessageToServer(message);
-                }
-            }).start();
         }
         disableAllButton();
         produceButton.setDisable(true);
@@ -310,5 +330,33 @@ public class CardDisplayController implements SmallController{
 
     public void setSelectStartingLeaderCard(boolean selectStartingLeaderCard) {
         this.selectStartingLeaderCard = selectStartingLeaderCard;
+    }
+
+    public void activateLeaderCard(ActionEvent actionEvent) {
+        if(leaderCard && producingCard.size()==1){
+            LeaderCardMessage message = new LeaderCardMessage(view.getGameId(), view.getPlayerId());
+            message.setActivateCard(true);
+            message.setCardCode(producingCard.get(0));
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    view.sendMessageToServer(message);
+                }
+            }).start();
+        }
+    }
+
+    public void sellLeaderCard(ActionEvent actionEvent) {
+        if(leaderCard && producingCard.size()==1){
+            LeaderCardMessage message = new LeaderCardMessage(view.getGameId(), view.getPlayerId());
+            message.setSellingCard(true);
+            message.setCardCode(producingCard.get(0));
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    view.sendMessageToServer(message);
+                }
+            }).start();
+        }
     }
 }

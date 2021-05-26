@@ -99,6 +99,7 @@ public class ClientController implements VisitorInterface {
                         }
                         //code to check added resource
                         view.finishedNormalAction("You have finished Marble action");
+                        return;
                     }
                     //code to check added resource
 

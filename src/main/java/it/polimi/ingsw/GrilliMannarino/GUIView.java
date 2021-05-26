@@ -29,6 +29,16 @@ public class GUIView extends ClientView{
 
   @Override
   void selectMarble(ArrayList<ArrayList<Marble>> returnedMarble) {
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("resources", that);
+        ResourcesController rc = (ResourcesController) screenHandler.getActiveController();
+        rc.setViewMarble(true);
+        rc.setReturnedMarble(returnedMarble);
+      }
+    });
 
   }
 
