@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -76,6 +77,10 @@ public class BoardSingleController implements SmallController{
   public ImageView faithCheck3;
   public ImageView faithCheck2;
   public ImageView faithCheck1;
+  public Label shield;
+  public Label servant;
+  public Label stone;
+  public Label coin;
 
   {
     final Map<Integer, Pane> valuesByName = new HashMap<>();
@@ -210,6 +215,13 @@ public class BoardSingleController implements SmallController{
     if(checks.get(3)){
       faithCheck3.setOpacity(1);
     }
+  }
+
+  public void setChest(HashMap<Resource,Integer> resources){
+    stone.setText((resources.get(Resource.STONE)!= null?resources.get(Resource.STONE): Integer.valueOf(0)).toString());
+    shield.setText((resources.get(Resource.SHIELD)!= null?resources.get(Resource.SHIELD): Integer.valueOf(0)).toString());
+    servant.setText((resources.get(Resource.SERVANT)!= null?resources.get(Resource.SERVANT): Integer.valueOf(0)).toString());
+    coin.setText((resources.get(Resource.COIN)!= null?resources.get(Resource.COIN): Integer.valueOf(0)).toString());
   }
 
 }
