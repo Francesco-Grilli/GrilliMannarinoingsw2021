@@ -155,7 +155,7 @@ public class ResourcesController implements SmallController{
     public void selectArrow3(MouseEvent mouseEvent) {
         m3++;
         Marble marbleToSet = marbleArray3.get(m3%(marbleArray3.size()));
-        resource3.setImage(new Image(marbleToSet.toString()));
+        resource3.setImage(new Image("image/" + marbleToSet.toString() + ".png"));
         resource3.setVisible(true);
         resource3.setDisable(false);
     }
@@ -163,7 +163,7 @@ public class ResourcesController implements SmallController{
     public void selectArrow4(MouseEvent mouseEvent) {
         m4++;
         Marble marbleToSet = marbleArray4.get(m4%(marbleArray4.size()));
-        resource4.setImage(new Image(marbleToSet.toString()));
+        resource4.setImage(new Image("image/" + marbleToSet.toString() + ".png"));
         resource4.setVisible(true);
         resource4.setDisable(false);
     }

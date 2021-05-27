@@ -151,7 +151,7 @@ public class GUIView extends ClientView{
         screenHandler.setScene("cardDisplay", that);
         CardDisplayController cdc = (CardDisplayController) screenHandler.getActiveController();
         cdc.setLeaderCard(true);
-        //TODO must set Sell/Activate Leadercard for controller
+        cdc.setCards(cards);
       }
     });
   }
@@ -276,7 +276,18 @@ public class GUIView extends ClientView{
 
   @Override
   public void resolveUnknown(HashMap<Integer, HashMap<Resource, Integer>> inputCard, HashMap<Integer, HashMap<Resource, Integer>> outputCard, ArrayList<Integer> selectedCard) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("resolveUnknown", that);
+        ResolveUnknownController ruc = (ResolveUnknownController) screenHandler.getActiveController();
+        ruc.setInputCard(inputCard);
+        ruc.setOutputCard(outputCard);
+        ruc.setSelectedCard(selectedCard);
+        ruc.resolve();
+      }
+    });
   }
 
   public void setScreenHandler(GUIControllerInterface controller){

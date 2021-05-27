@@ -76,14 +76,14 @@ public class GameSinglePlayer extends Game{
             return map;
         }
         else{
-            removeCard(activeToken.getFaction());
-            // TODO check if finished card
+            if(removeCard(activeToken.getFaction()))
+                endGame = true;
             return new AbstractMap.SimpleEntry<>(activeToken, false);
         }
     }
 
-    private void removeCard(Faction faction) {
-        cardMarketSingle.deleteTwoCards(faction);
+    private boolean removeCard(Faction faction) {
+        return cardMarketSingle.deleteTwoCards(faction);
     }
 
 
