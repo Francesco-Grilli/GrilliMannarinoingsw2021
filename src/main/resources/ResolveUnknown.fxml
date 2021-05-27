@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.ResolveUnknownController">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="700.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@image/Wood.jpg" />
+      </ImageView>
+      <ImageView fx:id="card1" fitHeight="152.0" fitWidth="100.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="inputLabel" layoutX="208.0" layoutY="41.0" text="Input:" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="inputImage1" fitHeight="70.0" fitWidth="70.0" layoutX="208.0" layoutY="82.0" onMouseClicked="#inputMethod1" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/SHIELD.png" />
+         </image></ImageView>
+      <ImageView fx:id="inputImage2" fitHeight="70.0" fitWidth="70.0" layoutX="278.0" layoutY="82.0" onMouseClicked="#inputMethod2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/STONE.png" />
+         </image></ImageView>
+      <ImageView fx:id="inputImage3" fitHeight="70.0" fitWidth="70.0" layoutX="348.0" layoutY="82.0" onMouseClicked="#inputMethod3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/SERVANT.png" />
+         </image></ImageView>
+      <ImageView fx:id="inputImage4" fitHeight="70.0" fitWidth="70.0" layoutX="418.0" layoutY="82.0" onMouseClicked="#inputMethod4" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/COIN.png" />
+         </image></ImageView>
+   </children>
+</AnchorPane>
