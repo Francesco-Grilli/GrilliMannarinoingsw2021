@@ -4,6 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,15 +22,22 @@ public class CardMarketController implements SmallController{
     public ImageView card12;
     public ImageView card22;
     public ImageView card32;
+    public ImageView productionCard1;
+    public ImageView productionCard2;
+    public ImageView productionCard3;
     private HashMap<Faction,HashMap<Integer,ImageView>> cardSlots = new HashMap<>();
+    private HashMap<Integer, ImageView> cardProduceSlots = new HashMap<>();
     private final Faction blue = Faction.BLUE;
     private final Faction green = Faction.GREEN;
     private final Faction yellow = Faction.YELLOW;
     private final Faction purple = Faction.PURPLE;
+    private Integer cardCodeProduce;
+
+    private GUIView view;
 
     @Override
     public void setView(GUIView view) {
-
+        this.view = view;
     }
 
     @Override
@@ -58,7 +66,10 @@ public class CardMarketController implements SmallController{
         this.cardSlots.put(purple,purple1);
         this.cardSlots.put(green,green2);
         this.cardSlots.put(yellow,yellow3);
-
+        cardProduceSlots.put(1, productionCard1);
+        cardProduceSlots.put(2, productionCard2);
+        cardProduceSlots.put(3, productionCard3);
+        cardProduceSlots.keySet().forEach(pos -> cardProduceSlots.get(pos).setDisable(true));
     }
 
     public void setCardSlots(HashMap<Faction,HashMap<Integer, Map.Entry<Integer,Boolean>>> cardSlots) {
@@ -69,12 +80,33 @@ public class CardMarketController implements SmallController{
                 Image toput = new Image("image/CC-"+cc+".png");
                 this.cardSlots.get(fac).get(lev).setImage(toput);
                 this.cardSlots.get(fac).get(lev).setDisable(!cardSlots.get(fac).get(lev).getValue());
+                if(!cardSlots.get(fac).get(lev).getValue())
+                    this.cardSlots.get(fac).get(lev).setOpacity(0.5);
                 this.cardSlots.get(fac).get(lev).setOnMouseClicked(e->this.sendMessage(cc));
             }
         }
     }
 
     private void sendMessage(int cardCode){
+        this.cardCodeProduce = cardCode;
+        cardProduceSlots.keySet().forEach(pos -> cardProduceSlots.get(pos).setDisable(false));
+    }
 
+    public void setProductionLine(HashMap<Integer, Integer> productionLine) {
+        HashMap<Integer, Integer> line = new HashMap<>(); //position, cc
+        productionLine.forEach((cc, p) -> line.put(p, cc));
+        for(Integer pos : cardProduceSlots.keySet()){
+            cardProduceSlots.get(pos).setImage(new Image("image/CC-" + line.get(pos) + ".png"));
+            cardProduceSlots.get(pos).setOnMouseClicked(e -> );
+        }
+    }
+
+    public void produce1(MouseEvent mouseEvent) {
+    }
+
+    public void produce3(MouseEvent mouseEvent) {
+    }
+
+    public void produce2(MouseEvent mouseEvent) {
     }
 }

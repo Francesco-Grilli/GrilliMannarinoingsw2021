@@ -49,7 +49,15 @@ public class GUIView extends ClientView{
 
   @Override
   void showCardMarket(HashMap<Faction, HashMap<Integer, Map.Entry<Integer, Boolean>>> buyableCard) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("cardMarket", that);
+        CardMarketController cdm = (CardMarketController) screenHandler.getActiveController();
+        cdm.setCardSlots(buyableCard);
+      }
+    });
   }
 
   @Override
@@ -270,7 +278,7 @@ public class GUIView extends ClientView{
   }
 
   @Override
-  public void endGame(HashMap<String, Integer> playerRanking) {
+  public void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
 
   }
 
@@ -288,6 +296,10 @@ public class GUIView extends ClientView{
         ruc.resolve();
       }
     });
+  }
+
+  public void moveResource(){
+
   }
 
   public void setScreenHandler(GUIControllerInterface controller){

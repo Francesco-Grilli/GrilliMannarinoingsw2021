@@ -1,12 +1,12 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class EndGameMessage extends Message implements MessageInterface, Serializable {
 
-    private HashMap<String, Integer> playerRanking;
+    private HashMap<Integer, Map.Entry<String, Integer>> playerRanking;
 
     public EndGameMessage(Integer gameId, Integer playerId) {
         super(gameId, playerId);
@@ -17,11 +17,11 @@ public class EndGameMessage extends Message implements MessageInterface, Seriali
         visitor.executeEndGame(this);
     }
 
-    public HashMap<String, Integer> getPlayerRanking() {
+    public HashMap<Integer, Map.Entry<String, Integer>> getPlayerRanking() {
         return playerRanking;
     }
 
-    public void setPlayerRanking(HashMap<String, Integer> playerRanking) {
+    public void setPlayerRanking(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
         this.playerRanking = playerRanking;
     }
 }
