@@ -1,175 +1,208 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.shape.Box?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.BoardController">
   <ImageView fitHeight="400.0" fitWidth="600.0">
     <image>
       <Image url="@image/Board.jpg" />
     </image>
   </ImageView>
- <Pane fx:id="faithStep0" layoutX="21.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1">
+ <Pane fx:id="faithStep0" layoutX="21.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep1" layoutX="51.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep1" layoutX="51.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep2" layoutX="81.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep2" layoutX="81.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep3" layoutX="80.0" layoutY="48.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep3" layoutX="80.0" layoutY="48.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep4" layoutX="79.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep4" layoutX="79.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep5" layoutX="109.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep5" layoutX="109.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep6" layoutX="139.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep6" layoutX="139.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep7" layoutX="168.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep7" layoutX="168.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep8" layoutX="197.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep8" layoutX="197.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep9" layoutX="228.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep9" layoutX="228.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep10" layoutX="228.0" layoutY="49.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep10" layoutX="228.0" layoutY="49.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep11" layoutX="228.0" layoutY="75.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep11" layoutX="228.0" layoutY="75.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep12" layoutX="258.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep12" layoutX="258.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep13" layoutX="287.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep13" layoutX="287.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep14" layoutX="317.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep14" layoutX="317.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep15" layoutX="346.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep15" layoutX="346.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep16" layoutX="374.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep16" layoutX="374.0" layoutY="76.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep17" layoutX="374.0" layoutY="48.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep17" layoutX="374.0" layoutY="48.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep18" layoutX="374.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep18" layoutX="374.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep19" layoutX="405.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep19" layoutX="405.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep20" layoutX="435.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep20" layoutX="435.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep21" layoutX="464.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep21" layoutX="464.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep22" layoutX="493.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep22" layoutX="493.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep23" layoutX="522.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep23" layoutX="522.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-   <Pane fx:id="faithStep24" layoutX="552.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+   <Pane fx:id="faithStep24" layoutX="552.0" layoutY="21.0" opacity="0" prefHeight="30.0" prefWidth="30.0">
    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/Cross.png"/>
+     <Image url="@image/CROSS.png" />
    </ImageView>
  </Pane>
-  <ImageView fx:id="productionCard1"  layoutX="234.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  <ImageView fx:id="productionCard1" fitHeight="200.0" fitWidth="100.0" layoutX="234.0" layoutY="165.0">
   </ImageView>
-  <ImageView  fx:id="productionCard2" layoutX="349.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  <ImageView fx:id="productionCard2" fitHeight="200.0" fitWidth="100.0" layoutX="349.0" layoutY="165.0">
   </ImageView>
-  <ImageView fx:id="productionCard3" layoutX="467.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  <ImageView fx:id="productionCard3" fitHeight="200.0" fitWidth="100.0" layoutX="467.0" layoutY="165.0">
   </ImageView>
-   <Pane fx:id="faithCheck1" layoutX="153.0" layoutY="61.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="faithCheck2" layoutX="300.0" layoutY="34.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="faithCheck3" layoutX="477.0" layoutY="62.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="row1_1" layoutX="59.0" layoutY="162.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="row2_1" layoutX="43.0" layoutY="198.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="row2_2" layoutX="80.0" layoutY="198.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="row3_1" layoutX="29.0" layoutY="235.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="row3_2" layoutX="61.0" layoutY="235.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="row3_3" layoutX="93.0" layoutY="235.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" />
-   <Pane fx:id="shield" layoutX="27.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
+   <ImageView fx:id="faithCheck1" fitHeight="30.0" fitWidth="30.0" layoutX="153.0" layoutY="61.0">
+     <Image url="@image/CHECK1.png" />
+   </ImageView>
+   <ImageView fx:id="faithCheck2" fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="34.0">
+     <Image url="@image/CHECK2.png" />
+   </ImageView>
+   <ImageView fx:id="faithCheck3" fitHeight="30.0" fitWidth="30.0" layoutX="477.0" layoutY="62.0">
+     <Image url="@image/CHECK3.png" />
+   </ImageView>
+  <ImageView fx:id="row1_1" fitHeight="30.0" fitWidth="30.0" layoutX="59.0" layoutY="162.0">
+  </ImageView>
+  <ImageView fx:id="row2_1" fitHeight="30.0" fitWidth="30.0" layoutX="43.0" layoutY="198.0">
+  </ImageView>
+  <ImageView fx:id="row2_2" fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="198.0">
+  </ImageView>
+  <ImageView fx:id="row3_1" fitHeight="30.0" fitWidth="30.0" layoutX="29.0" layoutY="235.0">
+  </ImageView>
+  <ImageView fx:id="row3_2" fitHeight="30.0" fitWidth="30.0" layoutX="61.0" layoutY="235.0">
+  </ImageView>
+  <ImageView fx:id="row3_3" fitHeight="30.0" fitWidth="30.0" layoutX="93.0" layoutY="235.0">
+  </ImageView>
+   <Pane  layoutX="27.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-     <Image url="@image/SHIELD.png"/>
+     <Image url="@image/SHIELD.png" />
    </ImageView>
+      <Label fx:id="shield" layoutX="11.0" layoutY="3.0" text="0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </Pane>
-  <Pane fx:id="servant" layoutX="80.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
+  <Pane  layoutX="80.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@image/SERVANT.png"/>
+      <Image url="@image/SERVANT.png" />
     </ImageView>
+      <Label fx:id="servant" layoutX="10.0" text="0" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
   </Pane>
-   <Pane fx:id="stone" layoutX="80.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
+   <Pane  layoutX="80.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-       <Image url="@image/STONE.png"/>
+       <Image url="@image/STONE.png" />
      </ImageView>
+      <Label fx:id="stone" layoutX="9.0" layoutY="1.0" text="0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </Pane>
-   <Pane fx:id="coin" layoutX="27.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
+   <Pane  layoutX="27.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
-       <Image url="@image/COIN.png"/>
+       <Image url="@image/COIN.png" />
      </ImageView>
+      <Label fx:id="coin" layoutX="12.0" layoutY="4.0" text="0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </Pane>
 </AnchorPane>

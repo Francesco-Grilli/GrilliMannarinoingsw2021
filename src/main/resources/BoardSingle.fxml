@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.BoardSingleController">
+  <ImageView fitHeight="400.0" fitWidth="600.0">
+    <image>
+      <Image url="@image/Board.jpg" />
+    </image>
+  </ImageView>
+  <Pane fx:id="faithStepLorenzo0" layoutX="21.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1">
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo1" layoutX="51.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo2" layoutX="81.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo3" layoutX="80.0" layoutY="48.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo4" layoutX="79.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo5" layoutX="109.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo6" layoutX="139.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo7" layoutX="168.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo8" layoutX="197.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo9" layoutX="228.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo10" layoutX="228.0" layoutY="49.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo11" layoutX="228.0" layoutY="75.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo12" layoutX="258.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo13" layoutX="287.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo14" layoutX="317.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo15" layoutX="346.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo16" layoutX="374.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo17" layoutX="374.0" layoutY="48.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo18" layoutX="374.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo19" layoutX="405.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo20" layoutX="435.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo21" layoutX="464.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo22" layoutX="493.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo23" layoutX="522.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStepLorenzo24" layoutX="552.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/LORENZOCROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep0" layoutX="21.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1">
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep1" layoutX="51.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep2" layoutX="81.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep3" layoutX="80.0" layoutY="48.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep4" layoutX="79.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep5" layoutX="109.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep6" layoutX="139.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep7" layoutX="168.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep8" layoutX="197.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep9" layoutX="228.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep10" layoutX="228.0" layoutY="49.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep11" layoutX="228.0" layoutY="75.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep12" layoutX="258.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep13" layoutX="287.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep14" layoutX="317.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep15" layoutX="346.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep16" layoutX="374.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep17" layoutX="374.0" layoutY="48.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep18" layoutX="374.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep19" layoutX="405.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep20" layoutX="435.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep21" layoutX="464.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep22" layoutX="493.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep23" layoutX="522.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="faithStep24" layoutX="552.0" layoutY="21.0" prefHeight="30.0" prefWidth="30.0" opacity="1" >
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/CROSS.png"/>
+    </ImageView>
+  </Pane>
+  <ImageView fx:id="productionCard1"  layoutX="234.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  </ImageView>
+  <ImageView  fx:id="productionCard2" layoutX="349.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  </ImageView>
+  <ImageView fx:id="productionCard3" layoutX="467.0" layoutY="165.0" fitHeight="200.0" fitWidth="100.0">
+  </ImageView>
+  <ImageView fx:id="faithCheck1" layoutX="153.0" layoutY="61.0" fitHeight="30.0" fitWidth="30.0" >
+    <Image url="@image/CHECK1.png"/>
+  </ImageView>
+  <ImageView fx:id="faithCheck2" layoutX="300.0" layoutY="34.0" fitHeight="30.0" fitWidth="30.0" >
+    <Image url="@image/CHECK2.png"/>
+  </ImageView>
+  <ImageView fx:id="faithCheck3" layoutX="477.0" layoutY="62.0" fitHeight="30.0" fitWidth="30.0" >
+    <Image url="@image/CHECK3.png"/>
+  </ImageView>
+  <ImageView fx:id="row1_1" layoutX="59.0" layoutY="162.0" fitHeight="30.0" fitWidth="30.0">
+    <Image/>
+  </ImageView>
+  <ImageView fx:id="row2_1" layoutX="43.0" layoutY="198.0" fitHeight="30.0" fitWidth="30.0" >
+    <Image/>
+  </ImageView>
+  <ImageView fx:id="row2_2" layoutX="80.0" layoutY="198.0" fitHeight="30.0" fitWidth="30.0">
+    <Image/>
+  </ImageView>
+  <ImageView fx:id="row3_1" layoutX="29.0" layoutY="235.0" fitHeight="30.0" fitWidth="30.0">
+    <Image/>
+  </ImageView>
+  <ImageView fx:id="row3_2" layoutX="61.0" layoutY="235.0" fitHeight="30.0" fitWidth="30.0">
+    <Image/>
+  </ImageView>
+  <ImageView fx:id="row3_3" layoutX="93.0" layoutY="235.0" fitHeight="30.0" fitWidth="30.0">
+    <Image/>
+  </ImageView>
+  <Pane fx:id="shield" layoutX="27.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/SHIELD.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="servant" layoutX="80.0" layoutY="296.0" prefHeight="30.0" prefWidth="30.0">
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/SERVANT.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="stone" layoutX="80.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/STONE.png"/>
+    </ImageView>
+  </Pane>
+  <Pane fx:id="coin" layoutX="27.0" layoutY="335.0" prefHeight="30.0" prefWidth="30.0">
+    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@image/COIN.png"/>
+    </ImageView>
+  </Pane>
+</AnchorPane>
+

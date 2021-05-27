@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -38,6 +40,19 @@ public class BoardController implements SmallController{
     public ImageView productionCard1;
     public ImageView productionCard2;
     public ImageView productionCard3;
+    public ImageView row1_1;
+    public ImageView row2_1;
+    public ImageView row2_2;
+    public ImageView row3_1;
+    public ImageView row3_2;
+    public ImageView row3_3;
+    public ImageView faithCheck3;
+    public ImageView faithCheck2;
+    public ImageView faithCheck1;
+    public Label shield;
+    public Label servant;
+    public Label stone;
+    public Label coin;
 
     {
         final Map<Integer, Pane> valuesByName = new HashMap<>();
@@ -98,5 +113,56 @@ public class BoardController implements SmallController{
         }else if(i == 3){
             productionCard3.setImage(new Image("@/image/CC-"+cc+".png"));
         }
+    }
+
+    private void setFirstLine(Resource resource, int amount){
+        String p = resource.toString().toUpperCase();
+        Image im = new Image("@/image/" + p + ".png");
+        if (amount>0){
+            row1_1.setImage(im);
+        }
+    }
+
+    private void setSecondLine(Resource resource, int amount){
+        String p = resource.toString().toUpperCase();
+        Image im = new Image("@/image/" + p + ".png");
+        if (amount>0) {
+            row2_1.setImage(im);
+        }
+        if(amount>1){
+            row2_2.setImage(im);
+        }
+    }
+    private void setThirdLine(Resource resource, int amount){
+        String p = resource.toString().toUpperCase();
+        Image im = new Image("@/image/" + p + ".png");
+        if (amount>0) {
+            row3_1.setImage(im);
+        }
+        if(amount>1){
+            row3_2.setImage(im);
+        }
+        if(amount>2){
+            row3_3.setImage(im);
+        }
+    }
+
+    public void showFaithChecks(HashMap<Integer,Boolean> checks){
+        if(checks.get(1)){
+            faithCheck1.setOpacity(1);
+        }
+        if(checks.get(2)){
+            faithCheck2.setOpacity(1);
+        }
+        if(checks.get(3)){
+            faithCheck3.setOpacity(1);
+        }
+    }
+
+    public void setChest(HashMap<Resource,Integer> resources){
+        stone.setText((resources.get(Resource.STONE)!= null?resources.get(Resource.STONE): Integer.valueOf(0)).toString());
+        shield.setText((resources.get(Resource.SHIELD)!= null?resources.get(Resource.SHIELD): Integer.valueOf(0)).toString());
+        servant.setText((resources.get(Resource.SERVANT)!= null?resources.get(Resource.SERVANT): Integer.valueOf(0)).toString());
+        coin.setText((resources.get(Resource.COIN)!= null?resources.get(Resource.COIN): Integer.valueOf(0)).toString());
     }
 }
