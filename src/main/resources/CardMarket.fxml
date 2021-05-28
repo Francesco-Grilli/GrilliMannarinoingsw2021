@@ -40,7 +40,16 @@
     <ImageView fx:id="card22" fitHeight="152.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
     <ImageView fx:id="card32" fitHeight="152.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
   </GridPane>
-   <ImageView fx:id="productionCard1" fitHeight="152.0" fitWidth="100.0" layoutX="14.0" layoutY="565.0" onMouseClicked="#produce1" />
-   <ImageView fx:id="productionCard2" fitHeight="152.0" fitWidth="100.0" layoutX="356.0" layoutY="565.0" onMouseClicked="#produce3" />
-   <ImageView fx:id="productionCard3" fitHeight="152.0" fitWidth="100.0" layoutX="184.0" layoutY="565.0" onMouseClicked="#produce2" />
+   <ImageView fx:id="productionCard1" fitHeight="152.0" fitWidth="100.0" layoutX="14.0" layoutY="565.0">
+      <image>
+         <Image url="@image/empy-production.png" />
+      </image></ImageView>
+   <ImageView fx:id="productionCard2" fitHeight="152.0" fitWidth="100.0" layoutX="356.0" layoutY="565.0">
+      <image>
+         <Image url="@image/empy-production.png" />
+      </image></ImageView>
+   <ImageView fx:id="productionCard3" fitHeight="152.0" fitWidth="100.0" layoutX="184.0" layoutY="565.0">
+      <image>
+         <Image url="@image/empy-production.png" />
+      </image></ImageView>
 </AnchorPane>

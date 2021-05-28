@@ -48,7 +48,7 @@ public class ClientController implements VisitorInterface {
     @Override
     public void executeStartGame(StartGameMessage startGame) {
         if(startGame.isStart()) {
-            view.startGame();
+            view.startGame(startGame.getNumberPlayer());
             receiveMessageFromServer();
         }
         else{
@@ -199,6 +199,7 @@ public class ClientController implements VisitorInterface {
     @Override
     public void executeResource(ResourceMessage resourceMessage) {
         view.updateResources(resourceMessage.getChestResources(), resourceMessage.getWareHouseResources());
+        receiveMessageFromServer();
     }
 
     @Override

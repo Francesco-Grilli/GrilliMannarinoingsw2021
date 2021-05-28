@@ -63,8 +63,6 @@ public class BoardSingleController implements SmallController{
   public Pane faithStepLorenzo22;
   public Pane faithStepLorenzo23;
   public Pane faithStepLorenzo24;
-  final Map<Integer, Pane> VALUES_BY_NAME;
-  final Map<Integer, Pane> LORENZO_BY_NAME;
   public ImageView productionCard1;
   public ImageView productionCard2;
   public ImageView productionCard3;
@@ -82,7 +80,11 @@ public class BoardSingleController implements SmallController{
   public Label stone;
   public Label coin;
 
-  {
+  private Map<Integer, Pane> VALUES_BY_NAME;
+  private Map<Integer, Pane> LORENZO_BY_NAME;
+  private GUIView view;
+
+  private void setUpMap(){
     final Map<Integer, Pane> valuesByName = new HashMap<>();
     valuesByName.put(0, faithStep0);
     valuesByName.put(1, faithStep1);
@@ -141,7 +143,8 @@ public class BoardSingleController implements SmallController{
 
   @Override
   public void setView(GUIView view) {
-
+    this.view = view;
+    setUpMap();
   }
 
   @Override
@@ -165,17 +168,17 @@ public class BoardSingleController implements SmallController{
 
   private void setProductionCard(int i, int cc){
     if(i == 1){
-      productionCard1.setImage(new Image("@/image/CC-"+cc+".png"));
+      productionCard1.setImage(new Image("image/CC-"+cc+".png"));
     }else if(i == 2){
-      productionCard2.setImage(new Image("@/image/CC-"+cc+".png"));
+      productionCard2.setImage(new Image("image/CC-"+cc+".png"));
     }else if(i == 3){
-      productionCard3.setImage(new Image("@/image/CC-"+cc+".png"));
+      productionCard3.setImage(new Image("image/CC-"+cc+".png"));
     }
   }
 
   private void setFirstLine(Resource resource, int amount){
     String p = resource.toString().toUpperCase();
-    Image im = new Image("@/image/" + p + ".png");
+    Image im = new Image("image/" + p + ".png");
     if (amount>0){
       row1_1.setImage(im);
     }
@@ -183,7 +186,7 @@ public class BoardSingleController implements SmallController{
 
   private void setSecondLine(Resource resource, int amount){
     String p = resource.toString().toUpperCase();
-    Image im = new Image("@/image/" + p + ".png");
+    Image im = new Image("image/" + p + ".png");
     if (amount>0) {
       row2_1.setImage(im);
     }
@@ -193,7 +196,7 @@ public class BoardSingleController implements SmallController{
   }
   private void setThirdLine(Resource resource, int amount){
     String p = resource.toString().toUpperCase();
-    Image im = new Image("@/image/" + p + ".png");
+    Image im = new Image("image/" + p + ".png");
     if (amount>0) {
       row3_1.setImage(im);
     }
@@ -205,7 +208,7 @@ public class BoardSingleController implements SmallController{
     }
   }
 
-  public void showFaithChecks(HashMap<Integer,Boolean> checks){
+  private void showFaithChecks(HashMap<Integer,Boolean> checks){
     if(checks.get(1)){
       faithCheck1.setOpacity(1);
     }
@@ -215,6 +218,14 @@ public class BoardSingleController implements SmallController{
     if(checks.get(3)){
       faithCheck3.setOpacity(1);
     }
+  }
+
+  public void showFaithChecks(boolean[] checks){
+    HashMap<Integer, Boolean> checksMap = new HashMap<>();
+    for(int i=0; i<checks.length; i++){
+      checksMap.put((i+1), checks[i]);
+    }
+    showFaithChecks(checksMap);
   }
 
   public void setChest(HashMap<Resource,Integer> resources){

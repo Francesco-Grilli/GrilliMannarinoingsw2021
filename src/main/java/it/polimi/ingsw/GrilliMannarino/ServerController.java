@@ -48,7 +48,11 @@ public class ServerController implements VisitorInterface {
         if(g.getPlayerID().size()==g.getNumberOfPlayer()) {
             Integer startingPlayer = g.startGame();
             ArrayList<Integer> player = g.getPlayerID();
-            player.forEach((p) -> server.sendMessageTo(p, new StartGameMessage(gameId, p, true)));
+            player.forEach((p) -> {
+                StartGameMessage message = new StartGameMessage(gameId, p, true);
+                message.setNumberPlayer(g.getNumberOfPlayer());
+                server.sendMessageTo(p, message);
+            });
             LeaderCardMessage leaderMessage = new LeaderCardMessage(g.getGameId(), startingPlayer);
             leaderMessage.setSelectLeaderCard(true);
             leaderMessage.setCards(g.selectLeaderCard());

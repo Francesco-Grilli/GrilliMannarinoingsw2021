@@ -38,6 +38,7 @@ public class GUIController extends Application implements GUIControllerInterface
       sceneMap.put("resolveUnknown", "ResolveUnknown.fxml");
       sceneMap.put("endGame", "EndGame.fxml");
       sceneMap.put("cardMarket", "CardMarket.fxml");
+      sceneMap.put("boardSingle", "BoardSingle.fxml");
   }
 
   public static void main(String[] args) {

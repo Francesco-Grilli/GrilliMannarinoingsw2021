@@ -323,6 +323,7 @@ public class CliView extends ClientView {
 
     @Override
     public void setCardIntoProductionLine(Integer selectedCard, Integer positionCard, HashMap<Integer, Integer> cardInProductionline) {
+        this.productionLine = new HashMap<>(cardInProductionline);
         showCardInProductionLine(cardInProductionline);
     }
 
@@ -494,7 +495,8 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public void startGame() {
+    public void startGame(Integer numberPlayer) {
+        this.numberOfPlayer = numberPlayer;
         loadProductionCard();
         loadLeaderCard();
         this.warehouse.put(Row.FIRST, new HashMap<>());
@@ -528,7 +530,6 @@ public class CliView extends ClientView {
         this.warehouse = wareHouseResources;
         printWareHouse();
         printChest();
-        controller.receiveMessageFromServer();
     }
 
     @Override

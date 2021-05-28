@@ -22,8 +22,11 @@ public class MarbleMarketController implements SmallController{
     public ImageView marble3_2;
     public ImageView marbleOut;
 
+    private GUIView view;
+
     @Override
     public void setView(GUIView view) {
+        this.view = view;
     }
 
     @Override
@@ -56,7 +59,6 @@ public class MarbleMarketController implements SmallController{
         marble3_1.setImage(new Image("image/"+t31+".png"));
         String t32 = marbles[3][2].toString();
         marble3_1.setImage(new Image("image/"+t31+".png"));
-
     }
 
     public void setMarbleOut(Marble marble){

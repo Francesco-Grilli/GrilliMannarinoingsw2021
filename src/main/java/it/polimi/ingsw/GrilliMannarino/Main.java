@@ -37,7 +37,6 @@ public class Main extends Application{
             ranking.put(2, new AbstractMap.SimpleEntry<>("Lorenzo", 55));
             ranking.put(3, new AbstractMap.SimpleEntry<>("Casa", 10));
             edc.setPlayerRanking(ranking);
-            edc.endGame();
         } catch (IOException e) {
             e.printStackTrace();
         }

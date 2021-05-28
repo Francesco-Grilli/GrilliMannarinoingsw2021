@@ -58,8 +58,8 @@ public class Client {
     public static void main(String[] args) {
         //new ClientController(new CliView());
         //else the GuiView
-        //GUIController.main(new String[1]);
-        Main.main(new String[0]);
+        GUIController.main(new String[1]);
+        //Main.main(new String[0]);
     }
 
     public void sendMessageToServer(MessageInterface message){

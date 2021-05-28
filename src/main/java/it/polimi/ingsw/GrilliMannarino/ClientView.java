@@ -15,15 +15,16 @@ public abstract class ClientView {
     protected Integer playerId;
     protected Integer gameId;
     protected Map<Row, HashMap<Resource, Integer>> warehouse = new HashMap<>();
-    protected HashMap<Resource, Integer> chest;
-    protected Integer faith;
+    protected HashMap<Resource, Integer> chest = new HashMap<>();
+    protected Integer faith =0;
     protected boolean[] faithMark = new boolean[3];
-    protected Integer lorenzoFaith;
+    protected Integer lorenzoFaith =0;
     protected boolean[] lorenzoFaithMark = new boolean[3];
     protected final int[] faithValue = {2, 3, 4};
     protected HashMap<Integer, Integer> productionLine = new HashMap<>();
     protected boolean normalAction = false;
     protected boolean leaderAction = false;
+    protected Integer numberOfPlayer;
 
     abstract void viewError(String errorMessage);
 
@@ -43,7 +44,7 @@ public abstract class ClientView {
 
     abstract void updateFaith(Integer faithPosition);
 
-    abstract void startGame();
+    abstract void startGame(Integer numberPlayer);
 
     abstract void updateResources(HashMap<Resource, Integer> chestResources, HashMap<Row, HashMap<Resource, Integer>> wareHouseResources);
 

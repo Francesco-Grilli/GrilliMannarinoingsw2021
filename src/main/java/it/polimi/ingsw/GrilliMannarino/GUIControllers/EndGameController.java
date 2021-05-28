@@ -28,7 +28,7 @@ public class EndGameController implements SmallController {
     HashMap<Integer, Label> nicknameMap = new HashMap<>();
     HashMap<Integer, Label> scoreMap = new HashMap<>();
 
-    public void endGame(){
+    private void endGame(){
         setUpLabelMap();
         playerMap.forEach((pos, l) -> {
             if(pos>view.getGameId())
@@ -67,5 +67,6 @@ public class EndGameController implements SmallController {
 
     public void setPlayerRanking(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
         this.playerRanking = playerRanking;
+        endGame();
     }
 }

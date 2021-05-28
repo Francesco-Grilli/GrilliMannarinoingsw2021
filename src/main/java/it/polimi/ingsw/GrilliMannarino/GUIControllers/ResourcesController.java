@@ -29,9 +29,9 @@ public class ResourcesController implements SmallController{
     private int m2 =0;
     private int m3 =0;
     private int m4 =0;
-    private ArrayList<Resource> returnedResource;
 
-    private boolean viewMarble;
+    private boolean viewMarble = false;
+    private boolean selectStartingResource = false;
     private ArrayList<Marble> marbleArray1;
     private ArrayList<Marble> marbleArray2;
     private ArrayList<Marble> marbleArray3;
@@ -65,15 +65,6 @@ public class ResourcesController implements SmallController{
             else{
                 placeImage(k, arr.get(0).toString(), true, arr);
             }
-            k++;
-        }
-    }
-
-    public void setReturnedResource(ArrayList<Resource> returnedResource){
-        this.returnedResource = returnedResource;
-        int k=1;
-        for(Resource res : returnedResource){
-            placeImage(k, res.toString());
             k++;
         }
     }
@@ -117,24 +108,6 @@ public class ResourcesController implements SmallController{
         }
     }
 
-    private void placeImage(int pos, String resource){
-        if(pos==1){
-            resource1.setImage(new Image("image/" + resource + ".png"));
-            resource1.setDisable(false);
-        }
-        else if(pos ==2){
-            resource2.setImage(new Image("image/" + resource + ".png"));
-            resource2.setDisable(false);
-        }
-        else if(pos==3){
-            resource3.setImage(new Image("image/" + resource + ".png"));
-            resource3.setDisable(false);
-        }
-        else if(pos==4){
-            resource4.setImage(new Image("image/" + resource + ".png"));
-            resource4.setDisable(false);
-        }
-    }
 
     public void selectArrow1(MouseEvent mouseEvent) {
         m1++;
@@ -179,52 +152,40 @@ public class ResourcesController implements SmallController{
         arrow4.setDisable(true);
     }
 
-    public void setViewMarble(boolean viewMarble) {
-        this.viewMarble = viewMarble;
-    }
-
     public void selectResource1(MouseEvent mouseEvent) {
-        if(viewMarble){
-            Marble toReturn = marbleArray1.get(m1);
-            resourceToReturn.add(Marble.getResource(toReturn));
-            resource1.setDisable(true);
-            resource1.setVisible(false);
-            arrow1.setDisable(true);
-            arrow1.setVisible(false);
-        }
+        Marble toReturn = marbleArray1.get(m1%marbleArray1.size());
+        resourceToReturn.add(Marble.getResource(toReturn));
+        resource1.setDisable(true);
+        resource1.setOpacity(0.5);
+        arrow1.setDisable(true);
+        arrow1.setVisible(false);
     }
 
     public void selectResource2(MouseEvent mouseEvent) {
-        if(viewMarble){
-            Marble toReturn = marbleArray2.get(m2);
-            resourceToReturn.add(Marble.getResource(toReturn));
-            resource2.setDisable(true);
-            resource2.setVisible(false);
-            arrow2.setDisable(true);
-            arrow2.setVisible(false);
-        }
+        Marble toReturn = marbleArray2.get(m2%marbleArray2.size());
+        resourceToReturn.add(Marble.getResource(toReturn));
+        resource2.setDisable(true);
+        resource2.setOpacity(0.5);
+        arrow2.setDisable(true);
+        arrow2.setVisible(false);
     }
 
     public void selectResource3(MouseEvent mouseEvent) {
-        if(viewMarble){
-            Marble toReturn = marbleArray3.get(m3);
-            resourceToReturn.add(Marble.getResource(toReturn));
-            resource3.setDisable(true);
-            resource3.setVisible(false);
-            arrow3.setDisable(true);
-            arrow3.setVisible(false);
-        }
+        Marble toReturn = marbleArray3.get(m3%marbleArray3.size());
+        resourceToReturn.add(Marble.getResource(toReturn));
+        resource3.setDisable(true);
+        resource3.setOpacity(0.5);
+        arrow3.setDisable(true);
+        arrow3.setVisible(false);
     }
 
     public void selectResource4(MouseEvent mouseEvent) {
-        if(viewMarble){
-            Marble toReturn = marbleArray4.get(m4);
-            resourceToReturn.add(Marble.getResource(toReturn));
-            resource4.setDisable(true);
-            resource4.setVisible(false);
-            arrow4.setDisable(true);
-            arrow4.setVisible(false);
-        }
+        Marble toReturn = marbleArray4.get(m4%marbleArray4.size());
+        resourceToReturn.add(Marble.getResource(toReturn));
+        resource4.setDisable(true);
+        resource4.setOpacity(0.5);
+        arrow4.setDisable(true);
+        arrow4.setVisible(false);
     }
 
     public void confirmMethod(ActionEvent actionEvent) {
@@ -241,5 +202,23 @@ public class ResourcesController implements SmallController{
                 }).start();
             }
         }
+        else if(selectStartingResource){
+            if(resourceToReturn.size()==returnedMarble.size()){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.showPlaceResourceIntoWareHouse(resourceToReturn);
+                    }
+                }).start();
+            }
+        }
+    }
+
+    public void setSelectStartingResource(boolean selectStartingResource) {
+        this.selectStartingResource = selectStartingResource;
+    }
+
+    public void setViewMarble(boolean viewMarble) {
+        this.viewMarble = viewMarble;
     }
 }

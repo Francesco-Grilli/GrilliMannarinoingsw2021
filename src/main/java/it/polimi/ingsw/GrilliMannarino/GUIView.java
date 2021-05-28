@@ -7,6 +7,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
+import it.polimi.ingsw.GrilliMannarino.Message.TurnMessage;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class GUIView extends ClientView{
 
   @Override
   void showMarbleMarket(ArrayList<ArrayList<Marble>> marbleList, Marble marbleOut) {
-
+    //TODO show marble market
   }
 
   @Override
@@ -44,7 +45,7 @@ public class GUIView extends ClientView{
 
   @Override
   void addedResource(Resource resourceType, Row insertRow, ArrayList<Resource> remainingResource, boolean addResourceCorrect) {
-
+    //TODO add resources into warehouse and print if the previously resource was placed correctly
   }
 
   @Override
@@ -56,13 +57,37 @@ public class GUIView extends ClientView{
         screenHandler.setScene("cardMarket", that);
         CardMarketController cdm = (CardMarketController) screenHandler.getActiveController();
         cdm.setCardSlots(buyableCard);
+        cdm.setProductionLine(that.productionLine);
       }
     });
   }
 
   @Override
   void setCardIntoProductionLine(Integer selectedCard, Integer positionCard, HashMap<Integer, Integer> cardInProductionline) {
-
+    this.productionLine = new HashMap<>(cardInProductionline);
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if(that.numberOfPlayer==1){
+          screenHandler.setScene("boardSingle", that);
+          BoardSingleController bsc = (BoardSingleController) screenHandler.getActiveController();
+          bsc.setLorenzoSteps(that.lorenzoFaith);
+          bsc.setPopelineSteps(that.faith);
+          bsc.setProductionCards(that.productionLine);
+          bsc.setChest(that.chest);
+          bsc.showFaithChecks(that.faithMark);
+        }
+        else {
+          screenHandler.setScene("board", that);
+          BoardController bc = (BoardController) screenHandler.getActiveController();
+          bc.setPopelineSteps(that.faith);
+          bc.setProductionCards(that.productionLine);
+          bc.setChest(that.chest);
+          bc.showFaithChecks(that.faithMark);
+        }
+      }
+    });
   }
 
   @Override
@@ -80,39 +105,113 @@ public class GUIView extends ClientView{
 
   @Override
   void checkPopeLine(boolean favorActive, Integer checkPosition, Integer faithPosition) {
-
-  }
-
-  @Override
-  void updateFaith(Integer faithPosition) {
-
-  }
-
-  @Override
-  void startGame() {
-    System.out.println("game has started");
+    if(favorActive)
+      this.faithMark[checkPosition]=true;
+    this.faith = faithPosition;
     GUIView that = this;
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
         screenHandler.setScene("board", that);
+        BoardController bc = (BoardController) screenHandler.getActiveController();
+        bc.setPopelineSteps(that.faith);
+        bc.setProductionCards(that.productionLine);
+        bc.setChest(that.chest);
+        bc.showFaithChecks(that.faithMark);
       }
     });
+    sleepLong(3);
+  }
+
+  @Override
+  void updateFaith(Integer faithPosition) {
+    this.faith = faithPosition;
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("board", that);
+        BoardController bc = (BoardController) screenHandler.getActiveController();
+        bc.setPopelineSteps(that.faith);
+        bc.setProductionCards(that.productionLine);
+        bc.setChest(that.chest);
+        bc.showFaithChecks(that.faithMark);
+      }
+    });
+    sleepLong(3);
+  }
+
+  @Override
+  void startGame(Integer numberPlayer) {
+    this.numberOfPlayer = numberPlayer;
+    System.out.println("game has started");
+    this.warehouse.put(Row.FIRST, new HashMap<>());
+    this.warehouse.put(Row.SECOND, new HashMap<>());
+    this.warehouse.put(Row.THIRD, new HashMap<>());
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if(that.numberOfPlayer==1){
+          screenHandler.setScene("boardSingle", that);
+          BoardSingleController bsc = (BoardSingleController) screenHandler.getActiveController();
+          bsc.setLorenzoSteps(that.lorenzoFaith);
+          bsc.setPopelineSteps(that.faith);
+          bsc.setProductionCards(that.productionLine);
+          bsc.setChest(that.chest);
+          bsc.showFaithChecks(that.faithMark);
+        }
+        else {
+          screenHandler.setScene("board", that);
+          BoardController bc = (BoardController) screenHandler.getActiveController();
+          bc.setPopelineSteps(that.faith);
+          bc.setProductionCards(that.productionLine);
+          bc.setChest(that.chest);
+          bc.showFaithChecks(that.faithMark);
+        }
+      }
+    });
+    sleepLong(3);
   }
 
   @Override
   void updateResources(HashMap<Resource, Integer> chestResources, HashMap<Row, HashMap<Resource, Integer>> wareHouseResources) {
-
+    this.chest = chestResources;
+    this.warehouse = wareHouseResources;
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if(that.numberOfPlayer==1) {
+          screenHandler.setScene("boardSingle", that);
+          BoardSingleController bsc = (BoardSingleController) screenHandler.getActiveController();
+          bsc.setPopelineSteps(that.faith);
+          bsc.setLorenzoSteps(that.lorenzoFaith);
+          bsc.setProductionCards(that.productionLine);
+          bsc.setChest(that.chest);
+          bsc.showFaithChecks(that.faithMark);
+        }
+        else{
+          screenHandler.setScene("board", that);
+          BoardController bc = (BoardController) screenHandler.getActiveController();
+          bc.setPopelineSteps(that.faith);
+          bc.setProductionCards(that.productionLine);
+          bc.setChest(that.chest);
+          bc.showFaithChecks(that.faithMark);
+        }
+      }
+    });
+    sleepLong(3);
   }
 
   @Override
   void moveApplied() {
-
+    //TODO need to swap lines and print resource correctly
   }
 
   @Override
   void looseResource() {
-
+    //TODO need to swap lines and print message of attention
   }
 
   @Override
@@ -147,7 +246,16 @@ public class GUIView extends ClientView{
 
   @Override
   public void finishedNormalAction(String message) {
-
+    this.normalAction = false;
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("action", that);
+        SmallController sm = screenHandler.getActiveController();
+        sm.errorMessage("Info", message);
+      }
+    });
   }
 
   @Override
@@ -234,22 +342,40 @@ public class GUIView extends ClientView{
 
   @Override
   public void finishedLeaderAction(String s) {
-
+    this.leaderAction = false;
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("action", that);
+        SmallController sm = screenHandler.getActiveController();
+        sm.errorMessage("Info", s);
+      }
+    });
   }
 
   @Override
   public void selectMarbleStarting(ArrayList<ArrayList<Marble>> marblesToSelect) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("resources", that);
+        ResourcesController rc = (ResourcesController) screenHandler.getActiveController();
+        rc.setSelectStartingResource(true);
+        rc.setReturnedMarble(marblesToSelect);
+      }
+    });
   }
 
   @Override
   public void placeResourceStarting(ArrayList<Resource> resourcesLeft) {
-
+    //TODO call fxml to set the resources into warehouse
   }
 
   @Override
   public void checkReturnedResource(ArrayList<Resource> returnedResource) {
-
+    //TODO call fxml to set the resources into warehouse
   }
 
   @Override
@@ -269,17 +395,60 @@ public class GUIView extends ClientView{
 
   @Override
   public void updateFaithSingle(Integer faithPosition, Integer lorenzoFaith) {
-
+    this.faith = faithPosition;
+    this.lorenzoFaith = lorenzoFaith;
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("boardSingle", that);
+        BoardSingleController bsc = (BoardSingleController) screenHandler.getActiveController();
+        bsc.setPopelineSteps(that.faith);
+        bsc.setLorenzoSteps(that.lorenzoFaith);
+        bsc.setProductionCards(that.productionLine);
+        bsc.setChest(that.chest);
+        bsc.showFaithChecks(that.faithMark);
+      }
+    });
+    sleepLong(3);
   }
 
   @Override
   public void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition, Integer lorenzoFaith, boolean lorenzoFavorActive) {
+    if(favorActive)
+      this.faithMark[checkPosition] = true;
+    this.faith = faithPosition;
+    if(lorenzoFavorActive)
+      this.lorenzoFaithMark[checkPosition] = true;
+    this.lorenzoFaith = lorenzoFaith;
+    GUIView that = this;
 
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("boardSingle", that);
+        BoardSingleController bsc = (BoardSingleController) screenHandler.getActiveController();
+        bsc.setPopelineSteps(that.faith);
+        bsc.setLorenzoSteps(that.lorenzoFaith);
+        bsc.showFaithChecks(that.faithMark);
+        bsc.setProductionCards(that.productionLine);
+        bsc.setChest(that.chest);
+      }
+    });
+    sleepLong(3);
   }
 
   @Override
   public void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("endGame", that);
+        EndGameController egc = (EndGameController) screenHandler.getActiveController();
+        egc.setPlayerRanking(playerRanking);
+      }
+    });
   }
 
   @Override
@@ -309,5 +478,44 @@ public class GUIView extends ClientView{
 
   public void sendMessageToServer(MessageInterface message){
     controller.sendMessageToServer(message);
+  }
+
+  public void skipTurn(){
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if(that.numberOfPlayer==1){
+          screenHandler.setScene("boardSingle", that);
+          BoardSingleController bsc = (BoardSingleController) screenHandler.getActiveController();
+          bsc.setLorenzoSteps(that.lorenzoFaith);
+          bsc.setPopelineSteps(that.faith);
+          bsc.setProductionCards(that.productionLine);
+          bsc.setChest(that.chest);
+          bsc.showFaithChecks(that.faithMark);
+        }
+        else {
+          screenHandler.setScene("board", that);
+          BoardController bc = (BoardController) screenHandler.getActiveController();
+          bc.setPopelineSteps(that.faith);
+          bc.setProductionCards(that.productionLine);
+          bc.setChest(that.chest);
+          bc.showFaithChecks(that.faithMark);
+        }
+      }
+    });
+    controller.sendMessageToServer(new TurnMessage(this.gameId, this.playerId));
+  }
+
+  private void sleepLong(int second){
+    try {
+      Thread.sleep(second*1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void showPlaceResourceIntoWareHouse(ArrayList<Resource> resources){
+    //TODO call fxml to place the resources into warehouse
   }
 }

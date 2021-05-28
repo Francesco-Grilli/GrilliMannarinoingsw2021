@@ -69,11 +69,10 @@ public class ActionsController implements SmallController {
     }
 
     public void skipTurnAction() {
-        TurnMessage turnMessage = new TurnMessage(view.getGameId(), view.getPlayerId());
         new Thread(new Runnable() {
             @Override
             public void run() {
-                view.sendMessageToServer(turnMessage);
+                view.skipTurn();
             }
         }).start();
     }
