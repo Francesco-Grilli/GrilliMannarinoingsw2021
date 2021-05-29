@@ -2,14 +2,13 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class BoardSingleController implements SmallController{
@@ -149,7 +148,10 @@ public class BoardSingleController implements SmallController{
 
   @Override
   public void errorMessage(String header, String context) {
-
+    Alert error = new Alert(Alert.AlertType.INFORMATION);
+    error.setHeaderText(header);
+    error.setContentText(context);
+    error.show();
   }
 
   public void setPopelineSteps(int step){
@@ -234,5 +236,4 @@ public class BoardSingleController implements SmallController{
     servant.setText((resources.get(Resource.SERVANT)!= null?resources.get(Resource.SERVANT): Integer.valueOf(0)).toString());
     coin.setText((resources.get(Resource.COIN)!= null?resources.get(Resource.COIN): Integer.valueOf(0)).toString());
   }
-
 }

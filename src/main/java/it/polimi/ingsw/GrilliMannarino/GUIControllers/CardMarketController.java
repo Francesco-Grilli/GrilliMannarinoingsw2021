@@ -3,6 +3,7 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.Message.BuyProductionCardMessage;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -43,7 +44,10 @@ public class CardMarketController implements SmallController{
 
     @Override
     public void errorMessage(String header, String context) {
-
+        Alert error = new Alert(Alert.AlertType.INFORMATION);
+        error.setHeaderText(header);
+        error.setContentText(context);
+        error.show();
     }
 
     private void getHashMapUp(){

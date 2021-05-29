@@ -9,9 +9,7 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.BoardSingleController">
   <ImageView fitHeight="400.0" fitWidth="600.0">
-    <image>
-      <Image url="@image/Board.jpg" />
-    </image>
+    <Image url="@image/Board.jpg"/>
   </ImageView>
   <Pane fx:id="faithStepLorenzo0" layoutX="21.0" layoutY="76.0" prefHeight="30.0" prefWidth="30.0" opacity="1">
     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">

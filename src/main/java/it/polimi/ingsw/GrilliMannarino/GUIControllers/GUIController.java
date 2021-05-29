@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -85,8 +86,9 @@ public class GUIController extends Application implements GUIControllerInterface
 
   @Override
   public void setScene(String scene, GUIView cont) {
-
-    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(sceneMap.get(scene)));
+    String url = sceneMap.get(scene);
+    URL net = getClass().getClassLoader().getResource(url);
+    FXMLLoader loader = new FXMLLoader(net);
     Parent root = null;
     try {
       root = loader.load();

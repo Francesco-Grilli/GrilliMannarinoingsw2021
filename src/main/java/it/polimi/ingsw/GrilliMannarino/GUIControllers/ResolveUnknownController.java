@@ -7,6 +7,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -304,6 +305,9 @@ public class ResolveUnknownController implements SmallController {
 
     @Override
     public void errorMessage(String header, String context) {
-
+        Alert error = new Alert(Alert.AlertType.INFORMATION);
+        error.setHeaderText(header);
+        error.setContentText(context);
+        error.show();
     }
 }

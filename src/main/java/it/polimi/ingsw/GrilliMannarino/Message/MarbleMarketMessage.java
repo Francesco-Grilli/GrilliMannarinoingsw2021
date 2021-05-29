@@ -45,6 +45,7 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
      * destroyRemaining is set to true by the client if want to destroy the marble remained
      */
     private boolean destroyRemaining = false;
+    private boolean notFinished = false;
 
     private boolean swapRow = false;
     private Row rowOne;

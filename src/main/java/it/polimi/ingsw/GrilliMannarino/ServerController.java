@@ -521,7 +521,6 @@ public class ServerController implements VisitorInterface {
                 else{
                     message.setCanMove(false);
                 }
-                message.setCanMove(game.canSwapLine(one, two));
             }
             server.sendMessageTo(message.getPlayerId(), message);
         }catch (IllegalArgumentException e){

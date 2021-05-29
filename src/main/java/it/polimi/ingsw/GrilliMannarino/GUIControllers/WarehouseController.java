@@ -6,11 +6,13 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.MarbleMarket;
 import it.polimi.ingsw.GrilliMannarino.Message.MarbleMarketMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MoveResourceMessage;
+import it.polimi.ingsw.GrilliMannarino.Message.StartingResourceMessage;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
@@ -37,13 +39,25 @@ public class WarehouseController implements SmallController {
   private Status status = Status.NOTHING;
   private Resource resourceToPlace;
   private HashMap<Integer,Resource> resourcesToPlace = new HashMap<>();
+  private HashMap<Integer, ImageView> resourceMap = new HashMap<>();
   private ArrayList<Resource> resourcesList;
   private Row selectedRow;
+  private boolean startingResource = false;
+  private boolean justSwitching = false;
   private GUIView view;
 
   @Override
   public void setView(GUIView view) {
     this.view = view;
+    initializeMap();
+  }
+
+  private void initializeMap() {
+    resourceMap.put(1, res1);
+    resourceMap.put(2, res2);
+    resourceMap.put(3, res3);
+    resourceMap.put(4, res4);
+    resourceMap.forEach((pos, img) -> img.setDisable(true));
   }
 
   @Override
@@ -63,51 +77,116 @@ public class WarehouseController implements SmallController {
   }
 
   public void resourceClick(int i){
+    if(status==Status.SWAP || resourceToPlace!=resourcesToPlace.get(i))
+      removeGlow();
     status = Status.PLACE;
     resourceToPlace = resourcesToPlace.get(i);
   }
 
   public void warehouseClick(Row r){
     if(status==Status.PLACE){
-
-      MarbleMarketMessage message = new MarbleMarketMessage(view.getGameId(), view.getPlayerId());
-      message.setAddedResource(true);
-      message.setResourceType(resourceToPlace);
-      message.setInsertRow(r);
-      message.setReturnedResource(resourcesList);
-      status = Status.NOTHING;
-      new Thread(new Runnable() {
-        @Override
-        public void run() {
-          view.sendMessageToServer(message);
-        }
-      }).start();
+      removeGlow();
+      if(startingResource){
+        StartingResourceMessage message = new StartingResourceMessage(view.getGameId(), view.getPlayerId());
+        message.setPlaceResource(true);
+        message.setRowToPlace(r);
+        message.setResourceToPlace(resourceToPlace);
+        message.setResourcesLeft(resourcesList);
+        status = Status.NOTHING;
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            view.sendMessageToServer(message);
+          }
+        }).start();
+      }
+      else {
+        MarbleMarketMessage message = new MarbleMarketMessage(view.getGameId(), view.getPlayerId());
+        message.setAddedResource(true);
+        message.setResourceType(resourceToPlace);
+        message.setInsertRow(r);
+        message.setReturnedResource(resourcesList);
+        status = Status.NOTHING;
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            view.sendMessageToServer(message);
+          }
+        }).start();
+      }
 
     }else if(status == Status.SWAP){
-      MoveResourceMessage moveMessage = new MoveResourceMessage(view.getGameId(), view.getPlayerId());
-      moveMessage.setForceSwap(true);
-      moveMessage.setRowOne(selectedRow);
-      moveMessage.setRowTwo(r);
-      status = Status.NOTHING;
-      new Thread(new Runnable() {
-        @Override
-        public void run() {
-          view.sendMessageToServer(moveMessage);
-        }
-      }).start();
+      removeGlow();
+      if(justSwitching){
+        MoveResourceMessage moveMessage = new MoveResourceMessage(view.getGameId(), view.getPlayerId());
+        moveMessage.setRowOne(selectedRow);
+        moveMessage.setRowTwo(r);
+        moveMessage.setForceSwap(true);
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            view.sendMessageToServer(moveMessage);
+          }
+        }).start();
+      }
+      else {
+        MarbleMarketMessage message = new MarbleMarketMessage(view.getGameId(), view.getPlayerId());
+        message.setSwapRow(true);
+        message.setRowOne(selectedRow);
+        message.setRowTwo(r);
+        message.setReturnedResource(resourcesList);
+        message.setForceSwap(true);
+        status = Status.NOTHING;
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            view.sendMessageToServer(message);
+          }
+        }).start();
+      }
     }else{
       status = Status.SWAP;
       selectedRow = r;
     }
   }
 
-  public void resource1(){resourceClick(1);}
-  public void resource2(){resourceClick(2);}
-  public void resource3(){resourceClick(3);}
-  public void resource4(){resourceClick(4);}
-  public void warehouse1(){warehouseClick(Row.FIRST);}
-  public void warehouse2(){warehouseClick(Row.SECOND);}
-  public void warehouse3(){warehouseClick(Row.THIRD);}
+  public void resource1(){
+    res1.setEffect(new Glow());
+    resourceClick(1);}
+  public void resource2(){
+    res2.setEffect(new Glow());
+    resourceClick(2);}
+  public void resource3(){
+    res3.setEffect(new Glow());
+    resourceClick(3);}
+  public void resource4(){
+    res4.setEffect(new Glow());
+    resourceClick(4);}
+  public void warehouse1(){
+    row1_1.setEffect(new Glow());
+    warehouseClick(Row.FIRST);}
+  public void warehouse2(){
+    row2_1.setEffect(new Glow());
+    row2_2.setEffect(new Glow());
+    warehouseClick(Row.SECOND);}
+  public void warehouse3(){
+    row3_1.setEffect(new Glow());
+    row3_2.setEffect(new Glow());
+    row3_3.setEffect(new Glow());
+    warehouseClick(Row.THIRD);}
+
+  private void removeGlow(){
+    row3_1.setEffect(null);
+    row3_2.setEffect(null);
+    row3_3.setEffect(null);
+    row2_1.setEffect(null);
+    row2_2.setEffect(null);
+    row1_1.setEffect(null);
+    res4.setEffect(null);
+    res3.setEffect(null);
+    res2.setEffect(null);
+    res1.setEffect(null);
+  }
 
   private void setFirstLine(Resource resource, int amount){
     String p = resource.toString().toUpperCase();
@@ -148,6 +227,14 @@ public class WarehouseController implements SmallController {
       this.resourcesToPlace.put(k, r);
       k++;
     }
+    showResources();
+  }
+
+  private void showResources() {
+    resourcesToPlace.forEach((pos, res) -> {
+      resourceMap.get(pos).setImage(new Image("image/" + res.toString() + ".png"));
+      resourceMap.get(pos).setDisable(false);
+    });
   }
 
   public void setWareHouse(HashMap<Row, HashMap<Resource, Integer>> wareHouse){
@@ -165,5 +252,13 @@ public class WarehouseController implements SmallController {
       for(Resource r : wareHouse.get(Row.THIRD).keySet())
         setThirdLine(r, wareHouse.get(Row.THIRD).get(r));
     }
+  }
+
+  public void setStartingResource(boolean startingResource) {
+    this.startingResource = startingResource;
+  }
+
+  public void setJustSwitching(boolean justSwitching) {
+    this.justSwitching = justSwitching;
   }
 }

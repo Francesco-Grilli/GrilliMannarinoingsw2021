@@ -3,6 +3,7 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.Message.MarbleMarketMessage;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -46,7 +47,10 @@ public class MarbleMarketController implements SmallController{
 
     @Override
     public void errorMessage(String header, String context) {
-
+        Alert error = new Alert(Alert.AlertType.INFORMATION);
+        error.setHeaderText(header);
+        error.setContentText(context);
+        error.show();
     }
 
     private void initializeMap(){

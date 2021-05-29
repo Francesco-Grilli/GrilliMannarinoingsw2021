@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
 import java.util.HashMap;
@@ -62,7 +63,10 @@ public class EndGameController implements SmallController {
 
     @Override
     public void errorMessage(String header, String context) {
-
+        Alert error = new Alert(Alert.AlertType.INFORMATION);
+        error.setHeaderText(header);
+        error.setContentText(context);
+        error.show();
     }
 
     public void setPlayerRanking(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {

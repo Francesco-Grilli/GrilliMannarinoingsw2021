@@ -74,7 +74,7 @@ public class ClientController implements VisitorInterface {
                 }
                 //code to selectLeadercard
                 view.selectLeaderCard(leaderCard.getCards());
-
+                return;
             }
             //code to activate card
             if (leaderCard.isActivationSellingCorrect())

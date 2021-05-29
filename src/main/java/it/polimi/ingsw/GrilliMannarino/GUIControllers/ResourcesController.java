@@ -5,6 +5,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.Message.MarbleMarketMessage;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,7 +53,10 @@ public class ResourcesController implements SmallController{
 
     @Override
     public void errorMessage(String header, String context) {
-
+        Alert error = new Alert(Alert.AlertType.INFORMATION);
+        error.setHeaderText(header);
+        error.setContentText(context);
+        error.show();
     }
 
     public void setReturnedMarble(ArrayList<ArrayList<Marble>> returnedMarble) {

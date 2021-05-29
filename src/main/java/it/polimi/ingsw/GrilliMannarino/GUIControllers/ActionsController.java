@@ -78,7 +78,12 @@ public class ActionsController implements SmallController {
     }
 
     public void swapResourcesAction() {
-        //TODO need to set scene from this controller??
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.moveResource();
+            }
+        }).start();
     }
 
     public void produceResourcesAction() {

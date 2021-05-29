@@ -4,6 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.Message.LeaderCardMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.ProductionMessage;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,7 +42,10 @@ public class CardDisplayController implements SmallController{
 
     @Override
     public void errorMessage(String header, String context) {
-
+        Alert error = new Alert(Alert.AlertType.INFORMATION);
+        error.setHeaderText(header);
+        error.setContentText(context);
+        error.show();
     }
 
     public void setCards(ArrayList<Integer> cardCodes){

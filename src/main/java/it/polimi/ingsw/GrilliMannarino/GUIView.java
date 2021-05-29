@@ -6,6 +6,7 @@ import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
+import it.polimi.ingsw.GrilliMannarino.Message.MarbleMarketMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 import it.polimi.ingsw.GrilliMannarino.Message.TurnMessage;
 import javafx.application.Platform;
@@ -16,11 +17,26 @@ import java.util.Map;
 
 public class GUIView extends ClientView{
 
+  private final int TimeToBoard = 1;
+
   private GUIControllerInterface screenHandler;
 
   @Override
   void viewError(String errorMessage) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        SmallController sc = screenHandler.getActiveController();
+        sc.errorMessage("Info", errorMessage);
+      }
+    });
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("action", that);
+      }
+    });
   }
 
   @Override
@@ -55,19 +71,27 @@ public class GUIView extends ClientView{
   @Override
   void addedResource(Resource resourceType, Row insertRow, ArrayList<Resource> remainingResource, boolean addResourceCorrect) {
     GUIView that = this;
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        screenHandler.setScene("warehouse", that);
-        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
-        if(addResourceCorrect)
-          wc.errorMessage("Correct!", resourceType.toString() + " has been added correctly");
-        else
-          wc.errorMessage("Incorrect!", resourceType.toString() + " was not place!");
-        wc.setResourcesToPlace(remainingResource);
-        wc.setWareHouse(that.warehouse);
-      }
-    });
+    if(remainingResource.isEmpty()){
+      MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
+      message.setReturnedResource(remainingResource);
+      message.setDestroyRemaining(true);
+      controller.sendMessageToServer(message);
+    }
+    else {
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          screenHandler.setScene("warehouse", that);
+          WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+          if (addResourceCorrect)
+            wc.errorMessage("Correct!", resourceType.toString() + " has been added correctly");
+          else
+            wc.errorMessage("Incorrect!", resourceType.toString() + " was not place!");
+          wc.setResourcesToPlace(remainingResource);
+          wc.setWareHouse(that.warehouse);
+        }
+      });
+    }
   }
 
   @Override
@@ -142,7 +166,7 @@ public class GUIView extends ClientView{
         bc.showFaithChecks(that.faithMark);
       }
     });
-    sleepLong(3);
+    sleepLong(that.TimeToBoard);
   }
 
   @Override
@@ -160,7 +184,7 @@ public class GUIView extends ClientView{
         bc.showFaithChecks(that.faithMark);
       }
     });
-    sleepLong(3);
+    sleepLong(that.TimeToBoard);
   }
 
   @Override
@@ -193,7 +217,7 @@ public class GUIView extends ClientView{
         }
       }
     });
-    sleepLong(3);
+    sleepLong(that.TimeToBoard);
   }
 
   @Override
@@ -223,17 +247,32 @@ public class GUIView extends ClientView{
         }
       }
     });
-    sleepLong(3);
+    sleepLong(that.TimeToBoard);
   }
 
   @Override
   void moveApplied() {
-    //TODO need to swap lines and print resource correctly
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("action", that);
+        SmallController sc = screenHandler.getActiveController();
+        sc.errorMessage("Correct", "Resource has been moved correctly");
+      }
+    });
   }
 
   @Override
   void looseResource() {
-    //TODO need to swap lines and print message of attention
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("action", that);
+        SmallController sc = screenHandler.getActiveController();
+      }
+    });
   }
 
   @Override
@@ -392,21 +431,50 @@ public class GUIView extends ClientView{
 
   @Override
   public void placeResourceStarting(ArrayList<Resource> resourcesLeft) {
-    //TODO call fxml to set the resources into warehouse
+    GUIView that = this;
+    if(resourcesLeft.isEmpty()){
+      new Thread(new Runnable() {
+        @Override
+        public void run() {
+          controller.receiveMessageFromServer();
+        }
+      }).start();
+    }
+    else{
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          screenHandler.setScene("warehouse", that);
+          WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+          wc.setResourcesToPlace(resourcesLeft);
+          wc.setStartingResource(true);
+          wc.setWareHouse(that.warehouse);
+        }
+      });
+    }
+
   }
 
   @Override
   public void checkReturnedResource(ArrayList<Resource> returnedResource) {
     GUIView that = this;
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        screenHandler.setScene("warehouse", that);
-        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
-        wc.setResourcesToPlace(returnedResource);
-        wc.setWareHouse(that.warehouse);
-      }
-    });
+    if(returnedResource.isEmpty()){
+      MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
+      message.setReturnedResource(returnedResource);
+      message.setDestroyRemaining(true);
+      controller.sendMessageToServer(message);
+    }
+    else {
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          screenHandler.setScene("warehouse", that);
+          WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+          wc.setResourcesToPlace(returnedResource);
+          wc.setWareHouse(that.warehouse);
+        }
+      });
+    }
   }
 
   @Override
@@ -441,7 +509,7 @@ public class GUIView extends ClientView{
         bsc.showFaithChecks(that.faithMark);
       }
     });
-    sleepLong(3);
+    sleepLong(that.TimeToBoard);
   }
 
   @Override
@@ -466,7 +534,7 @@ public class GUIView extends ClientView{
         bsc.setChest(that.chest);
       }
     });
-    sleepLong(3);
+    sleepLong(that.TimeToBoard);
   }
 
   @Override
@@ -500,16 +568,45 @@ public class GUIView extends ClientView{
 
   @Override
   public void looseResourceIntoMarbleMarket(ArrayList<Resource> returnedResource) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("warehouse", that);
+        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+        wc.errorMessage("", "Some resource may be lost!");
+        wc.setResourcesToPlace(returnedResource);
+        wc.setWareHouse(that.warehouse);
+      }
+    });
   }
 
   @Override
   public void moveAppliedIntoMarbleMarket(ArrayList<Resource> returnedResource) {
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("warehouse", that);
+        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+        wc.errorMessage("", "Warehouse moved correctly!");
+        wc.setResourcesToPlace(returnedResource);
+        wc.setWareHouse(that.warehouse);
+      }
+    });
   }
 
   public void moveResource(){
-
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("warehouse", that);
+        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+        wc.setJustSwitching(true);
+        wc.setWareHouse(that.warehouse);
+      }
+    });
   }
 
   public void setScreenHandler(GUIControllerInterface controller){
@@ -557,6 +654,16 @@ public class GUIView extends ClientView{
   }
 
   public void showPlaceResourceIntoWareHouse(ArrayList<Resource> resources){
-    //TODO call fxml to place the resources into warehouse
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("warehouse", that);
+        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+        wc.setResourcesToPlace(resources);
+        wc.setStartingResource(true);
+        wc.setWareHouse(that.warehouse);
+      }
+    });
   }
 }
