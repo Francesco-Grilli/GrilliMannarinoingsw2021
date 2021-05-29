@@ -150,6 +150,10 @@ public class ResourcesController implements SmallController{
         arrow3.setDisable(true);
         arrow4.setVisible(false);
         arrow4.setDisable(true);
+        resource1.setDisable(true);
+        resource2.setDisable(true);
+        resource3.setDisable(true);
+        resource4.setDisable(true);
     }
 
     public void selectResource1(MouseEvent mouseEvent) {

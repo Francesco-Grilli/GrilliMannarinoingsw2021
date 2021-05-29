@@ -25,7 +25,16 @@ public class GUIView extends ClientView{
 
   @Override
   void showMarbleMarket(ArrayList<ArrayList<Marble>> marbleList, Marble marbleOut) {
-    //TODO show marble market
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("marbleMarket", that);
+        MarbleMarketController mmc = (MarbleMarketController) screenHandler.getActiveController();
+        mmc.setMarbles(marbleList);
+        mmc.setMarbleOut(marbleOut);
+      }
+    });
   }
 
   @Override
