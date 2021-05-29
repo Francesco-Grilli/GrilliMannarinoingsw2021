@@ -151,16 +151,65 @@ public class CliView extends ClientView {
         System.out.println("Resources needed to be placed: ");
         resources.forEach(res -> System.out.format("%15s", res.toString()));
         System.out.println();
-        System.out.println("Do you want to add Resources into warehouse? Otherwise they will be lost, Y/N");
+        System.out.println("Do you want to place a resource into warehouse P, Move resources M or Discharge the ramaining resource D?");
         String s = scanner.nextLine();
-        while(!s.equals("Y") && !s.equals("N")){
+        while(!s.equals("P") && !s.equals("M") && !s.equals("D")){
             System.out.println("Invalid Input");
             s = scanner.nextLine();
         }
-        if(s.equals("N")){
+        if(s.equals("D")){
             MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
             message.setReturnedResource(resources);
             message.setDestroyRemaining(true);
+            controller.sendMessageToServer(message);
+            return;
+        }
+        else if(s.equals("M")){
+            MarbleMarketMessage message = new MarbleMarketMessage(this.gameId, this.playerId);
+            message.setSwapRow(true);
+            System.out.println("Select two row to reverse");
+            System.out.println("Select first row: ");
+            Row one = null, two = null;
+            try{
+                one = Row.valueOf(scanner.nextLine());
+            }
+            catch(IllegalArgumentException e){
+            }
+            while(!this.warehouse.containsKey(one)){
+                System.out.println("Invalid Input");
+                try{
+                    one = Row.valueOf(scanner.nextLine());
+                }
+                catch(IllegalArgumentException e){
+                }
+            }
+            System.out.println("Select second row: ");
+            try{
+                two = Row.valueOf(scanner.nextLine());
+            }
+            catch(IllegalArgumentException e){
+            }
+            while(!this.warehouse.containsKey(two)){
+                System.out.println("Invalid Input");
+                try{
+                    two = Row.valueOf(scanner.nextLine());
+                }
+                catch(IllegalArgumentException e){
+                }
+            }
+            message.setRowOne(one);
+            message.setRowTwo(two);
+            message.setReturnedResource(resources);
+            System.out.println("You have selected rows: " + one.toString() + " and " + two.toString());
+            System.out.println("Do you want to force the reverse? Doing so some resources may be lost. Y/N");
+            String ss = scanner.nextLine();
+            while(!ss.equals("N") && !ss.equals("Y")){
+                System.out.println("Invalid Input");
+                ss = scanner.nextLine();
+            }
+            if(ss.equals("Y")){
+                message.setForceSwap(true);
+            }
             controller.sendMessageToServer(message);
             return;
         }
@@ -540,7 +589,7 @@ public class CliView extends ClientView {
 
     @Override
     public void looseResource() {
-        System.out.println("Attention: some resources will be lost!!");
+        System.out.println("Attention: some resources may be lost!!");
         moveResource();
     }
 
@@ -960,6 +1009,18 @@ public class CliView extends ClientView {
         message.setInputCard(inputCardCopy);
         message.setOutputCard(outputCardCopy);
         controller.sendMessageToServer(message);
+    }
+
+    @Override
+    public void looseResourceIntoMarbleMarket(ArrayList<Resource> returnedResource) {
+        System.out.println("Attention: some resources may be lost!!");
+        getResourceToPlace(returnedResource);
+    }
+
+    @Override
+    public void moveAppliedIntoMarbleMarket(ArrayList<Resource> returnedResource) {
+        System.out.println("Resource has been moved correctly");
+        getResourceToPlace(returnedResource);
     }
 
     private ArrayList<Resource> getUnknownResource(int numberOfUnknown) {

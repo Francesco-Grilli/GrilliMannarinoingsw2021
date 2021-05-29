@@ -14,7 +14,7 @@ public abstract class ClientView {
     protected String nickname;
     protected Integer playerId;
     protected Integer gameId;
-    protected Map<Row, HashMap<Resource, Integer>> warehouse = new HashMap<>();
+    protected HashMap<Row, HashMap<Resource, Integer>> warehouse = new HashMap<>();
     protected HashMap<Resource, Integer> chest = new HashMap<>();
     protected Integer faith =0;
     protected boolean[] faithMark = new boolean[3];
@@ -56,7 +56,7 @@ public abstract class ClientView {
 
     abstract void enteredNewGame(String messageString, Integer gameId);
 
-    public void setWarehouse(Map<Row, HashMap<Resource, Integer>> warehouse) {
+    public void setWarehouse(HashMap<Row, HashMap<Resource, Integer>> warehouse) {
         this.warehouse = warehouse;
     }
 
@@ -115,4 +115,8 @@ public abstract class ClientView {
     }
 
     public abstract void resolveUnknown(HashMap<Integer, HashMap<Resource, Integer>> inputCard, HashMap<Integer, HashMap<Resource, Integer>> outputCard, ArrayList<Integer> selectedCard);
+
+    public abstract void looseResourceIntoMarbleMarket(ArrayList<Resource> returnedResource);
+
+    public abstract void moveAppliedIntoMarbleMarket(ArrayList<Resource> returnedResource);
 }

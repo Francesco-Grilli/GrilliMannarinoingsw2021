@@ -54,7 +54,20 @@ public class GUIView extends ClientView{
 
   @Override
   void addedResource(Resource resourceType, Row insertRow, ArrayList<Resource> remainingResource, boolean addResourceCorrect) {
-    //TODO add resources into warehouse and print if the previously resource was placed correctly
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("warehouse", that);
+        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+        if(addResourceCorrect)
+          wc.errorMessage("Correct!", resourceType.toString() + " has been added correctly");
+        else
+          wc.errorMessage("Incorrect!", resourceType.toString() + " was not place!");
+        wc.setResourcesToPlace(remainingResource);
+        wc.setWareHouse(that.warehouse);
+      }
+    });
   }
 
   @Override
@@ -384,7 +397,16 @@ public class GUIView extends ClientView{
 
   @Override
   public void checkReturnedResource(ArrayList<Resource> returnedResource) {
-    //TODO call fxml to set the resources into warehouse
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("warehouse", that);
+        WarehouseController wc = (WarehouseController) screenHandler.getActiveController();
+        wc.setResourcesToPlace(returnedResource);
+        wc.setWareHouse(that.warehouse);
+      }
+    });
   }
 
   @Override
@@ -474,6 +496,16 @@ public class GUIView extends ClientView{
         ruc.resolve();
       }
     });
+  }
+
+  @Override
+  public void looseResourceIntoMarbleMarket(ArrayList<Resource> returnedResource) {
+
+  }
+
+  @Override
+  public void moveAppliedIntoMarbleMarket(ArrayList<Resource> returnedResource) {
+
   }
 
   public void moveResource(){

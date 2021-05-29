@@ -381,121 +381,153 @@ public class ServerController implements VisitorInterface {
             sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "No normal action left!");
             return;
         }
+        if(!marbleMarketMessage.isSwapRow()) {
+            if (!marbleMarketMessage.isDisplayMarbleMarket()) {
+                if (!marbleMarketMessage.isSelectColumnRow()) {
+                    if (!marbleMarketMessage.isAddedResource()) {
+                        if (!marbleMarketMessage.isCheckReturnedResource()) {
+                            if (!marbleMarketMessage.isDestroyRemaining()) {
+                                //should not enter here
 
-        if(!marbleMarketMessage.isDisplayMarbleMarket()){
-            if (!marbleMarketMessage.isSelectColumnRow()){
-                if(!marbleMarketMessage.isAddedResource()){
-                    if(!marbleMarketMessage.isCheckReturnedResource()) {
-                        if (!marbleMarketMessage.isDestroyRemaining()) {
-                            //should not enter here
+                                sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on Buying marble at the market");
+                                return;
+                            }
+                            //code to destroy remaining resources and add pope faith
 
-                            sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on Buying marble at the market");
+                            MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                            message.setDestroyRemaining(true);
+                            game.setNormalAction(false);
+                            if (!marbleMarketMessage.getReturnedResource().isEmpty()) {
+                                int numberOfResource = marbleMarketMessage.getReturnedResource().size();
+                                if (game.addFaithExceptThis(marbleMarketMessage.getPlayerId(), numberOfResource)) {
+                                    updatePopeLine(game);
+                                } else {
+                                    updateFaith(game);
+                                }
+                            }
+                            if (game.isActivatedEnd()) {
+                                broadcastMessage(game, "The End is near");
+                            }
+                            server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
                             return;
                         }
-                        //code to destroy remaining resources and add pope faith
-
-                        MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                        message.setDestroyRemaining(true);
-                        game.setNormalAction(false);
-                        if (!marbleMarketMessage.getReturnedResource().isEmpty()) {
-                            int numberOfResource = marbleMarketMessage.getReturnedResource().size();
-                            if (game.addFaithExceptThis(marbleMarketMessage.getPlayerId(), numberOfResource)) {
-                                updatePopeLine(game);
+                        //code to check the returned resources
+                        ArrayList<Resource> resources = new ArrayList<>();
+                        for (Resource res : marbleMarketMessage.getReturnedResource()) {
+                            if (res.equals(Resource.FAITH)) {
+                                if (game.addFaithTo(marbleMarketMessage.getPlayerId()))
+                                    updatePopeLine(game);
+                                else {
+                                    PopeLineMessage popeMessage;
+                                    if (game.getNumberOfPlayer() == 1) {
+                                        popeMessage = new PopeLineSingleMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                                        ((PopeLineSingleMessage) popeMessage).setLorenzoFaith(game.getLorenzoFaith());
+                                    } else {
+                                        popeMessage = new PopeLineMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                                    }
+                                    popeMessage.setUpdatedPosition(true);
+                                    popeMessage.setFaithPosition(game.getPlayersFaith().get(marbleMarketMessage.getPlayerId()));
+                                    server.sendMessageTo(marbleMarketMessage.getPlayerId(), popeMessage);
+                                }
                             } else {
-                                updateFaith(game);
+                                resources.add(res);
                             }
                         }
-                        if (game.isActivatedEnd()) {
-                            broadcastMessage(game, "The End is near");
-                        }
-                        server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
+
+                        MarbleMarketMessage marketMessage = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                        marketMessage.setCheckReturnedResource(true);
+                        marketMessage.setReturnedResource(resources);
+                        server.sendMessageTo(marketMessage.getPlayerId(), marketMessage);
                         return;
                     }
-                    //code to check the returned resources
-                    ArrayList<Resource> resources = new ArrayList<>();
-                    for(Resource res : marbleMarketMessage.getReturnedResource()){
-                        if(res.equals(Resource.FAITH)){
-                            if(game.addFaithTo(marbleMarketMessage.getPlayerId()))
-                                updatePopeLine(game);
-                            else{
-                                PopeLineMessage popeMessage;
-                                if(game.getNumberOfPlayer()==1){
-                                    popeMessage = new PopeLineSingleMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                                    ((PopeLineSingleMessage)popeMessage).setLorenzoFaith(game.getLorenzoFaith());
-                                }
-                                else {
-                                    popeMessage = new PopeLineMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                                }
-                                popeMessage.setUpdatedPosition(true);
-                                popeMessage.setFaithPosition(game.getPlayersFaith().get(marbleMarketMessage.getPlayerId()));
-                                server.sendMessageTo(marbleMarketMessage.getPlayerId(), popeMessage);
-                            }
-                        }
-                        else{
-                            resources.add(res);
-                        }
+                    //code to add one resource at a time
+                    Resource res = marbleMarketMessage.getResourceType();
+                    Row row = marbleMarketMessage.getInsertRow();
+                    MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                    message.setAddedResource(true);
+                    message.setResourceType(marbleMarketMessage.getResourceType());
+                    message.setInsertRow(marbleMarketMessage.getInsertRow());
+                    message.setReturnedResource(marbleMarketMessage.getReturnedResource());
+                    if (game.placeResource(row, res) && marbleMarketMessage.getReturnedResource().contains(res)) {
+                        message.setAddResourceCorrect(true);
+                        marbleMarketMessage.getReturnedResource().remove(res);
+                        updateResources(game, marbleMarketMessage.getPlayerId());
                     }
-
-                    MarbleMarketMessage marketMessage = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                    marketMessage.setCheckReturnedResource(true);
-                    marketMessage.setReturnedResource(resources);
-                    server.sendMessageTo(marketMessage.getPlayerId(), marketMessage);
+                    server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
                     return;
                 }
-                //code to add one resource at a time
-                Resource res = marbleMarketMessage.getResourceType();
-                Row row = marbleMarketMessage.getInsertRow();
-                MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-                message.setAddedResource(true);
-                message.setResourceType(marbleMarketMessage.getResourceType());
-                message.setInsertRow(marbleMarketMessage.getInsertRow());
-                message.setReturnedResource(marbleMarketMessage.getReturnedResource());
-                if(game.placeResource(row, res) && marbleMarketMessage.getReturnedResource().contains(res)){
-                    message.setAddResourceCorrect(true);
-                    marbleMarketMessage.getReturnedResource().remove(res);
-                    updateResources(game, marbleMarketMessage.getPlayerId());
+                // code to select column or row
+
+                ArrayList<MarbleOption> marbles;
+                if (marbleMarketMessage.getColumnRow().equals("C")) {
+                    marbles = game.selectMarbleColumn(marbleMarketMessage.getColumnRowValue());
+                } else {
+                    marbles = game.selectMarbleRow(marbleMarketMessage.getColumnRowValue());
                 }
+
+                ArrayList<ArrayList<Marble>> marbleList = new ArrayList<>();
+                for (MarbleOption marble : marbles) {
+                    ArrayList<Marble> tempArray = new ArrayList<>(marble.getMarbles());
+                    marbleList.add(tempArray);
+                }
+                MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+                message.setDisplayMarblesReturned(true);
+                message.setReturnedMarble(marbleList);
                 server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
                 return;
-            }
-            // code to select column or row
 
-            ArrayList<MarbleOption> marbles;
-            if(marbleMarketMessage.getColumnRow().equals("C")){
-                marbles = game.selectMarbleColumn(marbleMarketMessage.getColumnRowValue());
             }
-            else{
-                marbles = game.selectMarbleRow(marbleMarketMessage.getColumnRowValue());
-            }
+            //code to show marble market
 
-            ArrayList<ArrayList<Marble>> marbleList = new ArrayList<>();
-            for (MarbleOption marble : marbles) {
-                ArrayList<Marble> tempArray = new ArrayList<>(marble.getMarbles());
-                marbleList.add(tempArray);
-            }
+            Marble[][] marbles = game.displayMarbleMarket();
             MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-            message.setDisplayMarblesReturned(true);
-            message.setReturnedMarble(marbleList);
+            ArrayList<ArrayList<Marble>> marblesToReturn = new ArrayList<>();
+            for (int x = 0; x < marbles.length; x++) {
+                ArrayList<Marble> temp = new ArrayList<>();
+                for (int y = 0; y < marbles[x].length; y++) {
+                    temp.add(y, marbles[x][y]);
+                }
+                marblesToReturn.add(temp);
+            }
+            message.setMarbleList(marblesToReturn);
+            message.setDisplayMarbleMarket(true);
+            message.setMarbleOut(game.displayMarbleOut());
             server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
             return;
-
         }
-        //code to show marble market
+        //code to move resources into marble market
+        try {
+            Row one = marbleMarketMessage.getRowOne();
+            Row two = marbleMarketMessage.getRowTwo();
 
-        Marble[][] marbles = game.displayMarbleMarket();
-        MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
-        ArrayList<ArrayList<Marble>> marblesToReturn = new ArrayList<>();
-        for(int x =0; x<marbles.length; x++){
-            ArrayList<Marble> temp = new ArrayList<>();
-            for(int y=0; y<marbles[x].length; y++){
-                temp.add(y, marbles[x][y]);
+            MarbleMarketMessage message = new MarbleMarketMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId());
+            message.setReturnedResource(marbleMarketMessage.getReturnedResource());
+            message.setRowOne(one);
+            message.setRowTwo(two);
+            message.setSwapRow(true);
+            if(marbleMarketMessage.isForceSwap()){
+                game.forceSwapLine(one, two);
+                updateResources(game, marbleMarketMessage.getPlayerId());
+                if(game.isActivatedEnd()){
+                    broadcastMessage(game, "The End is near");
+                }
             }
-            marblesToReturn.add(temp);
+            else{
+                if(game.canSwapLine(one, two)){
+                    game.forceSwapLine(one, two);
+                    message.setCanMove(true);
+                    updateResources(game, marbleMarketMessage.getPlayerId());
+                }
+                else{
+                    message.setCanMove(false);
+                }
+                message.setCanMove(game.canSwapLine(one, two));
+            }
+            server.sendMessageTo(message.getPlayerId(), message);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+            sendErrorMessage(marbleMarketMessage.getGameId(), marbleMarketMessage.getPlayerId(), "Error on Resource Moving");
         }
-        message.setMarbleList(marblesToReturn);
-        message.setDisplayMarbleMarket(true);
-        message.setMarbleOut(game.displayMarbleOut());
-        server.sendMessageTo(marbleMarketMessage.getPlayerId(), message);
     }
 
     @Override
@@ -690,7 +722,6 @@ public class ServerController implements VisitorInterface {
             message.setRowOne(one);
             message.setRowTwo(two);
             if(moveResourceMessage.isForceSwap()){
-                message.setForceSwap(true);
                 game.forceSwapLine(one, two);
                 updateResources(game, moveResourceMessage.getPlayerId());
                 if(game.isActivatedEnd()){

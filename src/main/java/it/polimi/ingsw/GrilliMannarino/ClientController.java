@@ -89,33 +89,46 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeMarbleMarket(MarbleMarketMessage marbleMarketMessage) {
-        if(!marbleMarketMessage.isDisplayMarbleMarket()){
-            if(!marbleMarketMessage.isDisplayMarblesReturned()) {
-                if (!marbleMarketMessage.isCheckReturnedResource()) {
-                    if (!marbleMarketMessage.isAddedResource()) {
-                        if (!marbleMarketMessage.isDestroyRemaining()) {
-                            view.viewError("Error in MarbleMarket action");
+        if(!marbleMarketMessage.isSwapRow()) {
+            if (!marbleMarketMessage.isDisplayMarbleMarket()) {
+                if (!marbleMarketMessage.isDisplayMarblesReturned()) {
+                    if (!marbleMarketMessage.isCheckReturnedResource()) {
+                        if (!marbleMarketMessage.isAddedResource()) {
+                            if (!marbleMarketMessage.isDestroyRemaining()) {
+                                view.viewError("Error in MarbleMarket action");
+                                return;
+                            }
+                            //code to check added resource
+                            view.finishedNormalAction("You have finished Marble action");
                             return;
                         }
                         //code to check added resource
-                        view.finishedNormalAction("You have finished Marble action");
+
+                        view.addedResource(marbleMarketMessage.getResourceType(), marbleMarketMessage.getInsertRow(), marbleMarketMessage.getReturnedResource(), marbleMarketMessage.isAddResourceCorrect());
                         return;
                     }
-                    //code to check added resource
-
-                    view.addedResource(marbleMarketMessage.getResourceType(), marbleMarketMessage.getInsertRow(), marbleMarketMessage.getReturnedResource(), marbleMarketMessage.isAddResourceCorrect());
+                    //code to check the returned resources
+                    view.checkReturnedResource(marbleMarketMessage.getReturnedResource());
                     return;
                 }
-                //code to check the returned resources
-                view.checkReturnedResource(marbleMarketMessage.getReturnedResource());
+                //code to select the marbles
+                view.selectMarble(marbleMarketMessage.getReturnedMarble());
                 return;
             }
-            //code to select the marbles
-            view.selectMarble(marbleMarketMessage.getReturnedMarble());
+            //code to see the marble
+            view.showMarbleMarket(marbleMarketMessage.getMarbleList(), marbleMarketMessage.getMarbleOut());
             return;
         }
-        //code to see the marble
-        view.showMarbleMarket(marbleMarketMessage.getMarbleList(), marbleMarketMessage.getMarbleOut());
+        //code to swap row inside marbleMarket
+
+        if(marbleMarketMessage.isCanMove()){
+            view.moveAppliedIntoMarbleMarket(marbleMarketMessage.getReturnedResource());
+        }
+        else {
+            // resources will be lost
+            view.looseResourceIntoMarbleMarket(marbleMarketMessage.getReturnedResource());
+        }
+
     }
 
     @Override
@@ -204,17 +217,14 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeMoveResource(MoveResourceMessage moveResourceMessage) {
-        if(!moveResourceMessage.isCanMove()){
-            if(!moveResourceMessage.isForceSwap()){
-                view.viewError("Error on Move Resources action");
-                return;
-            }
+        if(moveResourceMessage.isCanMove()){
+            // resources have been moved correctly
+            view.moveApplied();
+        }
+        else {
             // resources will be lost
             view.looseResource();
         }
-        // resources have been moved correctly
-
-        view.moveApplied();
     }
 
     @Override

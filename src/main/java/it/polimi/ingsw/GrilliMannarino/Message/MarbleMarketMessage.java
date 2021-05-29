@@ -46,6 +46,12 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
      */
     private boolean destroyRemaining = false;
 
+    private boolean swapRow = false;
+    private Row rowOne;
+    private Row rowTwo;
+    private boolean canMove = false;
+    private boolean forceSwap = false;
+
 
 
     public MarbleMarketMessage(Integer gameId, Integer playerId) {
@@ -175,5 +181,45 @@ public class MarbleMarketMessage extends Message implements MessageInterface, Se
 
     public void setCheckReturnedResource(boolean checkReturnedResource) {
         this.checkReturnedResource = checkReturnedResource;
+    }
+
+    public boolean isSwapRow() {
+        return swapRow;
+    }
+
+    public void setSwapRow(boolean swapRow) {
+        this.swapRow = swapRow;
+    }
+
+    public Row getRowOne() {
+        return rowOne;
+    }
+
+    public void setRowOne(Row rowOne) {
+        this.rowOne = rowOne;
+    }
+
+    public Row getRowTwo() {
+        return rowTwo;
+    }
+
+    public void setRowTwo(Row rowTwo) {
+        this.rowTwo = rowTwo;
+    }
+
+    public boolean isCanMove() {
+        return canMove;
+    }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+
+    public boolean isForceSwap() {
+        return forceSwap;
+    }
+
+    public void setForceSwap(boolean forceSwap) {
+        this.forceSwap = forceSwap;
     }
 }
