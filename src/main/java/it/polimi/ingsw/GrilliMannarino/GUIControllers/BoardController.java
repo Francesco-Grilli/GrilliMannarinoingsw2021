@@ -2,6 +2,7 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -169,6 +170,23 @@ public class BoardController implements SmallController{
             checksMap.put((i+1), checks[i]);
         }
         showFaithChecks(checksMap);
+    }
+
+    public void setWareHouse(HashMap<Row, HashMap<Resource, Integer>> wareHouse){
+        if(wareHouse.containsKey(Row.FIRST)){
+            for(Resource r : wareHouse.get(Row.FIRST).keySet())
+                setFirstLine(r, wareHouse.get(Row.FIRST).get(r));
+        }
+
+        if(wareHouse.containsKey(Row.SECOND)){
+            for(Resource r : wareHouse.get(Row.SECOND).keySet())
+                setSecondLine(r, wareHouse.get(Row.SECOND).get(r));
+        }
+
+        if(wareHouse.containsKey(Row.THIRD)){
+            for(Resource r : wareHouse.get(Row.THIRD).keySet())
+                setThirdLine(r, wareHouse.get(Row.THIRD).get(r));
+        }
     }
 
     public void setChest(HashMap<Resource,Integer> resources){
