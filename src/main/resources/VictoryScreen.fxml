@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.VictoryScreenController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="victoryScreen" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/Victory.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="272.0" layoutY="313.0" text="Score">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="scoreField" alignment="CENTER" contentDisplay="CENTER" layoutX="282.0" layoutY="348.0" prefHeight="30.0" prefWidth="40.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

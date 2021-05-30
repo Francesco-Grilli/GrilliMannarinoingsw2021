@@ -38,6 +38,10 @@ public class WarehouseController implements SmallController {
   public ImageView leaderCard2;
   public AnchorPane shoot;
   public ImageView trashcan;
+  public ImageView leaderCard2_1;
+  public ImageView leaderCard2_2;
+  public ImageView leaderCard1_2;
+  public ImageView leaderCard1_1;
 
   private enum Status{
     SWAP,NOTHING,PLACE
@@ -184,10 +188,12 @@ public class WarehouseController implements SmallController {
     warehouseClick(Row.THIRD);}
 
   public void leaderCard1(){
-    leaderCard1.setEffect(new Glow());
+    leaderCard1_1.setEffect(new Glow());
+    leaderCard1_2.setEffect(new Glow());
     warehouseClick(Row.FOURTH);}
   public void leaderCard2(){
-    leaderCard2.setEffect(new Glow());
+    leaderCard2_1.setEffect(new Glow());
+    leaderCard2_2.setEffect(new Glow());
     warehouseClick(Row.FIFTH);}
 
   private void removeGlow(){
@@ -201,35 +207,27 @@ public class WarehouseController implements SmallController {
     res3.setEffect(null);
     res2.setEffect(null);
     res1.setEffect(null);
+    leaderCard2_1.setEffect(null);
+    leaderCard2_2.setEffect(null);
+    leaderCard1_1.setEffect(null);
+    leaderCard1_2.setEffect(null);
   }
   public void areThereLeaderCards(boolean areThereLeaderCards){
     if(areThereLeaderCards){
       shoot.setPrefHeight(269.0);
-      leaderCard1.setDisable(false);
-      leaderCard2.setDisable(false);
     }else{
       shoot.setPrefHeight(225.0);
-      leaderCard1.setDisable(true);
-      leaderCard2.setDisable(true);
     }
   }
 
-  public void justSwapResources(boolean justSwapping){
-    if(justSwapping){
-      shoot.setPrefWidth(200.0);
-      res1.setDisable(true);
-      res2.setDisable(true);
-      res3.setDisable(true);
-      res4.setDisable(true);
-      trashcan.setDisable(true);
-    }else{
-      shoot.setPrefHeight(440.0);
-      res1.setDisable(false);
-      res2.setDisable(false);
-      res3.setDisable(false);
-      res4.setDisable(false);
-      trashcan.setDisable(false);
-    }
+  private void isThereLeaderCard1(boolean thereIs){
+    leaderCard1_1.setDisable(!thereIs);
+    leaderCard1_2.setDisable(!thereIs);
+  }
+
+  private void isThereLeaderCard2(boolean thereIs){
+    leaderCard2_1.setDisable(!thereIs);
+    leaderCard2_2.setDisable(!thereIs);
   }
 
 
@@ -262,6 +260,30 @@ public class WarehouseController implements SmallController {
     }
     if(amount>2){
       row3_3.setImage(im);
+    }
+  }
+  private void setFourthLine(Resource resource, int amount){
+    String p = resource.toString().toUpperCase();
+    Image logo = new Image("image/LC" + p + ".png");
+    leaderCard1.setImage(logo);
+    Image im = new Image("image/" + p + ".png");
+    if (amount>0) {
+      leaderCard1_1.setImage(im);
+    }
+    if(amount>1){
+      leaderCard1_2.setImage(im);
+    }
+  }
+  private void setFifthLine(Resource resource, int amount){
+    String p = resource.toString().toUpperCase();
+    Image logo = new Image("image/LC" + p + ".png");
+    leaderCard2.setImage(logo);
+    Image im = new Image("image/" + p + ".png");
+    if (amount>0) {
+      leaderCard2_1.setImage(im);
+    }
+    if(amount>1){
+      leaderCard2_2.setImage(im);
     }
   }
 
@@ -297,6 +319,26 @@ public class WarehouseController implements SmallController {
       for(Resource r : wareHouse.get(Row.THIRD).keySet())
         setThirdLine(r, wareHouse.get(Row.THIRD).get(r));
     }
+    if(wareHouse.containsKey(Row.FOURTH)||wareHouse.containsKey(Row.FIFTH)){
+      areThereLeaderCards(true);
+      if(wareHouse.containsKey(Row.FOURTH)){
+        isThereLeaderCard1(true);
+        for(Resource r : wareHouse.get(Row.FOURTH).keySet())
+          setFourthLine(r, wareHouse.get(Row.FOURTH).get(r));
+      }else{
+        isThereLeaderCard1(false);
+      }
+      if(wareHouse.containsKey(Row.FIFTH)){
+        isThereLeaderCard2(true);
+        for(Resource r : wareHouse.get(Row.FIFTH).keySet())
+          setFifthLine(r, wareHouse.get(Row.FIFTH).get(r));
+      }else{
+        isThereLeaderCard2(false);
+      }
+    }else{
+      areThereLeaderCards(false);
+    }
+
   }
 
   public void setStartingResource(boolean startingResource) {
@@ -305,6 +347,21 @@ public class WarehouseController implements SmallController {
 
   public void setJustSwitching(boolean justSwitching) {
     this.justSwitching = justSwitching;
+    if(justSwitching){
+      shoot.setPrefWidth(200.0);
+      res1.setDisable(true);
+      res2.setDisable(true);
+      res3.setDisable(true);
+      res4.setDisable(true);
+      trashcan.setDisable(true);
+    }else{
+      shoot.setPrefHeight(440.0);
+      res1.setDisable(false);
+      res2.setDisable(false);
+      res3.setDisable(false);
+      res4.setDisable(false);
+      trashcan.setDisable(false);
+    }
   }
 
   public void dumpAllResources(){

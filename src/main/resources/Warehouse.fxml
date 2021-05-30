@@ -36,12 +36,16 @@
       <ImageView fx:id="row3_2" fitHeight="56.0" fitWidth="56.0" layoutX="72.0" layoutY="155.0" onMouseClicked="#warehouse3" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="row3_3" fitHeight="56.0" fitWidth="56.0" layoutX="136.0" layoutY="155.0" onMouseClicked="#warehouse3" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="text" alignment="CENTER" layoutX="285.0" layoutY="14.0" prefHeight="17.0" prefWidth="27.0" textFill="WHITE" />
-      <ImageView fx:id="leaderCard1" fitHeight="44.0" fitWidth="100.0" layoutY="225.0" onMouseClicked="#leaderCard1" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="leaderCard2" fitHeight="44.0" fitWidth="100.0" layoutX="100.0" layoutY="225.0" onMouseClicked="#leaderCard2" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="leaderCard1" fitHeight="44.0" fitWidth="100.0" layoutY="225.0"  pickOnBounds="true" preserveRatio="true"/>
+      <ImageView fx:id="leaderCard2" fitHeight="44.0" fitWidth="100.0" layoutX="100.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true"/>
       <ImageView fx:id="trashcan" fitHeight="84.0" fitWidth="56.0" layoutX="384.0" layoutY="71.0" onMouseClicked="#dumpAllResources" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@image/Trashcan.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="leaderCard2_1" fitHeight="36.0" fitWidth="36.0" layoutX="103.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#leaderCard1" />
+      <ImageView fx:id="leaderCard2_2" fitHeight="36.0" fitWidth="36.0" layoutX="158.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#leaderCard1" />
+      <ImageView fx:id="leaderCard1_2" fitHeight="36.0" fitWidth="36.0" layoutX="58.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#leaderCard2" />
+      <ImageView fx:id="leaderCard1_1" fitHeight="36.0" fitWidth="36.0" layoutX="3.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#leaderCard2" />
    </children>
 </AnchorPane>
