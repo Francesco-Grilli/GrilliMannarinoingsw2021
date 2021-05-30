@@ -4,17 +4,27 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.AccountManagingController">
-   <Label fx:id="accountLabel" layoutX="208.0" layoutY="70.0" text="Create a New Account">
+   <ImageView fitHeight="400.0" fitWidth="603.0" pickOnBounds="true">
+      <image>
+         <Image url="@image/CardMarket.jpg" />
+      </image>
+   </ImageView>
+   <Label fx:id="accountLabel" alignment="CENTER" layoutX="24.0" layoutY="52.0" prefHeight="45.0" prefWidth="545.0" text="Create a New Account" textAlignment="CENTER" textFill="#ffe200" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
       <font>
-         <Font size="20.0" />
+         <Font name="Castellar" size="35.0" />
       </font>
    </Label>
-   <TextField fx:id="usernameField" layoutX="231.0" layoutY="161.0" promptText="Username" />
-   <PasswordField fx:id="passwordField" layoutX="231.0" layoutY="211.0" promptText="Password" />
-   <PasswordField fx:id="confirmPasswordField" layoutX="231.0" layoutY="245.0" promptText="Confirm Password" />
-   <Button fx:id="accountButton" layoutX="275.0" layoutY="298.0" mnemonicParsing="false" text="Confirm" onAction="#loginAccount"/>
+   <TextField fx:id="usernameField" layoutX="231.0" layoutY="161.0" promptText="Username" AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="227.0" />
+   <PasswordField fx:id="passwordField" layoutX="231.0" layoutY="211.0" promptText="Password" AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="227.0" />
+   <PasswordField fx:id="confirmPasswordField" layoutX="231.0" layoutY="245.0" promptText="Confirm Password" AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="227.0" />
+   <Button fx:id="accountButton" layoutX="262.0" layoutY="298.0" mnemonicParsing="false" onAction="#loginAccount" prefHeight="25.0" prefWidth="94.0" text="Confirm" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0">
+      <font>
+         <Font name="Castellar" size="12.0" />
+      </font></Button>
 </AnchorPane>

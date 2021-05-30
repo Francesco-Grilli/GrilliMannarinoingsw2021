@@ -8,16 +8,22 @@ public class WelcomeController implements SmallController{
 
   private GUIView view;
 
-  public void printNothing(){
-    System.out.println("Do nothing");
-  }
-
   public void getLogin(){
-
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        view.setLogin(false);
+      }
+    }).start();
   }
 
   public void getNewAccount(){
-
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        view.setLogin(true);
+      }
+    }).start();
   }
 
   @Override

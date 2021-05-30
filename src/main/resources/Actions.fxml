@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.ActionsController">
    <children>
+      <ImageView fitHeight="409.0" fitWidth="609.0" layoutX="-3.0" layoutY="-8.0" pickOnBounds="true" smooth="false">
+         <image>
+            <Image url="@image/CardMarket.jpg" />
+         </image>
+      </ImageView>
       <Button fx:id="getResourcesAction" layoutX="206.0" layoutY="76.0" mnemonicParsing="false" onAction="#getResourcesAction" text="GET RESOURCES FROM MARKET" />
       <Button fx:id="buyCardMarket" layoutX="222.0" layoutY="101.0" mnemonicParsing="false" onAction="#buyCardAction" text="BUY CARD FROM MARKET" />
       <Button fx:id="produceNewResources" layoutX="218.0" layoutY="126.0" mnemonicParsing="false" onAction="#produceResourcesAction" text="PRODUCE NEW RESOURCES" />
-      <Button fx:id="performLeaderAction" layoutX="215.0" layoutY="151.0" mnemonicParsing="false" onAction="#leaderAction" text="PERFORM A LEADER ACTION" />
-      <Button fx:id="swapResources" layoutX="198.0" layoutY="188.0" mnemonicParsing="false" onAction="#swapResourcesAction" text="SWAP RESOURCES IN WAREHOUSE" />
-      <Button fx:id="skipTurn" layoutX="263.0" layoutY="229.0" mnemonicParsing="false" onAction="#skipTurnAction" text="SKIP TURN" />
+      <Button fx:id="performLeaderAction" layoutX="215.0" layoutY="188.0" mnemonicParsing="false" onAction="#leaderAction" text="PERFORM A LEADER ACTION" />
+      <Button fx:id="swapResources" layoutX="198.0" layoutY="244.0" mnemonicParsing="false" onAction="#swapResourcesAction" text="SWAP RESOURCES IN WAREHOUSE" />
+      <Button fx:id="skipTurn" layoutX="263.0" layoutY="312.0" mnemonicParsing="false" onAction="#skipTurnAction" text="SKIP TURN" />
    </children>
 </AnchorPane>

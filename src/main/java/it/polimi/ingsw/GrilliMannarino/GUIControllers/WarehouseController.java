@@ -77,8 +77,10 @@ public class WarehouseController implements SmallController {
   }
 
   public void resourceClick(int i){
-    if(status==Status.SWAP || resourceToPlace!=resourcesToPlace.get(i))
+    if(status==Status.SWAP || resourceToPlace!=resourcesToPlace.get(i)) {
       removeGlow();
+      resourceMap.get(i).setEffect(new Glow());
+    }
     status = Status.PLACE;
     resourceToPlace = resourcesToPlace.get(i);
   }

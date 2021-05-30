@@ -3,7 +3,9 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Faction;
 import it.polimi.ingsw.GrilliMannarino.Message.BuyProductionCardMessage;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -27,6 +29,7 @@ public class CardMarketController implements SmallController{
     public ImageView productionCard1;
     public ImageView productionCard2;
     public ImageView productionCard3;
+    public Button backButton;
     private HashMap<Faction,HashMap<Integer,ImageView>> cardSlots = new HashMap<>();
     private HashMap<Integer, ImageView> cardProduceSlots = new HashMap<>();
     private final Faction blue = Faction.BLUE;
@@ -121,4 +124,12 @@ public class CardMarketController implements SmallController{
         cardProduceSlots.forEach((pos, img) -> img.setOnMouseClicked(e -> sendMessage(pos)));
     }
 
+    public void back(ActionEvent actionEvent) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.backToActionSelect();
+            }
+        }).start();
+    }
 }

@@ -61,14 +61,9 @@ public class AccountManagingController implements SmallController{
 
 
   public void loginAccount(){
-    if(passwordField.getText().equals(confirmPasswordField.getText())){
-      if(!usernameField.getText().equals(""))
-        controller.sendInformationToServer(usernameField.getText(), passwordField.getText(), false);
-      else
-        errorMessage("Error with username", "Username is empty");
-    }
+    if(!usernameField.getText().equals(""))
+      controller.sendInformationToServer(usernameField.getText(), passwordField.getText(), false);
     else
-      errorMessage("Error with Password", "The passwords do not match");
-  }
-
+      errorMessage("Error with username", "Username is empty");
+    }
 }

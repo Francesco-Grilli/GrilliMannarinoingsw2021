@@ -349,13 +349,6 @@ public class GUIView extends ClientView{
 
   @Override
   public void setUpInformation() {
-    GUIView that = this;
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        screenHandler.setScene("account", that);
-      }
-    });
   }
 
   public void sendInformationToServer(String nickname, String password, boolean newAccount){
@@ -663,6 +656,31 @@ public class GUIView extends ClientView{
         wc.setResourcesToPlace(resources);
         wc.setStartingResource(true);
         wc.setWareHouse(that.warehouse);
+      }
+    });
+  }
+
+  public void setLogin(boolean newAccount){
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("account", that);
+        AccountManagingController amc = (AccountManagingController) screenHandler.getActiveController();
+        if(newAccount)
+          amc.newAccountConfig();
+        else
+          amc.loginConfig();
+      }
+    });
+  }
+
+  public void backToActionSelect(){
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("action", that);
       }
     });
   }

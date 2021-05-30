@@ -64,6 +64,7 @@ public class GUIController extends Application implements GUIControllerInterface
     try {
       root = loader.load();
       SmallController wc = loader.getController();
+      wc.setView(view);
       this.activeController = wc;
     } catch (IOException e) {
       e.printStackTrace();
