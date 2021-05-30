@@ -36,6 +36,7 @@ public class WarehouseController implements SmallController {
   public ImageView leaderCard1;
   public ImageView leaderCard2;
   public AnchorPane shoot;
+  public ImageView trashcan;
 
   private enum Status{
     SWAP,NOTHING,PLACE
@@ -209,6 +210,24 @@ public class WarehouseController implements SmallController {
       shoot.setPrefHeight(225.0);
       leaderCard1.setDisable(true);
       leaderCard2.setDisable(true);
+    }
+  }
+
+  public void justSwapResources(boolean justSwapping){
+    if(justSwapping){
+      shoot.setPrefWidth(200.0);
+      res1.setDisable(true);
+      res2.setDisable(true);
+      res3.setDisable(true);
+      res4.setDisable(true);
+      trashcan.setDisable(true);
+    }else{
+      shoot.setPrefHeight(440.0);
+      res1.setDisable(false);
+      res2.setDisable(false);
+      res3.setDisable(false);
+      res4.setDisable(false);
+      trashcan.setDisable(false);
     }
   }
 
