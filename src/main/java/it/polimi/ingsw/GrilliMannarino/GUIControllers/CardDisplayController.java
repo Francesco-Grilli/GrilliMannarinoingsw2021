@@ -320,12 +320,12 @@ public class CardDisplayController implements SmallController{
         card4.setDisable(true);
         card5.setDisable(true);
         card6.setDisable(true);
-        card1.setVisible(false);
-        card2.setVisible(false);
-        card3.setVisible(false);
-        card4.setVisible(false);
-        card5.setVisible(false);
-        card6.setVisible(false);
+        card1.setOpacity(0.5);
+        card2.setOpacity(0.5);
+        card3.setOpacity(0.5);
+        card4.setOpacity(0.5);
+        card5.setOpacity(0.5);
+        card6.setOpacity(0.5);
     }
 
     public void setLeaderCard(boolean leaderCard) {
