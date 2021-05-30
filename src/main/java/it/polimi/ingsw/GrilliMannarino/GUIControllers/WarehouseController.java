@@ -181,6 +181,13 @@ public class WarehouseController implements SmallController {
     row3_3.setEffect(new Glow());
     warehouseClick(Row.THIRD);}
 
+  public void leaderCard1(){
+    leaderCard1.setEffect(new Glow());
+    warehouseClick(Row.FOURTH);}
+  public void leaderCard2(){
+    leaderCard2.setEffect(new Glow());
+    warehouseClick(Row.FIFTH);}
+
   private void removeGlow(){
     row3_1.setEffect(null);
     row3_2.setEffect(null);
