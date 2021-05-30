@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class WarehouseController implements SmallController {
   public ImageView row3_2;
   public ImageView row3_3;
   public Label text;
+  public ImageView leaderCard1;
+  public ImageView leaderCard2;
+  public AnchorPane shoot;
 
   private enum Status{
     SWAP,NOTHING,PLACE
@@ -189,6 +193,18 @@ public class WarehouseController implements SmallController {
     res2.setEffect(null);
     res1.setEffect(null);
   }
+  public void areThereLeaderCards(boolean areThereLeaderCards){
+    if(areThereLeaderCards){
+      shoot.setPrefHeight(269.0);
+      leaderCard1.setDisable(false);
+      leaderCard2.setDisable(false);
+    }else{
+      shoot.setPrefHeight(225.0);
+      leaderCard1.setDisable(true);
+      leaderCard2.setDisable(true);
+    }
+  }
+
 
   private void setFirstLine(Resource resource, int amount){
     String p = resource.toString().toUpperCase();
@@ -262,5 +278,9 @@ public class WarehouseController implements SmallController {
 
   public void setJustSwitching(boolean justSwitching) {
     this.justSwitching = justSwitching;
+  }
+
+  public void dumpAllResources(){
+    //messaggio per dumpare le risorse
   }
 }
