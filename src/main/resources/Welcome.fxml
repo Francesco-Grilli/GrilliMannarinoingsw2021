@@ -61,7 +61,7 @@
    </Label>
    <ImageView fitHeight="172.0" fitWidth="374.0" layoutX="108.0" layoutY="62.0" pickOnBounds="true">
       <image>
-         <Image url="@image/Welcom.png" />
+         <Image url="@image/Welcome.png" />
       </image>
    </ImageView>
 </AnchorPane>
