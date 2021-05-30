@@ -25,6 +25,7 @@ public class CardDisplayController implements SmallController{
     public Button produceButton;
     public Button activateButton;
     public Button sellButton;
+    public ImageView backArrow;
     private GUIView view;
     private boolean leaderCard = false;
     private boolean selectStartingLeaderCard = false;
@@ -96,11 +97,17 @@ public class CardDisplayController implements SmallController{
                 activateButton.setDisable(false);
             }
         }
+        else{
+            sellButton.setVisible(false);
+            sellButton.setDisable(true);
+            activateButton.setVisible(false);
+            activateButton.setDisable(true);
+        }
 
         HashMap<Integer, Integer> cardFrom = new HashMap<>(cardCodes); //code, pos
         HashMap<Integer,Integer> posCard = new HashMap<>(); //pos, code
 
-        cardFrom.forEach((cc, pos) -> posCard.put(pos, cc));
+        cardFrom.forEach((cc, pos) -> posCard.put(pos+1, cc));
 
         momentaryCardCodes = posCard;
         posCard.forEach(this::setCard);
@@ -111,30 +118,38 @@ public class CardDisplayController implements SmallController{
             card1.setImage(new Image("image/CC-"+cc+".png"));
             card1.setDisable(false);
             card1.setVisible(true);
+            card1.setOpacity(1);
         }else if(i == 2){
             card2.setImage(new Image("image/CC-"+cc+".png"));
             card2.setDisable(false);
             card2.setVisible(true);
+            card2.setOpacity(1);
         }else if(i == 3){
             card3.setImage(new Image("image/CC-"+cc+".png"));
             card3.setDisable(false);
             card3.setVisible(true);
+            card3.setOpacity(1);
         }else if(i == 4){
             card4.setImage(new Image("image/CC-"+cc+".png"));
             card4.setDisable(false);
             card4.setVisible(true);
+            card4.setOpacity(1);
         }else if(i == 5){
             card5.setImage(new Image("image/CC-"+cc+".png"));
             card5.setDisable(false);
             card5.setVisible(true);
+            card5.setOpacity(1);
         }else if(i == 6){
             card6.setImage(new Image("image/CC-"+cc+".png"));
             card6.setDisable(false);
             card6.setVisible(true);
+            card6.setOpacity(1);
         }
     }
 
     public void card1Action() {
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         if(leaderCard){
             if(selectStartingLeaderCard){
                 if(numberCardSelected<2){
@@ -160,6 +175,8 @@ public class CardDisplayController implements SmallController{
     }
 
     public void card2Action() {
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         if(leaderCard){
             if(selectStartingLeaderCard){
                 if(numberCardSelected<2){
@@ -185,6 +202,8 @@ public class CardDisplayController implements SmallController{
     }
 
     public void card3Action() {
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         if(leaderCard){
             if(selectStartingLeaderCard){
                 if(numberCardSelected<2){
@@ -210,6 +229,8 @@ public class CardDisplayController implements SmallController{
     }
 
     public void card4Action() {
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         if(leaderCard){
             if(selectStartingLeaderCard){
                 if(numberCardSelected<2){
@@ -235,6 +256,8 @@ public class CardDisplayController implements SmallController{
     }
 
     public void card5Action() {
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         if(leaderCard){
             if(selectStartingLeaderCard){
                 if(numberCardSelected<2){
@@ -260,6 +283,8 @@ public class CardDisplayController implements SmallController{
     }
 
     public void card6Action() {
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         if(leaderCard){
             if(selectStartingLeaderCard){
                 if(numberCardSelected<2){
@@ -333,6 +358,8 @@ public class CardDisplayController implements SmallController{
     }
 
     public void setSelectStartingLeaderCard(boolean selectStartingLeaderCard) {
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         this.selectStartingLeaderCard = selectStartingLeaderCard;
     }
 
@@ -362,5 +389,14 @@ public class CardDisplayController implements SmallController{
                 }
             }).start();
         }
+    }
+
+    public void goBack(MouseEvent mouseEvent) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.backToActionSelect();
+            }
+        }).start();
     }
 }

@@ -12,6 +12,11 @@
             <Image url="@image/Wood.jpg" />
          </image>
       </ImageView>
+      <ImageView fx:id="backArrow" fitHeight="32.0" fitWidth="60.0" layoutX="637.0" layoutY="192.0" onMouseClicked="#goBack" pickOnBounds="true">
+         <image>
+            <Image url="@image/back-arrow.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="card1" fitHeight="152.0" fitWidth="100.0" layoutX="14.0" layoutY="41.0" onMouseClicked="#card1Action" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="card2" fitHeight="152.0" fitWidth="100.0" layoutX="134.0" layoutY="41.0" onMouseClicked="#card2Action" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="card3" fitHeight="152.0" fitWidth="100.0" layoutX="248.0" layoutY="41.0" onMouseClicked="#card3Action" pickOnBounds="true" preserveRatio="true" />

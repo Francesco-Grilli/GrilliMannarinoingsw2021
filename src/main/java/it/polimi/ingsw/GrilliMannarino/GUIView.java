@@ -589,6 +589,13 @@ public class GUIView extends ClientView{
     });
   }
 
+  @Override
+  public void activateResourceLeaderCard(Integer cardCode, Resource res, Row row) {
+    HashMap<Resource, Integer> add = new HashMap<>();
+    add.put(res, 1);
+    this.warehouse.put(row, add);
+  }
+
   public void moveResource(){
     GUIView that = this;
     Platform.runLater(new Runnable() {
@@ -681,6 +688,16 @@ public class GUIView extends ClientView{
       @Override
       public void run() {
         screenHandler.setScene("action", that);
+      }
+    });
+  }
+
+  public void backToWelcome(){
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("welcome", that);
       }
     });
   }

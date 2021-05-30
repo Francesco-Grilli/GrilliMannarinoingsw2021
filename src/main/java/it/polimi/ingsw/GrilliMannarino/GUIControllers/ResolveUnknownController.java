@@ -79,6 +79,7 @@ public class ResolveUnknownController implements SmallController {
         unknownMessage.setInputCard(inputCard);
         unknownMessage.setOutputCard(outputCard);
         unknownMessage.setSelectedCard(selectedCard);
+        unknownMessage.setSelectCard(true);
         new Thread(new Runnable() {
             @Override
             public void run() {

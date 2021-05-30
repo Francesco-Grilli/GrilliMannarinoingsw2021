@@ -129,6 +129,13 @@ public class Board {
     return false;
   }
 
+  public LeaderCard getLeaderCard(int cardCode){
+    if(boardLeaderCards.containsKey(cardCode))
+      return boardLeaderCards.get(cardCode);
+    else
+      return null;
+  }
+
   private boolean canActivateLeaderCard(LeaderCard leaderCard){
     boolean condition = resourceManager.canRemove(leaderCard.getResourcePrice());
     if(!(checkOnCardsFactionsAndLevels(leaderCard.getCardPrice()))){

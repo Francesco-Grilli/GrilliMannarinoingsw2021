@@ -4,6 +4,7 @@ import it.polimi.ingsw.GrilliMannarino.GUIView;
 import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import it.polimi.ingsw.GrilliMannarino.GameData.Row;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -98,7 +99,10 @@ public class BoardController implements SmallController{
 
     @Override
     public void errorMessage(String header, String context) {
-
+        Alert error = new Alert(Alert.AlertType.INFORMATION);
+        error.setHeaderText(header);
+        error.setContentText(context);
+        error.show();
     }
 
     public void setPopelineSteps(int step){
@@ -154,13 +158,13 @@ public class BoardController implements SmallController{
 
     private void showFaithChecks(HashMap<Integer,Boolean> checks){
         if(checks.get(1)){
-            faithCheck1.setOpacity(1);
+            faithCheck1.setImage(new Image("image/ACTIVECHECK1.png"));
         }
         if(checks.get(2)){
-            faithCheck2.setOpacity(1);
+            faithCheck2.setImage(new Image("image/ACTIVECHECK2.png"));
         }
         if(checks.get(3)){
-            faithCheck3.setOpacity(1);
+            faithCheck3.setImage(new Image("image/ACTIVECHECK3.png"));
         }
     }
 

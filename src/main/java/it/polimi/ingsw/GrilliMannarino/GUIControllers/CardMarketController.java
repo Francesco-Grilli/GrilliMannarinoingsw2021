@@ -29,7 +29,7 @@ public class CardMarketController implements SmallController{
     public ImageView productionCard1;
     public ImageView productionCard2;
     public ImageView productionCard3;
-    public Button backButton;
+    public ImageView backArrow;
     private HashMap<Faction,HashMap<Integer,ImageView>> cardSlots = new HashMap<>();
     private HashMap<Integer, ImageView> cardProduceSlots = new HashMap<>();
     private final Faction blue = Faction.BLUE;
@@ -96,6 +96,8 @@ public class CardMarketController implements SmallController{
     }
 
     private void setCardCodeProduce(int cardCode){
+        backArrow.setVisible(false);
+        backArrow.setDisable(true);
         this.cardCodeProduce = cardCode;
         cardProduceSlots.keySet().forEach(pos -> cardProduceSlots.get(pos).setDisable(false));
     }
@@ -124,7 +126,8 @@ public class CardMarketController implements SmallController{
         cardProduceSlots.forEach((pos, img) -> img.setOnMouseClicked(e -> sendMessage(pos)));
     }
 
-    public void back(ActionEvent actionEvent) {
+
+    public void goBack(MouseEvent mouseEvent) {
         new Thread(new Runnable() {
             @Override
             public void run() {

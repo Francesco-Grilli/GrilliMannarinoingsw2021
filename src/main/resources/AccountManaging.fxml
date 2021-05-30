@@ -27,4 +27,9 @@
       <font>
          <Font name="Castellar" size="12.0" />
       </font></Button>
+   <ImageView fx:id="backArrow" fitHeight="58.0" fitWidth="90.0" layoutX="8.0" layoutY="328.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@image/back-arrow.png" />
+      </image>
+   </ImageView>
 </AnchorPane>

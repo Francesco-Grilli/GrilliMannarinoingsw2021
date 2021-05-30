@@ -5,10 +5,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class AccountManagingController implements SmallController{
 
-  GUIView controller;
+  public ImageView backArrow;
+  GUIView view;
   
   public TextField usernameField;
   public Label accountLabel;
@@ -18,7 +21,7 @@ public class AccountManagingController implements SmallController{
 
   @Override
   public void setView(GUIView view){
-    this.controller = view;
+    this.view = view;
   }
 
   @Override
@@ -48,7 +51,7 @@ public class AccountManagingController implements SmallController{
   public void newAccountCreation(){
     if (passwordField.getText().equals(confirmPasswordField.getText())){
       if(!usernameField.getText().equals("")){
-        controller.sendInformationToServer(usernameField.getText(), passwordField.getText(), true);
+        view.sendInformationToServer(usernameField.getText(), passwordField.getText(), true);
       }
       else{
         errorMessage("Error with Username", "Username is empty");
@@ -62,8 +65,17 @@ public class AccountManagingController implements SmallController{
 
   public void loginAccount(){
     if(!usernameField.getText().equals(""))
-      controller.sendInformationToServer(usernameField.getText(), passwordField.getText(), false);
+      view.sendInformationToServer(usernameField.getText(), passwordField.getText(), false);
     else
       errorMessage("Error with username", "Username is empty");
     }
+
+  public void goBack(MouseEvent mouseEvent) {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        view.backToWelcome();
+      }
+    }).start();
+  }
 }

@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -308,5 +309,14 @@ public class WarehouseController implements SmallController {
 
   public void dumpAllResources(){
     //messaggio per dumpare le risorse
+    MarbleMarketMessage message = new MarbleMarketMessage(view.getGameId(), view.getPlayerId());
+    message.setReturnedResource(resourcesList);
+    message.setDestroyRemaining(true);
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        view.sendMessageToServer(message);
+      }
+    }).start();
   }
 }

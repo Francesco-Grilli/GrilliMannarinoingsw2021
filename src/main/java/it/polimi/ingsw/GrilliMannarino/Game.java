@@ -320,12 +320,16 @@ public class Game {
 
     //METHOD TO WORK WITH LEADERCARDS
 
-    public ArrayList<Integer> getLeaderCard(){
+    public ArrayList<Integer> getLeaderCards(){
         return activeBoard.getLeaderCards();
     }
 
     public boolean activateLeaderCard(int cardCode){
         return activeBoard.activateLeaderCard(cardCode);
+    }
+
+    public LeaderCard getLeaderCard(int cc){
+        return activeBoard.getLeaderCard(cc);
     }
 
     public boolean hasActiveLeaderCard(){

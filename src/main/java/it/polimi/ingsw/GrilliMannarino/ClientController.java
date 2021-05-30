@@ -77,8 +77,12 @@ public class ClientController implements VisitorInterface {
                 return;
             }
             //code to activate card
-            if (leaderCard.isActivationSellingCorrect())
+            if (leaderCard.isActivationSellingCorrect()) {
+                if (leaderCard.isResourceLeaderCard()) {
+                    view.activateResourceLeaderCard(leaderCard.getCardCode(), leaderCard.getRes(), leaderCard.getRow());
+                }
                 view.finishedLeaderAction("Leader Card has been correctly activated, you have finished Leader action");
+            }
             else
                 view.viewError("Leader Card has not been activated");
             return;
@@ -190,6 +194,7 @@ public class ClientController implements VisitorInterface {
             view.viewError(error.getError());
         else
             view.printInformation(error.getError());
+        receiveMessageFromServer();
     }
 
     @Override

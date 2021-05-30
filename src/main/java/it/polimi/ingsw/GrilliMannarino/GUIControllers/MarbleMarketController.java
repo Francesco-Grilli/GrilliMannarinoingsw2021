@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class MarbleMarketController implements SmallController{
     public Button row3;
     public Button row2;
     public Button row1;
+    public ImageView backArrow;
 
     private HashMap<Integer, Button> column = new HashMap<>();
     private HashMap<Integer, Button> row = new HashMap<>();
@@ -116,6 +118,15 @@ public class MarbleMarketController implements SmallController{
             @Override
             public void run() {
                 view.sendMessageToServer(message);
+            }
+        }).start();
+    }
+
+    public void goBack(MouseEvent mouseEvent) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.backToActionSelect();
             }
         }).start();
     }

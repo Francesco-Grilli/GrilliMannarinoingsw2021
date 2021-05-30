@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GrilliMannarino.Message;
 
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
+import it.polimi.ingsw.GrilliMannarino.GameData.Row;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -19,6 +22,9 @@ public class LeaderCardMessage extends Message implements MessageInterface, Seri
     private boolean sellingCard = false;
     private boolean activationSellingCorrect = false;
     private Integer cardCode;
+    private boolean resourceLeaderCard = false;
+    private Row row;
+    private Resource res;
 
     public LeaderCardMessage(Integer gameId, Integer playerId) {
         super(gameId, playerId);
@@ -83,5 +89,29 @@ public class LeaderCardMessage extends Message implements MessageInterface, Seri
 
     public void setSelectLeaderCard(boolean selectLeaderCard) {
         this.selectLeaderCard = selectLeaderCard;
+    }
+
+    public boolean isResourceLeaderCard() {
+        return resourceLeaderCard;
+    }
+
+    public void setResourceLeaderCard(boolean resourceLeaderCard) {
+        this.resourceLeaderCard = resourceLeaderCard;
+    }
+
+    public Row getRow() {
+        return row;
+    }
+
+    public void setRow(Row row) {
+        this.row = row;
+    }
+
+    public Resource getRes() {
+        return res;
+    }
+
+    public void setRes(Resource res) {
+        this.res = res;
     }
 }

@@ -263,6 +263,11 @@ public class ServerController implements VisitorInterface {
                     message.setActivateCard(true);
                     message.setCardCode(leaderCard.getCardCode());
                     if (game.activateLeaderCard(leaderCard.getCardCode())) {
+                        if(game.getLeaderCard(message.getCardCode()) instanceof ResourceManagerLeaderCardTwoSpace){
+                            message.setResourceLeaderCard(true);
+                            message.setRow(((ResourceManagerLeaderCardTwoSpace) game.getLeaderCard(message.getCardCode())).getRow());
+                            message.setRes(game.getLeaderCard(message.getCardCode()).getDefinedResource());
+                        }
                         message.setActivationSellingCorrect(true);
                         game.setLeaderCardAction(false);
                     }
@@ -312,7 +317,7 @@ public class ServerController implements VisitorInterface {
         }
         //code to show leadercard
 
-        ArrayList<Integer> cards = new ArrayList<>(game.getLeaderCard());
+        ArrayList<Integer> cards = new ArrayList<>(game.getLeaderCards());
         LeaderCardMessage message = new LeaderCardMessage(leaderCard.getGameId(), leaderCard.getPlayerId());
         message.setShowLeaderCard(true);
         message.setCards(cards);

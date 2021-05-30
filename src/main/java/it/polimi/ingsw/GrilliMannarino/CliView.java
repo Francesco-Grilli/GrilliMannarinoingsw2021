@@ -1023,6 +1023,13 @@ public class CliView extends ClientView {
         getResourceToPlace(returnedResource);
     }
 
+    @Override
+    public void activateResourceLeaderCard(Integer cardCode, Resource res, Row row) {
+        HashMap<Resource, Integer> add = new HashMap<>();
+        add.put(res, 1);
+        this.warehouse.put(row, add);
+    }
+
     private ArrayList<Resource> getUnknownResource(int numberOfUnknown) {
         System.out.println("You have to resolve " + numberOfUnknown + " unknown resource");
         ArrayList<Resource> toReturn = new ArrayList<>();

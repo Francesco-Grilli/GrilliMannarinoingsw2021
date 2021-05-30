@@ -119,4 +119,6 @@ public abstract class ClientView {
     public abstract void looseResourceIntoMarbleMarket(ArrayList<Resource> returnedResource);
 
     public abstract void moveAppliedIntoMarbleMarket(ArrayList<Resource> returnedResource);
+
+    public abstract void activateResourceLeaderCard(Integer cardCode, Resource res, Row row);
 }
