@@ -6,6 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -42,6 +43,10 @@ public class CardStack implements CreationCardGroup{
             return null;
         }
         return cards.get(size).getCard();
+    }
+
+    public void shuffle(){
+        Collections.shuffle(cards);
     }
 
 

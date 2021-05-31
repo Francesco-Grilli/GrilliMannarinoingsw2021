@@ -79,13 +79,10 @@ public class BoardSingleController implements SmallController{
   public Label servant;
   public Label stone;
   public Label coin;
-
-  private Map<Integer, Pane> VALUES_BY_NAME;
-  private Map<Integer, Pane> LORENZO_BY_NAME;
   private GUIView view;
 
-  private void setUpMap(){
-    final Map<Integer, Pane> valuesByName = new HashMap<>();
+  private HashMap<Integer,Pane> getPopelineHashMap(){
+    HashMap<Integer, Pane> valuesByName = new HashMap<>();
     valuesByName.put(0, faithStep0);
     valuesByName.put(1, faithStep1);
     valuesByName.put(2, faithStep2);
@@ -111,40 +108,42 @@ public class BoardSingleController implements SmallController{
     valuesByName.put(22, faithStep22);
     valuesByName.put(23, faithStep23);
     valuesByName.put(24, faithStep24);
-    VALUES_BY_NAME = Collections.unmodifiableMap(valuesByName);
-    final Map<Integer, Pane> lorenzoByName = new HashMap<>();
-    valuesByName.put(0, faithStepLorenzo0);
-    valuesByName.put(1, faithStepLorenzo1);
-    valuesByName.put(2, faithStepLorenzo2);
-    valuesByName.put(3, faithStepLorenzo3);
-    valuesByName.put(4, faithStepLorenzo4);
-    valuesByName.put(5, faithStepLorenzo5);
-    valuesByName.put(6, faithStepLorenzo6);
-    valuesByName.put(7, faithStepLorenzo7);
-    valuesByName.put(8, faithStepLorenzo8);
-    valuesByName.put(9, faithStepLorenzo9);
-    valuesByName.put(10, faithStepLorenzo10);
-    valuesByName.put(11, faithStepLorenzo11);
-    valuesByName.put(12, faithStepLorenzo12);
-    valuesByName.put(13, faithStepLorenzo13);
-    valuesByName.put(14, faithStepLorenzo14);
-    valuesByName.put(15, faithStepLorenzo15);
-    valuesByName.put(16, faithStepLorenzo16);
-    valuesByName.put(17, faithStepLorenzo17);
-    valuesByName.put(18, faithStepLorenzo18);
-    valuesByName.put(19, faithStepLorenzo19);
-    valuesByName.put(20, faithStepLorenzo20);
-    valuesByName.put(21, faithStepLorenzo21);
-    valuesByName.put(22, faithStepLorenzo22);
-    valuesByName.put(23, faithStepLorenzo23);
-    valuesByName.put(24, faithStepLorenzo24);
-    LORENZO_BY_NAME = Collections.unmodifiableMap(lorenzoByName);
+    return valuesByName;
+  }
+
+  private HashMap<Integer,Pane> getLorenzoHashMap(){
+    HashMap<Integer, Pane> lorenzoByName = new HashMap<>();
+    lorenzoByName.put(0, faithStepLorenzo0);
+    lorenzoByName.put(1, faithStepLorenzo1);
+    lorenzoByName.put(2, faithStepLorenzo2);
+    lorenzoByName.put(3, faithStepLorenzo3);
+    lorenzoByName.put(4, faithStepLorenzo4);
+    lorenzoByName.put(5, faithStepLorenzo5);
+    lorenzoByName.put(6, faithStepLorenzo6);
+    lorenzoByName.put(7, faithStepLorenzo7);
+    lorenzoByName.put(8, faithStepLorenzo8);
+    lorenzoByName.put(9, faithStepLorenzo9);
+    lorenzoByName.put(10, faithStepLorenzo10);
+    lorenzoByName.put(11, faithStepLorenzo11);
+    lorenzoByName.put(12, faithStepLorenzo12);
+    lorenzoByName.put(13, faithStepLorenzo13);
+    lorenzoByName.put(14, faithStepLorenzo14);
+    lorenzoByName.put(15, faithStepLorenzo15);
+    lorenzoByName.put(16, faithStepLorenzo16);
+    lorenzoByName.put(17, faithStepLorenzo17);
+    lorenzoByName.put(18, faithStepLorenzo18);
+    lorenzoByName.put(19, faithStepLorenzo19);
+    lorenzoByName.put(20, faithStepLorenzo20);
+    lorenzoByName.put(21, faithStepLorenzo21);
+    lorenzoByName.put(22, faithStepLorenzo22);
+    lorenzoByName.put(23, faithStepLorenzo23);
+    lorenzoByName.put(24, faithStepLorenzo24);
+    return lorenzoByName;
   }
 
   @Override
   public void setView(GUIView view) {
     this.view = view;
-    setUpMap();
   }
 
   @Override
@@ -156,13 +155,15 @@ public class BoardSingleController implements SmallController{
   }
 
   public void setPopelineSteps(int step){
-    VALUES_BY_NAME.values().forEach(v->{v.setOpacity(0);});
-    VALUES_BY_NAME.get(step).setOpacity(1);
+    HashMap<Integer,Pane> values = getPopelineHashMap();
+    values.values().forEach(v->{v.setOpacity(0.0);});
+    values.get(step).setOpacity(1.0);
   }
 
   public void setLorenzoSteps(int step){
-    LORENZO_BY_NAME.values().forEach(v->{v.setOpacity(0);});
-    LORENZO_BY_NAME.get(step).setOpacity(1);
+    HashMap<Integer,Pane> values = getLorenzoHashMap();
+    values.values().forEach(v->{v.setOpacity(0.0);});
+    values.get(step).setOpacity(1.0);
   }
 
   public void setProductionCards(HashMap<Integer,Integer> cardCodes){

@@ -25,6 +25,11 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     cardStacks = new HashMap<>();
     orderCardsInStacks();
     playedCards = new HashMap<>();
+    for(HashMap<Integer,CardStack> fac: cardStacks.values()){
+      for(CardStack cards: fac.values()){
+        cards.shuffle();
+      }
+    }
   }
 
   public HashMap<Faction, HashMap<Integer, CreationCard>> getCards(){
