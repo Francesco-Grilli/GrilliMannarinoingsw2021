@@ -33,6 +33,7 @@ public class MarbleMarketLeaderCardWhiteResource extends MarbleMarketLeaderCard 
 
   /**
    * performs the action of selecting a column in the market
+   * adding the optional resource instead of the white marble
    * @param column the column
    * @return the marbles earned from the action
    */
@@ -49,6 +50,7 @@ public class MarbleMarketLeaderCardWhiteResource extends MarbleMarketLeaderCard 
 
   /**
    * performs the action of selecting a row in the market
+   * adding the optional resource instead of the white marble
    * @param row the row
    * @return the marbles earned from the action
    */
