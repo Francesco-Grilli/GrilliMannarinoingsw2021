@@ -82,8 +82,8 @@ class WareHouseTest {
         try {
             house.removeResources(Row.THIRD, Resource.COIN, -1);
         }
-        catch (IllegalArgumentException e){
-            e.printStackTrace();
+        catch (IllegalArgumentException ignored){
+
         }
 
     }
