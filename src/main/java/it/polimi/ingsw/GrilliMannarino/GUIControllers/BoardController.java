@@ -56,11 +56,10 @@ public class BoardController implements SmallController{
     public Label stone;
     public Label coin;
 
-    private Map<Integer, Pane> VALUES_BY_NAME;
     private GUIView view;
 
-    private void setUpMap(){
-        final Map<Integer, Pane> valuesByName = new HashMap<>();
+    private HashMap<Integer,Pane> getPopelineHashMap(){
+        HashMap<Integer, Pane> valuesByName = new HashMap<>();
         valuesByName.put(0, faithStep0);
         valuesByName.put(1, faithStep1);
         valuesByName.put(2, faithStep2);
@@ -86,7 +85,7 @@ public class BoardController implements SmallController{
         valuesByName.put(22, faithStep22);
         valuesByName.put(23, faithStep23);
         valuesByName.put(24, faithStep24);
-        VALUES_BY_NAME = Collections.unmodifiableMap(valuesByName);
+        return valuesByName;
     }
 
 
@@ -94,7 +93,6 @@ public class BoardController implements SmallController{
     @Override
     public void setView(GUIView view) {
         this.view = view;
-        setUpMap();
     }
 
     @Override
@@ -106,8 +104,9 @@ public class BoardController implements SmallController{
     }
 
     public void setPopelineSteps(int step){
-        VALUES_BY_NAME.values().forEach(v->{v.setOpacity(0);});
-        VALUES_BY_NAME.get(step).setOpacity(1);
+        HashMap<Integer,Pane> values = getPopelineHashMap();
+        values.values().forEach(v->{v.setOpacity(0);});
+        values.get(step).setOpacity(1);
     }
 
     public void setProductionCards(HashMap<Integer,Integer> cardCodes){
