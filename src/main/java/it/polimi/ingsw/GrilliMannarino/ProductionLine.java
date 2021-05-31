@@ -36,7 +36,7 @@ public class ProductionLine implements ProductionLineBoardInterface{
             position = 3;
         }
         else{
-            position = ((pos % this.maxProductionSlots));
+            position = pos;
         }
         if(canAddCard(pos,card)){
             productionCards.put(card.getCardCode(), card);
@@ -56,7 +56,7 @@ public class ProductionLine implements ProductionLineBoardInterface{
             position = 3;
         }
         else{
-            position = ((pos % this.maxProductionSlots));
+            position = pos;
         }
         return activeCards.get(position).canAdd(card);
     }

@@ -72,7 +72,7 @@ public class ProductionLineLeaderCardResourceFaithTest {
     assertFalse(boardtest.getProductionLine().addCard(1, new CreationCard(2,1,1,Faction.GREEN, null, null,null)));
     assertTrue(boardtest.getProductionLine().addCard(2, new CreationCard(3,1,1,Faction.GREEN, null, null,null)));
 
-    assertEquals(boardtest.getProductionLine().getCards().get(2).getCardCode(),1);
-    assertEquals(boardtest.getProductionLine().getCards().get(3).getCardCode(),3);
+    assertEquals(boardtest.getProductionLine().getCards().get(1).getCardCode(),1);
+    assertEquals(boardtest.getProductionLine().getCards().get(2).getCardCode(),3);
   }
 }
