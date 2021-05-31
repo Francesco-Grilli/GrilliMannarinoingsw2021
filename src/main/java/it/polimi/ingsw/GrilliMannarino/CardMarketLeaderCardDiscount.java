@@ -11,6 +11,10 @@ public class CardMarketLeaderCardDiscount extends CardMarketLeaderCard implement
     super(resourcePrice, cardPrice, definedResource, points,cardCode);
   }
 
+  /**
+   * returns the cards of the market applying the said discount to their prices
+   * @return the discount
+   */
   @Override
   public HashMap<Faction, HashMap<Integer, CreationCard>> getCards() {
     HashMap<Faction, HashMap<Integer, CreationCard>> temp = getCardMarket().getCards();
@@ -29,11 +33,22 @@ public class CardMarketLeaderCardDiscount extends CardMarketLeaderCard implement
     return temp;
   }
 
+  /**
+   * buys card that is found at the coordinates faction-level on the grid
+   * @param faction the faction coordinate
+   * @param level the level coordinate
+   * @return the card
+   */
   @Override
   public CreationCard buyCard(Faction faction, Integer level) {
     return this.cardMarket.buyCard(faction,level);
   }
 
+  /**
+   * returns the card corresponding to the specified card code
+   * @param cardCode the card code of the card
+   * @return the card
+   */
   @Override
   public CreationCard getCardFromCode(int cardCode) {
     return getCardMarket().getCardFromCode(cardCode);

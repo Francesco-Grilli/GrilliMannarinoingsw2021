@@ -23,15 +23,28 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
     loadMarbles();
   }
 
+  /**
+   * returns the marbles on the grid of the market as an Array of Arrays
+   * @return the marbles
+   */
   public Marble[][] getMarbleBoard() {
     Marble[][] t = marbleBoard.clone();
     return t;
   }
 
+  /**
+   * returns the marble to joggle into the market
+   * @return is the marble
+   */
   public Marble getMarbleOut() {
     return marbleOut;
   }
 
+  /**
+   * performs the action of selecting a column in the market
+   * @param column the column
+   * @return the marbles earned from the action
+   */
   public ArrayList<MarbleOption> getColumn(int column){
     column = column-1 % this.sizeX;
     ArrayList<MarbleOption> toReturn = new ArrayList<>(this.sizeY);
@@ -42,6 +55,10 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
     return toReturn;
   }
 
+  /**
+   * moves the marbles after the getColumn Action
+   * @param column the column of marbles to shift
+   */
   private void shiftColumn(int column){
     Marble temporaryMarble;
     for(int pos = 0; pos<this.sizeY; pos++){
@@ -51,6 +68,11 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
     }
   }
 
+  /**
+   * performs the action of selecting a row in the market
+   * @param row the row
+   * @return the marbles earned from the action
+   */
   public ArrayList<MarbleOption> getRow(int row){
     row = row-1 % this.sizeY;
     ArrayList<MarbleOption> toReturn = new ArrayList<>(this.sizeX);
@@ -61,6 +83,10 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
     return toReturn;
   }
 
+  /**
+   * moves the marbles after the getRow Action
+   * @param row the row of marbles to shift
+   */
   private void shiftRow(int row){
     Marble temporaryMarble;
     for(int pos = 0; pos<this.sizeX; pos++){
@@ -70,6 +96,9 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
     }
   }
 
+  /**
+   * internally loads the marble configuration from the file marbles.json
+   */
   private void loadMarbles(){
     JSONParser jsonParser = new JSONParser();
 
@@ -87,6 +116,10 @@ public class MarbleMarket implements MarbleMarketBoardInterface {
     }
   }
 
+  /**
+   * parses and places the marbles "randomly" in the market
+   * @param j the Json containing raw marble data
+   */
   private void marbleParsing(JSONObject j){
     HashMap<Marble,Integer> marbles = new HashMap<>();
     for(Marble m: Marble.values()){
