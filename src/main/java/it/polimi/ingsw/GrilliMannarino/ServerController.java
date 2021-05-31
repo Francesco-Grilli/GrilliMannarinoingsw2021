@@ -560,6 +560,7 @@ public class ServerController implements VisitorInterface {
             CreationCard card = game.getCardFromCode(cardCode);
             if(card==null) {
                 sendErrorMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId(), "Error on card code");
+                return;
             }
             BuyProductionCardMessage message = new BuyProductionCardMessage(buyProductionCardMessage.getGameId(), buyProductionCardMessage.getPlayerId());
             message.setSelectCard(true);
@@ -591,8 +592,11 @@ public class ServerController implements VisitorInterface {
 
         for(Faction fac : cards.keySet()){
             HashMap<Integer, Map.Entry<Integer, Boolean>> facMap = new HashMap<>();
-            for(Integer value : cards.get(fac).keySet()){
-                facMap.put(value, new AbstractMap.SimpleEntry<>(cards.get(fac).get(value).getKey().getCardCode(), cards.get(fac).get(value).getValue()));
+            if(cards.containsKey(fac)) {
+                for (Integer value : cards.get(fac).keySet()) {
+                    if(cards.get(fac).containsKey(value))
+                        facMap.put(value, new AbstractMap.SimpleEntry<>(cards.get(fac).get(value).getKey().getCardCode(), cards.get(fac).get(value).getValue()));
+                }
             }
             returnedCards.put(fac, facMap);
         }
@@ -882,4 +886,7 @@ public class ServerController implements VisitorInterface {
     }
 
 
+    public void removePlayer(String nickName) {
+        playerLogged.remove(nickName);
+    }
 }

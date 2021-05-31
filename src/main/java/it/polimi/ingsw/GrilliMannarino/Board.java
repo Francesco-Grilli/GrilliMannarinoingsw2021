@@ -49,7 +49,8 @@ public class Board {
     t.forEach((fac,levels)->{
       ret.put(fac,new HashMap<>());
       levels.forEach((lev,pair)->{
-        ret.get(fac).put(lev, new AbstractMap.SimpleEntry<>(pair.getCard(), canBuyCard(pair)));
+        if(pair!=null)
+          ret.get(fac).put(lev, new AbstractMap.SimpleEntry<>(pair.getCard(), canBuyCard(pair)));
       });
     });
     return ret;

@@ -68,4 +68,8 @@ public class Server {
     public Integer logIn(String nickname, String password) {
         return controller.logInPlayer(nickname, password);
     }
+
+    public void removePlayer(String nickName) {
+        controller.removePlayer(nickName);
+    }
 }

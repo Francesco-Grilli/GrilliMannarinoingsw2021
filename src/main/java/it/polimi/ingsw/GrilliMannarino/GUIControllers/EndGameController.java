@@ -3,6 +3,8 @@ package it.polimi.ingsw.GrilliMannarino.GUIControllers;
 import it.polimi.ingsw.GrilliMannarino.GUIView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class EndGameController implements SmallController {
     public Label score2;
     public Label score3;
     public Label score4;
+    public ImageView home;
 
     private GUIView view;
     private HashMap<Integer, Map.Entry<String, Integer>> playerRanking;
@@ -32,7 +35,7 @@ public class EndGameController implements SmallController {
     private void endGame(){
         setUpLabelMap();
         playerMap.forEach((pos, l) -> {
-            if(pos>view.getGameId())
+            if(pos>view.getNumberOfPlayer())
                 l.setVisible(false);
             else{
                 nicknameMap.get(pos).setText(playerRanking.get(pos).getKey());
@@ -72,5 +75,14 @@ public class EndGameController implements SmallController {
     public void setPlayerRanking(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
         this.playerRanking = playerRanking;
         endGame();
+    }
+
+    public void backNewGame(MouseEvent mouseEvent) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                view.backToNewGame();
+            }
+        }).start();
     }
 }

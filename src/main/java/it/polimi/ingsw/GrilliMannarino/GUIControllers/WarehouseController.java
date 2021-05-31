@@ -42,7 +42,7 @@ public class WarehouseController implements SmallController {
   public ImageView leaderCard2_2;
   public ImageView leaderCard1_2;
   public ImageView leaderCard1_1;
-
+  public ImageView backArrow;
   private enum Status{
     SWAP,NOTHING,PLACE
   }
@@ -68,6 +68,8 @@ public class WarehouseController implements SmallController {
     resourceMap.put(3, res3);
     resourceMap.put(4, res4);
     resourceMap.forEach((pos, img) -> img.setDisable(true));
+    backArrow.setDisable(true);
+    backArrow.setVisible(false);
   }
 
   @Override
@@ -343,6 +345,8 @@ public class WarehouseController implements SmallController {
 
   public void setStartingResource(boolean startingResource) {
     this.startingResource = startingResource;
+    trashcan.setDisable(true);
+    trashcan.setOpacity(0.5);
   }
 
   public void setJustSwitching(boolean justSwitching) {
@@ -354,6 +358,9 @@ public class WarehouseController implements SmallController {
       res3.setDisable(true);
       res4.setDisable(true);
       trashcan.setDisable(true);
+      trashcan.setOpacity(0.5);
+      backArrow.setVisible(true);
+      backArrow.setDisable(false);
     }else{
       shoot.setPrefHeight(440.0);
       res1.setDisable(false);
@@ -373,6 +380,15 @@ public class WarehouseController implements SmallController {
       @Override
       public void run() {
         view.sendMessageToServer(message);
+      }
+    }).start();
+  }
+
+  public void goBack(MouseEvent mouseEvent) {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        view.backToActionSelect();
       }
     }).start();
   }

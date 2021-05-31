@@ -123,6 +123,7 @@ public class GUIView extends ClientView{
           bsc.setProductionCards(that.productionLine);
           bsc.setChest(that.chest);
           bsc.showFaithChecks(that.faithMark);
+          bsc.setWareHouse(that.warehouse);
         }
         else {
           screenHandler.setScene("board", that);
@@ -131,6 +132,7 @@ public class GUIView extends ClientView{
           bc.setProductionCards(that.productionLine);
           bc.setChest(that.chest);
           bc.showFaithChecks(that.faithMark);
+          bc.setWareHouse(that.warehouse);
         }
       }
     });
@@ -164,6 +166,7 @@ public class GUIView extends ClientView{
         bc.setProductionCards(that.productionLine);
         bc.setChest(that.chest);
         bc.showFaithChecks(that.faithMark);
+        bc.setWareHouse(that.warehouse);
       }
     });
     sleepLong(that.TimeToBoard);
@@ -182,6 +185,7 @@ public class GUIView extends ClientView{
         bc.setProductionCards(that.productionLine);
         bc.setChest(that.chest);
         bc.showFaithChecks(that.faithMark);
+        bc.setWareHouse(that.warehouse);
       }
     });
     sleepLong(that.TimeToBoard);
@@ -206,6 +210,7 @@ public class GUIView extends ClientView{
           bsc.setProductionCards(that.productionLine);
           bsc.setChest(that.chest);
           bsc.showFaithChecks(that.faithMark);
+          bsc.setWareHouse(that.warehouse);
         }
         else {
           screenHandler.setScene("board", that);
@@ -214,6 +219,7 @@ public class GUIView extends ClientView{
           bc.setProductionCards(that.productionLine);
           bc.setChest(that.chest);
           bc.showFaithChecks(that.faithMark);
+          bc.setWareHouse(that.warehouse);
         }
       }
     });
@@ -236,6 +242,7 @@ public class GUIView extends ClientView{
           bsc.setProductionCards(that.productionLine);
           bsc.setChest(that.chest);
           bsc.showFaithChecks(that.faithMark);
+          bsc.setWareHouse(that.warehouse);
         }
         else{
           screenHandler.setScene("board", that);
@@ -244,6 +251,7 @@ public class GUIView extends ClientView{
           bc.setProductionCards(that.productionLine);
           bc.setChest(that.chest);
           bc.showFaithChecks(that.faithMark);
+          bc.setWareHouse(that.warehouse);
         }
       }
     });
@@ -500,6 +508,7 @@ public class GUIView extends ClientView{
         bsc.setProductionCards(that.productionLine);
         bsc.setChest(that.chest);
         bsc.showFaithChecks(that.faithMark);
+        bsc.setWareHouse(that.warehouse);
       }
     });
     sleepLong(that.TimeToBoard);
@@ -525,6 +534,7 @@ public class GUIView extends ClientView{
         bsc.showFaithChecks(that.faithMark);
         bsc.setProductionCards(that.productionLine);
         bsc.setChest(that.chest);
+        bsc.setWareHouse(that.warehouse);
       }
     });
     sleepLong(that.TimeToBoard);
@@ -631,6 +641,7 @@ public class GUIView extends ClientView{
           bsc.setProductionCards(that.productionLine);
           bsc.setChest(that.chest);
           bsc.showFaithChecks(that.faithMark);
+          bsc.setWareHouse(that.warehouse);
         }
         else {
           screenHandler.setScene("board", that);
@@ -639,6 +650,7 @@ public class GUIView extends ClientView{
           bc.setProductionCards(that.productionLine);
           bc.setChest(that.chest);
           bc.showFaithChecks(that.faithMark);
+          bc.setWareHouse(that.warehouse);
         }
       }
     });
@@ -698,6 +710,25 @@ public class GUIView extends ClientView{
       @Override
       public void run() {
         screenHandler.setScene("welcome", that);
+      }
+    });
+  }
+
+  public void backToNewGame() {
+    this.numberOfPlayer=0;
+    this.warehouse=new HashMap<>();
+    this.chest = new HashMap<>();
+    this.faith=0;
+    this.gameId =0;
+    this.faithMark = new boolean[3];
+    this.lorenzoFaith=0;
+    this.lorenzoFaithMark = new boolean[3];
+    this.productionLine = new HashMap<>();
+    GUIView that = this;
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        screenHandler.setScene("createGame", that);
       }
     });
   }

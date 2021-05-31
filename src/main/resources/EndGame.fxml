@@ -6,88 +6,83 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0"
-            prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.EndGameController">
-   <ImageView fitHeight="400.0" fitWidth="700.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@image/Wood.jpg"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.EndGameController">
+   <ImageView fitHeight="277.0" fitWidth="700.0" pickOnBounds="true">
+      <Image url="@image/Wood.jpg" />
    </ImageView>
    <Label fx:id="player1" layoutX="14.0" layoutY="39.0" text="1" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
    <Label fx:id="player2" layoutX="14.0" layoutY="84.0" text="2" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
    <Label fx:id="player3" layoutX="14.0" layoutY="129.0" text="3" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
    <Label fx:id="player4" layoutX="14.0" layoutY="174.0" text="4" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
-   <Label fx:id="nickname1" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="39.0" maxWidth="460.0"
-          prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
+   <Label fx:id="nickname1" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="39.0" maxWidth="460.0" prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
-   <Label fx:id="nickname2" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="84.0" maxWidth="460.0"
-          prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
+   <Label fx:id="nickname2" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="84.0" maxWidth="460.0" prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
-   <Label fx:id="nickname3" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="129.0" maxWidth="460.0"
-          prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
+   <Label fx:id="nickname3" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="129.0" maxWidth="460.0" prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
-   <Label fx:id="nickname4" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="174.0" maxWidth="460.0"
-          prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
+   <Label fx:id="nickname4" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="174.0" maxWidth="460.0" prefHeight="45.0" prefWidth="460.0" textAlignment="CENTER" textFill="#fafafa">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
-   <Label fx:id="score1" alignment="CENTER" layoutX="598.0" layoutY="39.0" prefHeight="45.0" prefWidth="68.0"
-          textFill="WHITE">
+   <Label fx:id="score1" alignment="CENTER" layoutX="598.0" layoutY="39.0" prefHeight="45.0" prefWidth="68.0" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
    <Label layoutX="256.0" layoutY="3.0" text="Nickname" textFill="WHITE">
       <font>
-         <Font size="25.0"/>
+         <Font size="25.0" />
       </font>
    </Label>
    <Label layoutX="601.0" layoutY="3.0" text="Score" textFill="WHITE">
       <font>
-         <Font size="25.0"/>
+         <Font size="25.0" />
       </font>
    </Label>
-   <Label fx:id="score2" alignment="CENTER" layoutX="598.0" layoutY="84.0" prefHeight="45.0" prefWidth="68.0"
-          textFill="WHITE">
+   <Label fx:id="score2" alignment="CENTER" layoutX="598.0" layoutY="84.0" prefHeight="45.0" prefWidth="68.0" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
-   <Label fx:id="score3" alignment="CENTER" layoutX="598.0" layoutY="129.0" prefHeight="45.0" prefWidth="68.0"
-          textFill="WHITE">
+   <Label fx:id="score3" alignment="CENTER" layoutX="598.0" layoutY="129.0" prefHeight="45.0" prefWidth="68.0" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
-   <Label fx:id="score4" alignment="CENTER" layoutX="598.0" layoutY="174.0" prefHeight="45.0" prefWidth="68.0"
-          textFill="WHITE">
+   <Label fx:id="score4" alignment="CENTER" layoutX="598.0" layoutY="174.0" prefHeight="45.0" prefWidth="68.0" textFill="WHITE">
       <font>
-         <Font size="30.0"/>
+         <Font size="30.0" />
       </font>
    </Label>
+   <ImageView fx:id="home" fitHeight="45.0" fitWidth="68.0" layoutX="326.0" layoutY="232.0" onMouseClicked="#backNewGame" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@image/home.png" />
+      </image>
+   </ImageView>
 </AnchorPane>
