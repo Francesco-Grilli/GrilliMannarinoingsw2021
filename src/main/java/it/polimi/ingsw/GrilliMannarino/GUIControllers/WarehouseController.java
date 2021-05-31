@@ -80,8 +80,8 @@ public class WarehouseController implements SmallController {
 
   private void fade(Label lbl){
     SequentialTransition sequentialTransition = new SequentialTransition();
-    Transition t = new PauseTransition(Duration.millis(3000));
-    FadeTransition fadeOut = new FadeTransition(Duration.millis(2000), lbl);
+    Transition t = new PauseTransition(Duration.millis(1500));
+    FadeTransition fadeOut = new FadeTransition(Duration.millis(1500), lbl);
     fadeOut.setFromValue(1);
     fadeOut.setToValue(0);
     sequentialTransition.getChildren().addAll(t, fadeOut);

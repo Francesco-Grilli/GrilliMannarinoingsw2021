@@ -4,6 +4,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="shoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.WarehouseController">
    <children>
@@ -35,7 +36,10 @@
       <ImageView fx:id="row3_1" fitHeight="56.0" fitWidth="56.0" layoutX="8.0" layoutY="155.0" onMouseClicked="#warehouse3" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="row3_2" fitHeight="56.0" fitWidth="56.0" layoutX="72.0" layoutY="155.0" onMouseClicked="#warehouse3" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="row3_3" fitHeight="56.0" fitWidth="56.0" layoutX="136.0" layoutY="155.0" onMouseClicked="#warehouse3" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="text" alignment="CENTER" layoutX="285.0" layoutY="14.0" prefHeight="17.0" prefWidth="27.0" textFill="WHITE" />
+      <Label fx:id="text" alignment="CENTER" layoutX="199.0" layoutY="14.0" prefHeight="17.0" prefWidth="242.0" textFill="WHITE">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
       <ImageView fx:id="leaderCard1" fitHeight="44.0" fitWidth="100.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="leaderCard2" fitHeight="44.0" fitWidth="100.0" layoutX="100.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="trashcan" fitHeight="84.0" fitWidth="56.0" layoutX="384.0" layoutY="71.0" onMouseClicked="#dumpAllResources" pickOnBounds="true" preserveRatio="true">

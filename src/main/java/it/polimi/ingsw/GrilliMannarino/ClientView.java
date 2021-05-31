@@ -92,7 +92,7 @@ public abstract class ClientView {
 
     public abstract void checkPopeLineSingle(boolean favorActive, Integer checkPosition, Integer faithPosition, Integer lorenzoFaith, boolean lorenzoFavorActive);
 
-    public abstract void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking);
+    public abstract void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking, boolean win);
 
     public String getNickname() {
         return nickname;

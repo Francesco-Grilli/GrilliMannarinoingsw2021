@@ -301,10 +301,10 @@ public class Game {
         return activeBoard.showCardInProductionLine();
     }
 
-    public HashMap<String, Integer> getAllPoints(){
-        HashMap<String, Integer> playerPoints = new HashMap<>();
+    private HashMap<String, Map.Entry<Integer, Integer>> getAllPoints(){    //nickname, points, numberOfResource
+        HashMap<String, Map.Entry<Integer, Integer>> playerPoints = new HashMap<>();
         for(Integer playerId : player.keySet()){
-            playerPoints.put(player.get(playerId).getName(), board.get(playerId).getPoints());
+            playerPoints.put(player.get(playerId).getName(), new AbstractMap.SimpleEntry<>(board.get(playerId).getPoints(), board.get(playerId).getNumberOfResources()));
         }
         return playerPoints;
     }
@@ -489,5 +489,45 @@ public class Game {
 
     public void setStart(boolean start) {
         this.start = start;
+    }
+
+    public HashMap<Integer, Map.Entry<String, Integer>> orderRank(){
+        HashMap<String, Map.Entry<Integer, Integer>> ranking = new HashMap<>(getAllPoints());
+        HashMap<String, Map.Entry<Integer, Integer>> rankingCopy = new HashMap<>(ranking);
+
+        HashMap<Integer, Map.Entry<String, Integer>> orderedRank = new HashMap<>();
+        Integer pos = 1;
+        ArrayList<String> playerInGame = new ArrayList<>(ranking.keySet());
+        ArrayList<Integer> valueInRanking = new ArrayList<>();
+        ranking.forEach((nick, map) -> valueInRanking.add(map.getKey()));
+        Collections.sort(valueInRanking, Collections.reverseOrder());
+
+        for(Integer score : valueInRanking){
+            for(String nick : playerInGame){
+                if(ranking.containsKey(nick)){
+                    if(ranking.get(nick).getKey().equals(score)) {
+                        orderedRank.put(pos, new AbstractMap.SimpleEntry<>(nick, ranking.get(nick).getKey()));
+                        ranking.remove(nick);
+                        pos++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        for(Integer i =1; i<orderedRank.size(); i++){
+            if(orderedRank.get(i).getValue().equals(orderedRank.get(i+1).getValue())){
+                int prev = rankingCopy.get(orderedRank.get(i).getKey()).getValue();
+                int next = rankingCopy.get(orderedRank.get(i+1).getKey()).getValue();
+                if(next>prev){
+                    Integer prevPoints = orderedRank.get(i).getValue();
+                    String prevNick = orderedRank.get(i).getKey();
+                    orderedRank.put(i, new AbstractMap.SimpleEntry<>(orderedRank.get(i+1).getKey(), orderedRank.get(i+1).getValue()));
+                    orderedRank.put(i+1, new AbstractMap.SimpleEntry<>(prevNick, prevPoints));
+                }
+            }
+        }
+
+        return orderedRank;
     }
 }

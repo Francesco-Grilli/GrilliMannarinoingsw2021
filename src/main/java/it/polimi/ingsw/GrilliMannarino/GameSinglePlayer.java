@@ -12,6 +12,7 @@ public class GameSinglePlayer extends Game{
     private Integer playerId;
     private ArrayList<LorenzoToken> tokens;
     private int tokenNumber = 0;
+    private boolean win = true;
 
     public GameSinglePlayer(Integer gameId) {
         super(gameId, 1);
@@ -64,20 +65,26 @@ public class GameSinglePlayer extends Game{
         LorenzoToken activeToken = popLorenzoToken();
         if(activeToken.getNumber().equals(0)){
             Map.Entry<LorenzoToken, Boolean> map = new AbstractMap.SimpleEntry<>(activeToken, boardSingle.doubleAddLorenzoFaith());
-            if(boardSingle.getLorenzoFaith()>=24)
-                endGame=true;
+            if(boardSingle.getLorenzoFaith()>=24) {
+                win = false;
+                endGame = true;
+            }
             return map;
         }
         else if(activeToken.getNumber().equals(1)){
             Collections.shuffle(tokens);
             Map.Entry<LorenzoToken, Boolean> map = new AbstractMap.SimpleEntry<>(activeToken, boardSingle.addLorenzoFaith());
-            if(boardSingle.getLorenzoFaith()>=24)
+            if(boardSingle.getLorenzoFaith()>=24) {
+                win = false;
                 endGame = true;
+            }
             return map;
         }
         else{
-            if(removeCard(activeToken.getFaction()))
+            if(removeCard(activeToken.getFaction())) {
+                win = false;
                 endGame = true;
+            }
             return new AbstractMap.SimpleEntry<>(activeToken, false);
         }
     }
@@ -130,5 +137,9 @@ public class GameSinglePlayer extends Game{
         if(boardSingle.getLorenzoFaith()>=24)
             endGame = true;
         return check;
+    }
+
+    public boolean isWin() {
+        return win;
     }
 }

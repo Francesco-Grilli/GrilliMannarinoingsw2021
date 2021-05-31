@@ -207,36 +207,18 @@ public class ServerController implements VisitorInterface {
     }
 
     private synchronized void endGame(Game game){
-        HashMap<String, Integer> ranking = new HashMap<>(game.getAllPoints());
-        HashMap<Integer, Map.Entry<String, Integer>> orderedRank = new HashMap<>(orderRank(ranking));
+        HashMap<Integer, Map.Entry<String, Integer>> orderedRank = new HashMap<>(game.orderRank());
         for(Integer player : game.getPlayerID()){
             EndGameMessage message = new EndGameMessage(game.getGameId(), player);
             message.setPlayerRanking(orderedRank);
+            if(game.getNumberOfPlayer().equals(1)){
+                message.setWin(((GameSinglePlayer) game).isWin());
+            }
             server.sendMessageTo(player, message);
         }
+
     }
 
-    private HashMap<Integer, Map.Entry<String, Integer>> orderRank(HashMap<String, Integer> ranking){
-        HashMap<Integer, Map.Entry<String, Integer>> orderedRank = new HashMap<>();
-        Integer pos = 1;
-        ArrayList<String> playerInGame = new ArrayList<>(ranking.keySet());
-        ArrayList<Integer> valueInRanking = new ArrayList<>(ranking.values());
-        Collections.sort(valueInRanking, Collections.reverseOrder());
-        for(Integer score : valueInRanking){
-            for(String nick : playerInGame){
-                if(ranking.containsKey(nick)){
-                    if(ranking.get(nick).equals(score)) {
-                        orderedRank.put(pos, new AbstractMap.SimpleEntry<>(nick, ranking.get(nick)));
-                        ranking.remove(nick);
-                        pos++;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return orderedRank;
-    }
 
     @Override
     public synchronized void executeLeaderCard(LeaderCardMessage leaderCard) {

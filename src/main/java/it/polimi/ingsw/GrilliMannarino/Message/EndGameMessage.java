@@ -7,6 +7,7 @@ import java.util.Map;
 public class EndGameMessage extends Message implements MessageInterface, Serializable {
 
     private HashMap<Integer, Map.Entry<String, Integer>> playerRanking;
+    private boolean win = false;
 
     public EndGameMessage(Integer gameId, Integer playerId) {
         super(gameId, playerId);
@@ -23,5 +24,13 @@ public class EndGameMessage extends Message implements MessageInterface, Seriali
 
     public void setPlayerRanking(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
         this.playerRanking = playerRanking;
+    }
+
+    public boolean isWin() {
+        return win;
+    }
+
+    public void setWin(boolean win) {
+        this.win = win;
     }
 }

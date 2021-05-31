@@ -180,7 +180,7 @@ public class ClientController implements VisitorInterface {
 
     @Override
     public void executeEndGame(EndGameMessage endGame) {
-        view.endGame(endGame.getPlayerRanking());
+        view.endGame(endGame.getPlayerRanking(), endGame.isWin());
     }
 
     @Override

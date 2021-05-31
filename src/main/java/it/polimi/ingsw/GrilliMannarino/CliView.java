@@ -957,7 +957,7 @@ public class CliView extends ClientView {
     }
 
     @Override
-    public void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
+    public void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking, boolean win) {
         System.out.println("Game has ended");
         for(Integer pos : playerRanking.keySet()){
             System.out.println(pos + ": " + playerRanking.get(pos).getKey() + " Score: " + playerRanking.get(pos).getValue());

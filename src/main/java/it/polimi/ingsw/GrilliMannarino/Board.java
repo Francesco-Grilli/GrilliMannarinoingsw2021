@@ -22,7 +22,7 @@ public class Board {
   protected CardMarketBoardInterface cardMarket;
   protected MarbleMarketBoardInterface marbleMarket;
   protected HashMap<Integer, LeaderCard> boardLeaderCards;
-  protected ArrayList<Integer> activeLeaderCards;
+  protected HashMap<Integer, LeaderCard> activeLeaderCards;
   private boolean startingResource = false;
 
   public Board(Player player, CardMarketBoardInterface cardMarket, MarbleMarketBoardInterface marbleMarket){
@@ -33,7 +33,7 @@ public class Board {
     this.resourceManager = new ResourceManager();
     this.popeLine = new PopeLine();
     this.boardLeaderCards = new HashMap<>();
-    this.activeLeaderCards = new ArrayList<>();
+    this.activeLeaderCards = new HashMap<>();
   }
 
   //METHOD TO PRODUCTIONLINE
@@ -131,8 +131,8 @@ public class Board {
   }
 
   public LeaderCard getLeaderCard(int cardCode){
-    if(boardLeaderCards.containsKey(cardCode))
-      return boardLeaderCards.get(cardCode);
+    if(activeLeaderCards.containsKey(cardCode))
+      return activeLeaderCards.get(cardCode);
     else
       return null;
   }
@@ -182,7 +182,7 @@ public class Board {
   }
 
   private int getLeaderCardsPoints(){
-    return this.activeLeaderCards.stream().map(t -> this.boardLeaderCards.get(t).getValue()).reduce(0,Integer::sum);
+    return this.activeLeaderCards.values().stream().map(l -> l.getValue()).reduce(0, Integer::sum);
   }
 
   public int getPoints(){
@@ -372,7 +372,7 @@ public class Board {
   }
 
   public ArrayList<Integer> getActiveLeaderCards() {
-    return new ArrayList<>(activeLeaderCards);
+    return new ArrayList<>(activeLeaderCards.keySet());
   }
 
   public ArrayList<Integer> getLeaderCards(){
@@ -387,7 +387,7 @@ public class Board {
       leadercard.put("card",key);
     });
     JSONArray activeleadercards = new JSONArray();
-    activeLeaderCards.forEach((key)->{
+    activeLeaderCards.forEach((key, value)->{
       JSONObject leadercard = new JSONObject();
       leadercard.put("card",key);
     });

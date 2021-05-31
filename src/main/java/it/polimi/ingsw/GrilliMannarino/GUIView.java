@@ -541,16 +541,30 @@ public class GUIView extends ClientView{
   }
 
   @Override
-  public void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking) {
+  public void endGame(HashMap<Integer, Map.Entry<String, Integer>> playerRanking, boolean win) {
     GUIView that = this;
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        screenHandler.setScene("endGame", that);
-        EndGameController egc = (EndGameController) screenHandler.getActiveController();
-        egc.setPlayerRanking(playerRanking);
-      }
-    });
+    if(this.getNumberOfPlayer()>1) {
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          screenHandler.setScene("endGame", that);
+          EndGameController egc = (EndGameController) screenHandler.getActiveController();
+          egc.setPlayerRanking(playerRanking);
+        }
+      });
+    }
+    else{
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          screenHandler.setScene("victory", that);
+          VictoryScreenController vsc = (VictoryScreenController) screenHandler.getActiveController();
+          ArrayList<Integer> score = new ArrayList<>();
+          playerRanking.forEach((pos, map) -> score.add(map.getValue()));
+          vsc.setResult(win, score.get(0));
+        }
+      });
+    }
   }
 
   @Override
