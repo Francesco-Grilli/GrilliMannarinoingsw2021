@@ -27,36 +27,79 @@ public class CreationCard implements CreationCardGroup {
         this.input = input;
     }
 
+    /**
+     * returns the point value of the current instance of CreationCard
+     * @return is the said point value
+     */
     public int getValue() {
         return value;
     }
+
+    /**
+     * returns the faction of the current instance of CreationCard
+     * @return is the faction
+     */
     public Faction getFaction() {
         return faction;
     }
+
+    /**
+     * returns the level of the current instance of CreationCard
+     * @return is the level
+     */
     public int getCardLevel() {
         return cardLevel;
     }
+
+    /**
+     * returns the in game cardcode of the current instance of CreationCard
+     * @return is the card code
+     */
     public int getCardCode() {return cardCode; }
+
+    /**
+     * returns the HashMap containing the relation Resource-Amount that defines the price of the current instance
+     * of CreationCard
+     * @return is the price
+     */
     public HashMap<Resource, Integer> getPrice() {
         if(this.price == null){
             return null;
         }
         return new HashMap<>(this.price);
     }
+
+    /**
+     * returns the HashMap containing the relation Resource-Amount that defines the input required by the execution of
+     * the production of the current instance of CreationCard
+     * @return is the price
+     */
     public HashMap<Resource, Integer> getInput() {
         if(this.input == null){
             return null;
         }
         return new HashMap<>(this.input);
     }
+
+    /**
+     * returns the HashMap containing the relation Resource-Amount that defines the output produced the current instance of CreationCard
+     * @return is the price
+     */
     public HashMap<Resource, Integer> getOutput() {
         if(this.output == null){
             return null;
         }
         return new HashMap<>(this.output);
     }
+
     public boolean canAdd(CreationCard card){return false;}
     public boolean addCard(CreationCard card){return false;}
+
+    /**
+     * returns a copy of the current instance of CreationCard, this instance can be safely modified applying discounts
+     * or editing input and output of production
+     * @return is the copy of "this"
+     */
     public CreationCard getCard() {return new CreationCard(this.getCardCode(),this.getCardLevel(),this.getValue(),this.getFaction(),this.getPrice(),this.getInput(),this.getOutput());}
 
     @Override
