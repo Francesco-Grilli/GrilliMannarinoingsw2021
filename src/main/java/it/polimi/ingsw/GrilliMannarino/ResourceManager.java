@@ -186,6 +186,10 @@ public class ResourceManager implements ResourceManagerBoardInterface {
         return points / 5;
     }
 
+    /**
+     * return the number of resources inside resource manager
+     * @return an integer representing the number of resource
+     */
     public int getNumberOfResource(){
         int resource=0;
         HashMap<Resource, Integer> resourceMap = getResources();
@@ -257,14 +261,30 @@ public class ResourceManager implements ResourceManagerBoardInterface {
         return ret;
     }
 
+    /**
+     * used to overwrite a line inside warehouse
+     * @param line the line you want to overwrite
+     * @param res the resource you want to have into the new line
+     * @param value the number of resources
+     * @return a boolean equals true if the overwrite war correct
+     */
     public boolean setLineFromChest(Row line, Resource res, Integer value) {
         return wareHouse.setLine(line, res, value);
     }
 
+    /**
+     * used to remove a line inside warehouse
+     * @param line the line you want to remove
+     */
     public void removeLineFromChest(Row line) {
         wareHouse.removeLine(line);
     }
 
+    /**
+     * used to return the resources inside a line
+     * @param line the line you want to get the resources
+     * @return an hashmap representing the resources inside a line
+     */
     public HashMap<Resource, Integer> getResourceLine(Row line) {
         return wareHouse.getResources().get(line);
     }

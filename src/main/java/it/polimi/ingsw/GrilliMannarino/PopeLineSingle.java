@@ -38,8 +38,15 @@ public class PopeLineSingle extends PopeLine{
         return lorenzo.getFaith();
     }
 
+    /**
+     * check if the popeline has activare a Pope's favor
+     * @return true if the player has triggered the Pope's favor, false if the favor has been discarded
+     */
     public boolean checkLorenzoPopeFaith(){return lorenzo.checkPopeFaith();}
 
+    /**
+     * update the Pope's favor shared by all people inside the game
+     */
     @Override
     public void updateChecks() {
         super.updateChecks();

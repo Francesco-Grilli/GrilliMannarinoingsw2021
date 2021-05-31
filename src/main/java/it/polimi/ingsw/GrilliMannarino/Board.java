@@ -36,8 +36,11 @@ public class Board {
     this.activeLeaderCards = new HashMap<>();
   }
 
-  //METHOD TO PRODUCTIONLINE
 
+  /**
+   * show the card inside
+   * @return
+   */
   public HashMap<Integer, CreationCard> showCardInProductionLine(){
     return productionLine.getCards();
   }

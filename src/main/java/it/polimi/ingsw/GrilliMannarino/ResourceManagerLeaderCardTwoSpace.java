@@ -118,7 +118,7 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
 
     /**
      * remove the input resources from the leader card
-     * @param input
+     * @param input the resources to remove
      * @return the resources left from removing
      */
     @Override
@@ -149,7 +149,8 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
     }
 
     /**
-     * @return all method
+     * return the number of points of all resources and of the leadercard
+     * @return the integer representing the number of points
      */
     @Override
     public int getResourcePoints() {
@@ -161,6 +162,10 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         return resources/5;
     }
 
+    /**
+     * return the number of resources into resource manager and leadercard
+     * @return the integer representing the number of resources
+     */
     @Override
     public int getNumberOfResource() {
         int resource=0;
@@ -171,6 +176,13 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         return resource;
     }
 
+    /**
+     * overwrites a line of warehouse or of the leadercard
+     * @param line to overwrite
+     * @param res to put into the new line
+     * @param value the number of resources to add
+     * @return true if could overwrite the line
+     */
     @Override
     public boolean setLineFromChest(Row line, Resource res, Integer value) {
         if(line == currentRow) {
@@ -188,6 +200,10 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
             return resourceManager.setLineFromChest(line, res, value);
     }
 
+    /**
+     * clear a line of warehouse or leadercard
+     * @param line the line to remove
+     */
     @Override
     public void removeLineFromChest(Row line) {
         if(line == currentRow)
@@ -196,6 +212,10 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
             resourceManager.removeLineFromChest(line);
     }
 
+    /**
+     * binds the leadercard to the boards
+     * @param board where it will set itself
+     */
     @Override
     public void execute(Board board) {
         resourceManager = board.getResourceManager();
@@ -203,6 +223,11 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         currentRow = Row.getNextValue(resourceManager.getRow());
     }
 
+    /**
+     * return the resources and the number of each resource into the warehouse or leadercard
+     * @param line you wants to get the resources
+     * @return an hashmap representing the resources into the line
+     */
     @Override
     public HashMap<Resource, Integer> getResourceLine(Row line){
         if(line == currentRow){
@@ -214,11 +239,19 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
             return resourceManager.getResourceLine(line);
     }
 
+    /**
+     * get all resources inside the chest
+     * @return an hashmap representing all resources and the number inside chest
+     */
     @Override
     public HashMap<Resource, Integer> getResourcesFromChest() {
         return resourceManager.getResourcesFromChest();
     }
 
+    /**
+     * return all resources inside warehouse and leadercard divided by row
+     * @return an hashmap with all resources inside warehouse divided bu row
+     */
     @Override
     public HashMap<Row, HashMap<Resource, Integer>> getEachResourceFromWareHouse() {
         HashMap<Row, HashMap<Resource, Integer>> resourceCopy = new HashMap<>(resourceManager.getEachResourceFromWareHouse());
@@ -230,6 +263,7 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
 
         return resourceCopy;
     }
+
 
     @Override
     public JSONObject getStatus() {
@@ -245,6 +279,12 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
 
     public void setStatus(JSONObject status){}
 
+    /**
+     * used to swap line between warehouse
+     * @param one the first row to swap
+     * @param two the second row to swap
+     * @return a boolean true if the swap was correct
+     */
     @Override
     public boolean canSwapLine(Row one, Row two) {
         boolean check = true;
@@ -278,6 +318,11 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         return check;
     }
 
+    /**
+     * used to force the swapping even if some resources will be lost
+     * @param one the first row to swap
+     * @param two the second row to swap
+     */
     @Override
     public void forceSwapLine(Row one, Row two) {
         if(one != currentRow && two != currentRow)
