@@ -3,8 +3,6 @@ package it.polimi.ingsw.GrilliMannarino.Internet;
 import it.polimi.ingsw.GrilliMannarino.CliView;
 import it.polimi.ingsw.GrilliMannarino.ClientController;
 import it.polimi.ingsw.GrilliMannarino.GUIControllers.GUIController;
-import it.polimi.ingsw.GrilliMannarino.GUIView;
-import it.polimi.ingsw.GrilliMannarino.Main;
 import it.polimi.ingsw.GrilliMannarino.Message.LoginMessage;
 import it.polimi.ingsw.GrilliMannarino.Message.MessageInterface;
 
@@ -56,10 +54,12 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        //new ClientController(new CliView());
-        //else the GuiView
-        GUIController.main(new String[1]);
-        //Main.main(new String[0]);
+        if(args[0].equals("CLI")){
+            new ClientController(new CliView());
+        }
+        else{
+            GUIController.main(new String[1]);
+        }
     }
 
     public void sendMessageToServer(MessageInterface message){
