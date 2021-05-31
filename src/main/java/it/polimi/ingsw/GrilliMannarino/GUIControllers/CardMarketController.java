@@ -121,7 +121,8 @@ public class CardMarketController implements SmallController{
         HashMap<Integer, Integer> line = new HashMap<>(); //position, cc
         productionLine.forEach((cc, p) -> line.put(p, cc));
         for(Integer pos : line.keySet()){
-            cardProduceSlots.get(pos).setImage(new Image("image/CC-" + line.get(pos) + ".png"));
+            if(cardProduceSlots.containsKey(pos))
+                cardProduceSlots.get(pos).setImage(new Image("image/CC-" + line.get(pos) + ".png"));
         }
         cardProduceSlots.forEach((pos, img) -> img.setOnMouseClicked(e -> sendMessage(pos)));
     }
