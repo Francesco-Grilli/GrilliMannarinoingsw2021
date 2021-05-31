@@ -116,6 +116,11 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         return check;
     }
 
+    /**
+     * remove the input resources from the leader card
+     * @param input
+     * @return the resources left from removing
+     */
     @Override
     public HashMap<Resource, Integer> remove(HashMap<Resource, Integer> input) {
         if(input == null)
@@ -143,6 +148,9 @@ public class ResourceManagerLeaderCardTwoSpace extends ResourceManagerLeaderCard
         return currentRow;
     }
 
+    /**
+     * @return all method
+     */
     @Override
     public int getResourcePoints() {
         int resources=0;

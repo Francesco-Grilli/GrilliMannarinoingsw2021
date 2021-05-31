@@ -24,7 +24,6 @@ public class EndGameController implements SmallController {
     public Label score2;
     public Label score3;
     public Label score4;
-    public ImageView home;
 
     private GUIView view;
     private HashMap<Integer, Map.Entry<String, Integer>> playerRanking;
@@ -77,12 +76,4 @@ public class EndGameController implements SmallController {
         endGame();
     }
 
-    public void backNewGame(MouseEvent mouseEvent) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                view.backToNewGame();
-            }
-        }).start();
-    }
 }

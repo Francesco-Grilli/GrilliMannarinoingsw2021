@@ -58,6 +58,12 @@ public class WareHouse {
         return checkPresence;
     }
 
+    /**
+     * check if there already is a resource on another row
+     * @param l
+     * @param resource
+     * @return true if there already is a resource on another row
+     */
     private boolean alreadyPresent(Row l, Resource resource){
         boolean check=false;
         for(Resource r : resources.get(l).keySet()){
@@ -200,6 +206,10 @@ public class WareHouse {
         resources.get(line).clear();
     }
 
+    /**
+     * get the status of all warehouse to save the game
+     * @return
+     */
     public JSONObject getStatus(){
         JSONObject status = new JSONObject();
         resources.forEach((key,value)->{
@@ -216,6 +226,10 @@ public class WareHouse {
         return hash;
     }
 
+    /**
+     * set the status of the warehouse as was before saving
+     * @param status
+     */
     public void setStatus(JSONObject status){
         Arrays.stream(Row.values()).forEach(v->{
             if(status.get(v.toString())!= null) {

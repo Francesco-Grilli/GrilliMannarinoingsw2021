@@ -80,9 +80,4 @@
          <Font size="30.0" />
       </font>
    </Label>
-   <ImageView fx:id="home" fitHeight="45.0" fitWidth="68.0" layoutX="326.0" layoutY="232.0" onMouseClicked="#backNewGame" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@image/home.png" />
-      </image>
-   </ImageView>
 </AnchorPane>
