@@ -13,33 +13,51 @@ public class MarbleMarketLeaderCardWhiteResource extends MarbleMarketLeaderCard 
     super(resourcePrice, cardPrice, definedResource, points,cardCode);
   }
 
+  /**
+   * returns the marbles on the grid of the market as an Array of Arrays
+   * @return the marbles
+   */
   @Override
   public Marble[][] getMarbleBoard() {
     return getMarbleMarket().getMarbleBoard();
   }
 
+  /**
+   * returns the marble to joggle into the market
+   * @return is the marble
+   */
   @Override
   public Marble getMarbleOut() {
     return getMarbleMarket().getMarbleOut();
   }
 
+  /**
+   * performs the action of selecting a column in the market
+   * @param column the column
+   * @return the marbles earned from the action
+   */
   @Override
   public ArrayList<MarbleOption> getColumn(int column) {
     ArrayList<MarbleOption> temp = getMarbleMarket().getColumn(column);
     temp.forEach(t -> {
       if(t.hasWhite()){
-        //t.addOption(Resource.getMarble(getDefinedResource()));
+        t.addOption(Resource.UNKNOWN.getMarble(getDefinedResource()));
       }
     });
     return temp;
   }
 
+  /**
+   * performs the action of selecting a row in the market
+   * @param row the row
+   * @return the marbles earned from the action
+   */
   @Override
   public ArrayList<MarbleOption> getRow(int row) {
     ArrayList<MarbleOption> temp = getMarbleMarket().getColumn(row);
     temp.forEach(t -> {
       if(t.hasWhite()){
-        //t.addOption(Resource.getMarble(getDefinedResource()));
+        t.addOption(Resource.UNKNOWN.getMarble(getDefinedResource()));
       }
     });
     return temp;

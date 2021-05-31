@@ -27,6 +27,12 @@ public class ProductionLine implements ProductionLineBoardInterface{
         this(3);
     }
 
+    /**
+     * adds the CreationCard to the specified production slot
+     * @param pos the production slot
+     * @param card the card to add
+     * @return the boolean representing if the adding procedure ended correctly
+     */
     public boolean addCard(int pos, CreationCard card){
         int position;
         if(pos<1){
@@ -46,6 +52,12 @@ public class ProductionLine implements ProductionLineBoardInterface{
         }
     }
 
+    /**
+     * checks if the CreationCard can be added to the specified production slot
+     * @param pos the production slot
+     * @param card the card to add
+     * @return the boolean representing if the card can be added
+     */
     @Override
     public boolean canAddCard(int pos, CreationCard card) {
         int position;
@@ -61,6 +73,10 @@ public class ProductionLine implements ProductionLineBoardInterface{
         return activeCards.get(position).canAdd(card);
     }
 
+    /**
+     * returns the Hashmap containing the relation Slot-CreationCard represented in the productionLine
+     * @return is the Hashmap
+     */
     public HashMap<Integer, CreationCard> getCards(){
         HashMap<Integer, CreationCard> cards = new HashMap<>();
         for(Integer key: activeCards.keySet()){
@@ -73,16 +89,30 @@ public class ProductionLine implements ProductionLineBoardInterface{
         return cards;
     }
 
+    /**
+     * returns the internal number of the next slot to add cards to
+     * eg. a productionLine with 3 production slot will return "4" standing for the fourth production slot
+     * @return the next free slot
+     */
     public int getNextFreeSlot() {
         return maxProductionSlots +1;
     }
 
+    /**
+     * returns an ArrayList containing all creation card possessed by the production Line enceforth by the
+     * player, this collection can be operated upon without modifying the production line
+     * @return the Arraylist of cards
+     */
     public ArrayList<CreationCard> allUsedCards(){
         ArrayList<CreationCard> cardsToReturn = new ArrayList<>();
         this.productionCards.values().forEach(t-> cardsToReturn.add(t.getCard()));
         return cardsToReturn;
     }
 
+    /**
+     * returns the points that are due to the possession of CreationCards
+     * @return is the points
+     */
     public int getPoints() {
         return allUsedCards().stream().map(CreationCard::getValue).reduce(0, Integer::sum);
     }
@@ -112,6 +142,10 @@ public class ProductionLine implements ProductionLineBoardInterface{
 
     public void setStatus(JSONObject status){}
 
+    /**
+     * returns the number of cards currently possessed by the player
+     * @return is the number of cards
+     */
     public int getNumberOfCards(){
         return productionCards.size();
     }

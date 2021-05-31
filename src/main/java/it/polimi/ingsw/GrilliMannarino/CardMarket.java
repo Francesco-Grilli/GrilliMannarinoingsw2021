@@ -32,6 +32,10 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     }
   }
 
+  /**
+   * returns the grid of cards disposed on top of the 12 stacks
+   * @return the HashMap of HashMap representing the cards
+   */
   public HashMap<Faction, HashMap<Integer, CreationCard>> getCards(){
     HashMap<Faction, HashMap<Integer, CreationCard>> cardCodes = new HashMap<>();
     for(Faction fac: cardStacks.keySet()){
@@ -47,6 +51,12 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     return cardCodes;
   }
 
+  /**
+   * buys card that is found at the coordinates faction-level on the grid
+   * @param faction the faction coordinate
+   * @param level the level coordinate
+   * @return the card
+   */
   public CreationCard buyCard(Faction faction, Integer level){
     if(cardStacks == null || cardStacks.isEmpty()){
       return null;
@@ -63,6 +73,11 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     }
   }
 
+  /**
+   * returns the card corresponding to the specified card code
+   * @param cardCode the card code of the card
+   * @return the card
+   */
   @Override
   public CreationCard getCardFromCode(int cardCode) {
     if(cardsInGame.get(cardCode)!=null){
@@ -71,6 +86,10 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     return null;
   }
 
+  /**
+   * loads the cards from the file CreationCards
+   * and calls the method parsecreationcard to add them to the cardsInGame
+   */
   private void loadCards(){
     JSONParser jsonParser = new JSONParser();
 
@@ -85,6 +104,10 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     }
   }
 
+  /**
+   * parses the Json of the card and adds it to the
+   * @param card json containing the card data
+   */
   private void parseCreationCard(JSONObject card) {
     //Get card object within list
     JSONObject cardObject = (JSONObject) card.get("card");
@@ -100,6 +123,11 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     this.cardsInGame.put(cardCode, new CreationCard(cardCode, cardLevel, cardValue,cardFaction,cardPrice,cardInput,cardOutput));
   }
 
+  /**
+   * parses the Json of the resources and returns the hashmap to be used in the creation of the CreationCard
+   * @param resources the json containing raw data
+   * @return the HashMap to be used in the creation of the card
+   */
   private HashMap<Resource, Integer> parseHashMapResources(JSONObject resources){
     Resource[] keys = Resource.values();
     HashMap<Resource, Integer> temp = new HashMap<>();
@@ -112,6 +140,9 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     return temp;
   }
 
+  /**
+   * groups the cards by faction and by level and creates the CardStacks containing the groups
+   */
   private void orderCardsInStacks(){
     int l = getMaxLevelOfCards();
     for(Faction fac: Faction.values()){
@@ -130,6 +161,10 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     }
   }
 
+  /**
+   * returns the max level among all the CreationCards istantiated in the game
+   * @return the max level of cards
+   */
   private int getMaxLevelOfCards(){
     AtomicInteger maxLevel = new AtomicInteger(0);
     cardsInGame.forEach((key,value)->{
@@ -176,6 +211,11 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
 
   public void setStatus(JSONObject status){}
 
+  /**
+   * deletes two cards of a faction starting from the lowest possible level
+   * @param faction the faction to delete cards from
+   * @return if the cards have been removed correctly
+   */
   @Override
   public boolean deleteTwoCards(Faction faction) {
     if(factionEmpty(faction)){
@@ -185,6 +225,11 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     return factionEmpty(faction);
   }
 
+  /**
+   * specifies if the market is empty of creation cards of the given faction
+   * @param faction the faction
+   * @return if there are no more cards
+   */
   private boolean factionEmpty(Faction faction){
     if(cardStacks.get(faction) != null){
       HashMap<Integer, CardStack> temp = cardStacks.get(faction);
@@ -198,6 +243,10 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     return true;
   }
 
+  /**
+   * deletes two cards at maximum from the given faction pool starting from the lowest level
+   * @param faction the given faction
+   */
   private void effectiveDeletion(Faction faction){
     if(cardStacks.get(faction) != null){
       HashMap<Integer, CardStack> temp = cardStacks.get(faction);

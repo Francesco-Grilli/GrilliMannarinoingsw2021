@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GrilliMannarino;
 
 import it.polimi.ingsw.GrilliMannarino.GameData.Marble;
+import it.polimi.ingsw.GrilliMannarino.GameData.Resource;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +24,7 @@ public class MarbleOptionTest {
     MarbleOption test2 = new MarbleOption(Marble.GREY);
 
     test1.addOption(Marble.WHITE);
-    test2.addOption(Marble.PURPLE);
+    test1.addOption(Resource.UNKNOWN.getMarble(Resource.SERVANT));
 
     assertTrue(test1.hasWhite());
     assertFalse(test2.hasWhite());
