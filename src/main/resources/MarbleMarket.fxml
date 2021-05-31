@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.MarbleMarketController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GrilliMannarino.GUIControllers.MarbleMarketController">
    <children>
       <ImageView fitHeight="271.0" fitWidth="319.0" layoutX="72.0" layoutY="70.0" pickOnBounds="true">
          <image>
@@ -31,26 +35,26 @@
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
        </rowConstraints>
-       <ImageView fx:id="marble0_0" fitHeight="55.0" fitWidth="55.0" />
-       <ImageView fx:id="marble1_0" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="1" />
-       <ImageView fx:id="marble2_0" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="2" />
-       <ImageView fx:id="marble3_0" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="3" />
-       <ImageView fx:id="marble0_1" fitHeight="55.0" fitWidth="55.0" GridPane.rowIndex="1" />
-       <ImageView fx:id="marble1_1" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-       <ImageView fx:id="marble2_1" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-       <ImageView fx:id="marble3_1" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-       <ImageView fx:id="marble0_2" fitHeight="55.0" fitWidth="55.0" GridPane.rowIndex="2" />
-       <ImageView fx:id="marble1_2" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-       <ImageView fx:id="marble2_2" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-       <ImageView fx:id="marble3_2" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+       <ImageView fx:id="marble3_2" fitHeight="55.0" fitWidth="55.0" />
+       <ImageView fx:id="marble2_2" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="1" />
+       <ImageView fx:id="marble1_2" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="2" />
+       <ImageView fx:id="marble0_2" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="3" />
+       <ImageView fx:id="marble3_1" fitHeight="55.0" fitWidth="55.0" GridPane.rowIndex="1" />
+       <ImageView fx:id="marble2_1" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <ImageView fx:id="marble1_1" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+       <ImageView fx:id="marble0_1" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+       <ImageView fx:id="marble3_0" fitHeight="55.0" fitWidth="55.0" GridPane.rowIndex="2" />
+       <ImageView fx:id="marble2_0" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+       <ImageView fx:id="marble1_0" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+       <ImageView fx:id="marble0_0" fitHeight="55.0" fitWidth="55.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
      </GridPane>
-      <Button fx:id="col1" layoutX="145.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
-      <Button fx:id="col3" layoutX="251.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
-      <Button fx:id="col2" layoutX="199.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
-      <Button fx:id="col4" layoutX="303.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
-      <Button fx:id="row3" layoutX="407.0" layoutY="252.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="55.0" text="Button" />
+      <Button fx:id="col4" layoutX="145.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
+      <Button fx:id="col2" layoutX="251.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
+      <Button fx:id="col3" layoutX="199.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
+      <Button fx:id="col1" layoutX="303.0" layoutY="357.0" mnemonicParsing="false" opacity="0.0" prefHeight="73.0" prefWidth="32.0" text="Button" />
+      <Button fx:id="row1" layoutX="407.0" layoutY="252.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="55.0" text="Button" />
       <Button fx:id="row2" layoutX="407.0" layoutY="201.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="55.0" text="Button" />
-      <Button fx:id="row1" layoutX="407.0" layoutY="146.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="55.0" text="Button" />
+      <Button fx:id="row3" layoutX="407.0" layoutY="146.0" mnemonicParsing="false" opacity="0.0" prefHeight="30.0" prefWidth="55.0" text="Button" />
       <ImageView fx:id="marbleOut" fitHeight="55.0" fitWidth="55.0" layoutX="76.0" layoutY="75.0" />
    </children>
 </AnchorPane>

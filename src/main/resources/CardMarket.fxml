@@ -49,11 +49,11 @@
       <image>
          <Image url="@image/empy-production.png" />
       </image></ImageView>
-   <ImageView fx:id="productionCard2" fitHeight="152.0" fitWidth="100.0" layoutX="356.0" layoutY="565.0">
+   <ImageView fx:id="productionCard3" fitHeight="152.0" fitWidth="100.0" layoutX="356.0" layoutY="565.0">
       <image>
          <Image url="@image/empy-production.png" />
       </image></ImageView>
-   <ImageView fx:id="productionCard3" fitHeight="152.0" fitWidth="100.0" layoutX="184.0" layoutY="565.0">
+   <ImageView fx:id="productionCard2" fitHeight="152.0" fitWidth="100.0" layoutX="184.0" layoutY="565.0">
       <image>
          <Image url="@image/empy-production.png" />
       </image></ImageView>
