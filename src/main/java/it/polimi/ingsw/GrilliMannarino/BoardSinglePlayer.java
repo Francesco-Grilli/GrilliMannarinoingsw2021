@@ -11,6 +11,10 @@ public class BoardSinglePlayer extends Board{
         this.popeLine = popelineLorenzo;
     }
 
+    /**
+     * adds one point of faith to the lorenzo counter in the popelineSinge during a single player match
+     * @return returns if adding the said faith points triggers a pope action
+     */
     public boolean addLorenzoFaith(){
         try{
             return popelineLorenzo.addLorenzoFaith();
@@ -20,6 +24,10 @@ public class BoardSinglePlayer extends Board{
         return false;
     }
 
+    /**
+     * adds two point of faith to the lorenzo counter in the popelineSinge during a single player match
+     * @return returns if adding the said faith points triggers a pope action
+     */
     public boolean doubleAddLorenzoFaith(){
         try{
             return popelineLorenzo.doubleAddLorenzoFaith();
@@ -29,6 +37,10 @@ public class BoardSinglePlayer extends Board{
         return false;
     }
 
+    /**
+     * returns the faith points of lorenzo in a single player game
+     * @return the points
+     */
     public int getLorenzoFaith(){
         try{
             return popelineLorenzo.getLorenzoFaith();
@@ -38,10 +50,18 @@ public class BoardSinglePlayer extends Board{
         return -1;
     }
 
+    /**
+     * checks if the popeline single can activate a pope favor due to lorenzo's position
+     * @return
+     */
     public boolean checkLorenzoPopeFaith(){
         return popelineLorenzo.checkLorenzoPopeFaith();
     }
 
+    /**
+     * checkPopeFaith is called by the Board if anyone has returned true when has been added a new popeFaith
+     * @return true if the player has triggered the Pope's favor, false if the favor has been discarded
+     */
     public boolean checkPopeFaith(){
         return popelineLorenzo.checkPopeFaith();
     }
