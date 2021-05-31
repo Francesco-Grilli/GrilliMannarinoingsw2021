@@ -181,41 +181,8 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
     if(factionEmpty(faction)){
       return true;
     }
-    if(cardStacks.get(faction) != null){
-      HashMap<Integer, CardStack> temp = cardStacks.get(faction);
-      List<Integer> keys = temp.keySet().stream().sorted().collect(Collectors.toList());
-      int deleted = 0;
-      for(Integer i:keys){
-        CardStack toDelete = temp.get(i);
-        if(toDelete.emptyStack()){
-          break;
-        }else{
-          toDelete.popCard();
-          deleted++;
-          if(factionEmpty(faction)){
-            return true;
-          }else{
-            if(deleted >= 2){
-              return false;
-            }else{
-              if(toDelete.emptyStack()){
-                break;
-              }else{
-                toDelete.popCard();
-                deleted++;
-                if(factionEmpty(faction)){
-                  return true;
-                }else{
-                  return false;
-                }
-              }
-            }
-          }
-        }
-      }
-      return true;
-    }
-    return true;
+    effectiveDeletion(faction);
+    return factionEmpty(faction);
   }
 
   private boolean factionEmpty(Faction faction){
@@ -229,5 +196,19 @@ public class CardMarket implements CardMarketBoardInterface, GetCarder, CardMark
       return toRet;
     }
     return true;
+  }
+
+  private void effectiveDeletion(Faction faction){
+    if(cardStacks.get(faction) != null){
+      HashMap<Integer, CardStack> temp = cardStacks.get(faction);
+      int deleted = 0;
+      for(Integer i:temp.keySet()){
+        CardStack toDelete = temp.get(i);
+        if (!toDelete.emptyStack() && deleted < 2) {
+          toDelete.popCard();
+          deleted++;
+        }
+      }
+    }
   }
 }
