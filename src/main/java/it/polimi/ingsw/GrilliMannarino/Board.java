@@ -38,14 +38,17 @@ public class Board {
 
 
   /**
-   * show the card inside
-   * @return
+   * show the card inside the production line
+   * @return an hashmap with the position of the creation card
    */
   public HashMap<Integer, CreationCard> showCardInProductionLine(){
     return productionLine.getCards();
   }
 
-  //METHOD TO GET/BUY CARD
+  /**
+   * return all cards into the card market
+   * @return an hashmap with the all card into card market
+   */
   public HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard,Boolean>>> getBuyableCard(){
     HashMap<Faction, HashMap<Integer, CreationCard>> t = cardMarket.getCards();
     HashMap<Faction, HashMap<Integer, Map.Entry<CreationCard,Boolean>>> ret = new HashMap<>();
@@ -59,11 +62,20 @@ public class Board {
     return ret;
   }
 
+  /**
+   * check if can buy a creation card
+   * @param card the creation card that want to buy
+   * @return a boolean equals true if you can buy that card
+   */
   private Boolean canBuyCard(CreationCard card){
     return resourceManager.canRemove(card.getPrice());
   }
 
-
+  /**
+   * return a card from market
+   * @param card the card you want to get
+   * @return the creation card
+   */
   public CreationCard getCardFromMarket(CreationCard card){
     if(canBuyCard(card)) {
       resourceManager.remove(card.getPrice());
@@ -72,11 +84,20 @@ public class Board {
     return null;
   }
 
-
+  /**
+   * check if the production line can produce with the configuration passed
+   * @param cards the configuration of the cards
+   * @return a boolean equals true if you can produce
+   */
   public boolean canProduceWithConfiguration(ArrayList<CreationCard> cards){
     return resourceManager.canRemove(getInputOfConfiguration(cards));
   }
 
+  /**
+   * produce the resources using the card passed
+   * @param cards the configuration of cards to produce
+   * @return true if configuration was correct
+   */
   public boolean produce(ArrayList<CreationCard> cards){
     boolean check = false;
     if(canProduceWithConfiguration(cards)) {
@@ -98,41 +119,78 @@ public class Board {
     return check;
   }
 
+  /**
+   * get the number of card bought
+   * @return an integer as the number of cards bought
+   */
   public int getNumberOfCards(){
     return productionLine.getNumberOfCards();
   }
 
-
+  /**
+   * return the marbles inside the marble market
+   * @return a 2d array of the marble inside marble market
+   */
   public Marble[][] getMarblesFromMarket(){
     return this.marbleMarket.getMarbleBoard();
   }
 
+  /**
+   * return the marble out of the market
+   * @return a Marble enum of the marble out
+   */
   public Marble getMarbleOut(){
     return this.marbleMarket.getMarbleOut();
   }
 
+  /**
+   * return the marble from the marble market selection
+   * @param i an integer representing the position of the row to select
+   * @return an array of marble option of the marble selected
+   */
   public ArrayList<MarbleOption> getRow(int i){
     return this.marbleMarket.getRow(i);
   }
 
+  /**
+   * return the marble from the marble market selection
+   * @param i an integer representing the position of the column to select
+   * @return an array of marble option of the marble selected
+   */
   public ArrayList<MarbleOption> getColumn(int i){
     return this.marbleMarket.getColumn(i);
   }
 
+  /**
+   * set the leadercards inside board after selected by the player
+   * @param leaderCards the leadercard to add, selected by the player
+   */
   public void setLeaderCards(ArrayList<LeaderCard> leaderCards){
     leaderCards.forEach(t-> this.boardLeaderCards.put(t.getCardCode(),t));
   }
 
+  /**
+   * used to activate the leadercard inside the board
+   * @param cardCode of the leadercard to activate
+   * @return true if the leadercard was correctly activated
+   */
   public boolean activateLeaderCard(int cardCode){
     if(boardLeaderCards.containsKey(cardCode)){
       if(canActivateLeaderCard(boardLeaderCards.get(cardCode))) {
         boardLeaderCards.get(cardCode).execute(this);
+        activeLeaderCards.put(cardCode, boardLeaderCards.get(cardCode));
+        boardLeaderCards.remove(cardCode);
         return true;
       }
     }
     return false;
   }
 
+  /**
+   * return the leadercard inside board
+   * @param cardCode the code of the leadercard to return
+   * @return the leadercard you want to get
+   */
   public LeaderCard getLeaderCard(int cardCode){
     if(activeLeaderCards.containsKey(cardCode))
       return activeLeaderCards.get(cardCode);
@@ -140,6 +198,11 @@ public class Board {
       return null;
   }
 
+  /**
+   * check if youc an activate the leadercard
+   * @param leaderCard the leadercard to activate
+   * @return true if the leadercard was correctly activated
+   */
   private boolean canActivateLeaderCard(LeaderCard leaderCard){
     boolean condition = resourceManager.canRemove(leaderCard.getResourcePrice());
     if(!(checkOnCardsFactionsAndLevels(leaderCard.getCardPrice()))){
@@ -169,14 +232,31 @@ public class Board {
     return true;
   }
 
+  /**
+   * return the creation from the cardCode parameter
+   * @param cardCode the card code of the card to get
+   * @return the creation card
+   */
   public CreationCard getCardFromCode(int cardCode){
     return cardMarket.getCardFromCode(cardCode);
   }
 
+  /**
+   * check if can add a new card inside the production line
+   * @param pos the position you want to set the creation card
+   * @param card the card you want to set
+   * @return true if the card was correctly placed
+   */
   public boolean canAddCard(int pos, CreationCard card){
     return productionLine.canAddCard(pos, card);
   }
 
+  /**
+   * add the card to the production line
+   * @param pos the position you want to set the creation card
+   * @param card the card you want to set
+   * @return true if the card was correctly placed
+   */
   public boolean addCard(int pos, CreationCard card){
     if(canAddCard(pos,card)){
       return productionLine.addCard(pos,card);
@@ -188,6 +268,10 @@ public class Board {
     return this.activeLeaderCards.values().stream().map(l -> l.getValue()).reduce(0, Integer::sum);
   }
 
+  /**
+   * return all points of the leadercard, cards, resources inside board
+   * @return ad integer representing the number of points inside board
+   */
   public int getPoints(){
     int points = this.getLeaderCardsPoints();
     points += getResourcePoints();
@@ -196,6 +280,11 @@ public class Board {
     return points;
   }
 
+  /**
+   * sell a leadercard inside board
+   * @param cardCode the card code of the leader card you want to sell
+   * @return true if the leader card was correctly sold
+   */
   public boolean sellLeaderCard(int cardCode){
     if(boardLeaderCards.containsKey(cardCode)){
       boardLeaderCards.remove(cardCode);
@@ -205,36 +294,75 @@ public class Board {
   }
 
 
-  //METHOD TO WORK WITH RESOURCE MANAGER
-
+  /**
+   * check if can set the resources from market
+   * @param line the line you want to set the resources
+   * @param resource the resource you want to set
+   * @param value the number of resource to set
+   * @return true if can set the resources inside market
+   */
   public boolean canSetResourcesFromMarket(Row line, Resource resource, Integer value){
     return resourceManager.canSetResourcesFromMarket(line, resource, value);
   }
 
+  /**
+   * set the resources inside market
+   * @param line the line you want to set the resources
+   * @param resource the resource you want to set
+   * @param value the number of resource to set
+   * @return an hashmap with the remaining resource
+   */
   public HashMap<Resource, Integer> setResourcesFromMarket(Row line, Resource resource, Integer value){
     return resourceManager.setResourcesFromMarket(line, resource, value);
   }
 
+  /**
+   * set the resources produce by production line inside the chest
+   * @param resources the resources you want to add
+   */
   public void setResourcesFromProduction(HashMap<Resource, Integer> resources){
     resourceManager.setResourcesFromProduction(resources);
   }
 
+  /**
+   * return all resources inside resource manager
+   * @return an hashmap with all resources inside resource manager
+   */
   public HashMap<Resource, Integer> getResources(){
     return resourceManager.getResources();
   }
 
+  /**
+   * return all resources inside warehouse
+   * @return an hashmap with all resources inside warehouse
+   */
   public HashMap<Row, HashMap<Resource, Integer>> getResourcesFromWareHouse(){
     return resourceManager.getEachResourceFromWareHouse();
   }
 
+  /**
+   * return all resources inside chest
+   * @return an hashmap with all resources inside chest
+   */
   public HashMap<Resource, Integer> getResourcesFromChest(){
     return resourceManager.getResourcesFromChest();
   }
 
+  /**
+   * check if can swap line inside warehouse
+   * @param one the first line to reverse
+   * @param two the second line to reverse
+   * @return true if can swap line between row
+   */
   public boolean canSwapLineFromWareHouse(Row one, Row two){
     return resourceManager.canSwapLine(one, two);
   }
 
+  /**
+   * force the swapping of the line into warehouse even if some resources will be lost
+   * @param one the first line to reverse
+   * @param two the second line to reverse
+   */
   public void forceSwapLineFromWareHouse(Row one, Row two){
     resourceManager.forceSwapLine(one, two);
   }
@@ -243,16 +371,26 @@ public class Board {
     return resourceManager.getResourcePoints();
   }
 
+  /**
+   * return the number of resources inside resource manager
+   * @return an integer with the number of resources
+   */
   public int getNumberOfResources(){
     return resourceManager.getNumberOfResource();
   }
 
-  //METHOD TO ACCESS THE POPELINE
-
+  /**
+   * add one pope faith to the player
+   * @return true if while adding a pope faith the player has activated a pope's favor
+   */
   public boolean addPopeFaith(){
     return popeLine.addFaith();
   }
 
+  /**
+   * check if the player has activate or discharged a pope's favor
+   * @return true if the player has activated the favor
+   */
   public boolean checkPopeFaith(){
     return popeLine.checkPopeFaith();
   }
@@ -261,19 +399,30 @@ public class Board {
     return popeLine.getPoints();
   }
 
+  /**
+   * get the faith of the player
+   * @return an integer with the faith of the player
+   */
   public int getFaith(){
     return popeLine.getFaith();
   }
 
+  /**
+   * get the favor activated or not by the player
+   * @return an array with the favor
+   */
   public boolean[] getFaithSteps(){
     return popeLine.getFaithSteps();
   }
-
 
   public boolean[] getFaithChecks(){
     return popeLine.getFaithChecks();
   }
 
+  /**
+   * add to lorenzo one point of faith
+   * @return true if lorenzo has activated a pope's favor
+   */
   public boolean addLorenzoFaith(){
     try{
       return ((PopeLineSingle) popeLine).addLorenzoFaith();
@@ -283,6 +432,10 @@ public class Board {
     return false;
   }
 
+  /**
+   * add two point of faith to lorenzo
+   * @return true if lorenzo as activated a pope's favor
+   */
   public boolean doubleAddLorenzoFaith(){
     try{
       return ((PopeLineSingle) popeLine).doubleAddLorenzoFaith();
@@ -292,6 +445,10 @@ public class Board {
     return false;
   }
 
+  /**
+   * get the faith of lorenzo
+   * @return an integer with the faith of lorenzo
+   */
   public int getLorenzoFaith(){
     try{
       return ((PopeLineSingle) popeLine).getLorenzoFaith();
@@ -301,6 +458,11 @@ public class Board {
     return -1;
   }
 
+  /**
+   * get the resource in input to produce
+   * @param cardsToProduceWith the cards used to produce new resources
+   * @return an hashmap with the resources needed to produce
+   */
   public HashMap<Resource, Integer> getInputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){
     HashMap<Resource, Integer> inputOfConfiguration = new HashMap<>();
     cardsToProduceWith.forEach((t) -> {
@@ -311,6 +473,11 @@ public class Board {
     return inputOfConfiguration;
   }
 
+  /**
+   * get the resources produces
+   * @param cardsToProduceWith the cards used to produce new resources
+   * @return an hashmap with the resources produced by the production line
+   */
   public HashMap<Resource, Integer> getOutputOfConfiguration(ArrayList<CreationCard> cardsToProduceWith){
     HashMap<Resource, Integer> outputOfConfiguration = new HashMap<>();
     cardsToProduceWith.forEach((t) -> {
@@ -323,15 +490,24 @@ public class Board {
 
   //METHOD TO GET MARBLE
 
+  /**
+   * return the selected row of the marble market
+   * @param row the selected row of marble market
+   * @return an array list of marble to place
+   */
   public ArrayList<MarbleOption> getMarbleRow(int row){
     return marbleMarket.getRow(row);
   }
 
+  /**
+   * return the selected column of the marble market
+   * @param column the selected column of marble market
+   * @return an array list of marble to place
+   */
   public ArrayList<MarbleOption> getMarbleColumn(int column){
     return marbleMarket.getColumn(column);
   }
 
-  //GETTERS AND SETTERS
 
 
   public PopeLine getPopeLine() {
